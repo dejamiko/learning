@@ -25,8 +25,8 @@ class Object:
 
         self.name = f"Object {index}"
         self.index = index
-        self._latent_representation = latent_representation
-        self.visible_representation = self.create_visible_representation()
+        self._latent_repr = latent_representation
+        self.visible_repr = self.create_visible_representation()
         self.task_type = task_type
         self.demo = None
 
@@ -35,8 +35,8 @@ class Object:
         Create a visible representation of the object. This is done by adding some noise to the latent representation
         :return: The visible representation of the object
         """
-        return self._latent_representation + np.random.normal(0, c.VISIBLE_REPRESENTATION_NOISE,
-                                                              self._latent_representation.shape)
+        return self._latent_repr + np.random.normal(0, c.VISIBLE_REPRESENTATION_NOISE,
+                                                    self._latent_repr.shape)
 
     def get_visual_similarity(self, other):
         """
@@ -44,8 +44,8 @@ class Object:
         :param other: The other object
         :return: The similarity between the visible representations. Implemented as the cosine similarity
         """
-        return np.dot(self.visible_representation, other.visible_representation) / (
-                np.linalg.norm(self.visible_representation) * np.linalg.norm(other.visible_representation))
+        return np.dot(self.visible_repr, other.visible_repr) / (
+                np.linalg.norm(self.visible_repr) * np.linalg.norm(other.visible_repr))
 
     def get_latent_similarity(self, other):
         """
@@ -53,7 +53,7 @@ class Object:
         :param other: The other object
         :return: The similarity between the latent representations. Implemented as the dot product
         """
-        return np.dot(self._latent_representation, other._latent_representation)
+        return np.dot(self._latent_repr, other._latent_repr)
 
     def get_task_type_correspondence(self, other):
         """
@@ -67,7 +67,7 @@ class Object:
         return self.__str__()
 
     def __str__(self):
-        return f"{self.name} ({self._latent_representation}), {self.visible_representation}, {self.task_type}, {self.demo}"
+        return f"{self.name} ({self._latent_repr}), {self.visible_repr}, {self.task_type}, {self.demo}"
 
     def try_action(self, action):
         """
@@ -90,7 +90,7 @@ class Object:
         For now, it is just the latent representation multiplied by the task type
         :return: The "position" of the object
         """
-        return self._latent_representation * (c.TASK_TYPES.index(self.task_type) + 1)
+        return self._latent_repr * (c.TASK_TYPES.index(self.task_type) + 1)
 
     def get_demo(self):
         return self.get_position()

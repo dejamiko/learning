@@ -10,6 +10,7 @@ if __name__ == "__main__":
 
     all_results = []
     for seed in seeds_to_try:
+        print("Running experiment with seed", seed)
         result = run_experiment(seed)
         all_results.append(result)
 
@@ -18,3 +19,4 @@ if __name__ == "__main__":
     print("Average exploration tries", np.mean([r["exploration_tries"] for r in all_results]))
     print("Average failures from oracle", np.mean([r["failures_from_oracle_count"] for r in all_results]))
     print("Average failures from exploration", np.mean([r["failures_from_exploration_count"] for r in all_results]))
+    print("Average time", np.mean([r["time"] for r in all_results]))

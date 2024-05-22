@@ -1,3 +1,5 @@
+import time
+
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.cluster import KMeans
@@ -72,14 +74,14 @@ def generate_objects():
     for i in range(c.OBJ_NUM):
         objects.append(TrajectoryObject(i, np.random.uniform(0, 1, c.LATENT_DIM), -1))
     # cluster the objects into different task types based on the latent representation
-    k = KMeans(n_clusters=len(c.TASK_TYPES)).fit(np.array([o._latent_representation for o in objects]))
+    k = KMeans(n_clusters=len(c.TASK_TYPES)).fit(np.array([o._latent_repr for o in objects]))
     for i, o in enumerate(objects):
         o.task_type = c.TASK_TYPES[k.labels_[i]]
 
-    create_figure(objects, "_latent_representation")
+    create_figure(objects, "_latent_repr")
     plt.savefig("objects_latent.png")
     plt.clf()
-    create_figure(objects, "visible_representation")
+    create_figure(objects, "visible_repr")
     plt.savefig("objects_visible.png")
     plt.clf()
 
@@ -128,8 +130,8 @@ def solve_objects(objects, known_objects, unknown_objects, visual_similarities, 
         demo = None
         if visual_similarities[u, k] > c.SIMILARITY_THRESHOLD:
             if c.VERBOSITY > 0 and not objects[u].get_task_type_correspondence(objects[k]):
-                print(
-                    f"Similarity {visual_similarities[u, k]}, matching tasks {objects[u].get_task_type_correspondence(objects[k])}")
+                print(f"Similarity {visual_similarities[u, k]}, matching tasks "
+                      f"{objects[u].get_task_type_correspondence(objects[k])}")
             if c.VERBOSITY > 1:
                 print(f"Replaying demo for object {objects[k]} to solve object {objects[u]} with similarity "
                       f"{visual_similarities[u, k]}")
@@ -152,6 +154,7 @@ def solve_objects(objects, known_objects, unknown_objects, visual_similarities, 
 
 
 def run_experiment(seed):
+    start_time = time.time()
     np.random.seed(seed)
     oracle = NoisyOracle(1)
 
@@ -170,14 +173,14 @@ def run_experiment(seed):
     failures_from_exploration_count = len([o for o in failed_objects if not o[1]])
 
     if c.VERBOSITY > 0:
-        create_figure(objects, "_latent_representation")
+        create_figure(objects, "_latent_repr")
         for obj_ind, _ in failed_objects:
-            plt.scatter(objects[obj_ind]._latent_representation[0], objects[obj_ind]._latent_representation[1], color="red")
+            plt.scatter(objects[obj_ind]._latent_repr[0], objects[obj_ind]._latent_repr[1], color="red")
         plt.savefig("objects_with_failures.png")
         plt.clf()
-        create_figure(objects, "visible_representation")
+        create_figure(objects, "visible_repr")
         for obj_ind, _ in failed_objects:
-            plt.scatter(objects[obj_ind].visible_representation[0], objects[obj_ind].visible_representation[1], color="red")
+            plt.scatter(objects[obj_ind].visible_repr[0], objects[obj_ind].visible_repr[1], color="red")
         plt.savefig("objects_visible_with_failures.png")
 
         print(f"Total cost: {oracle.get_final_cost()}")
@@ -194,12 +197,11 @@ def run_experiment(seed):
         "oracle_tries": oracle_tries_mean,
         "exploration_tries": exploration_tries_mean,
         "failures_from_oracle_count": failures_from_oracle_count,
-        "failures_from_exploration_count": failures_from_exploration_count
+        "failures_from_exploration_count": failures_from_exploration_count,
+        "time": time.time() - start_time
     }
 
 
 if __name__ == "__main__":
     # TODO Add learning so the exploration is smarter - how? Do I have a reward signal?
     run_experiment(0)
-
-
