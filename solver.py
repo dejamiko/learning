@@ -5,32 +5,29 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 import config as c
-from environment import NoisyOracle, TrajectoryObject, generate_trajectory
+from environment import NoisyOracle, TrajectoryObject, generate_trajectory, PerfectOracle
 
 
-def try_object(obj, base_actions):
+def try_object(obj, base_trajectory):
     """
     Try to solve the object by applying the base action with some noise
     :param obj: The object to solve
-    :param base_actions: The base actions to apply
+    :param base_trajectory: The base trajectory to apply
     :return: The number of tries it took to solve the object and whether the object was solved
     """
     counter = 0
-    actions = base_actions
-    failed = not obj.try_trajectory(actions)
+    trajectory = base_trajectory
+    failed = not obj.try_trajectory(trajectory)
     while failed:
-        actions = generate_trajectory(
-            np.sum(base_actions, axis=0) +
-            np.random.uniform(-c.ACTION_EXPLORATION_DEVIATION, c.ACTION_EXPLORATION_DEVIATION, base_actions[0].shape)
-        )
-        failed = not obj.try_trajectory(actions)
+        trajectory = base_trajectory + np.random.normal(0, c.ACTION_EXPLORATION_DEVIATION, base_trajectory.shape)
+        failed = not obj.try_trajectory(trajectory)
         counter += 1
         if counter > c.EXPLORATION_TRIES:
             if c.VERBOSITY > 0:
-                print(f"Failed to find {obj.get_position()} with trajectory ending {np.sum(base_actions, axis=0)} "
+                print(f"Failed to find {obj.get_position()} with trajectory ending {np.sum(base_trajectory, axis=0)} "
                       f"for object {obj}")
             break
-    return counter, not failed, actions
+    return counter, not failed, trajectory
 
 
 def select_objects_to_try(visual_similarities, known_objects, unknown_objects, object_types, objects):
@@ -77,6 +74,7 @@ def generate_objects():
     k = KMeans(n_clusters=len(c.TASK_TYPES)).fit(np.array([o._latent_repr for o in objects]))
     for i, o in enumerate(objects):
         o.task_type = c.TASK_TYPES[k.labels_[i]]
+        o.generate_waypoints()
 
     create_figure(objects, "_latent_repr")
     plt.savefig("objects_latent.png")
@@ -128,6 +126,7 @@ def solve_objects(objects, known_objects, unknown_objects, visual_similarities, 
         # if the objects are quite similar, try replaying the known demo
         from_oracle = False
         demo = None
+
         if visual_similarities[u, k] > c.SIMILARITY_THRESHOLD:
             if c.VERBOSITY > 0 and not objects[u].get_task_type_correspondence(objects[k]):
                 print(f"Similarity {visual_similarities[u, k]}, matching tasks "
@@ -136,16 +135,20 @@ def solve_objects(objects, known_objects, unknown_objects, visual_similarities, 
                 print(f"Replaying demo for object {objects[k]} to solve object {objects[u]} with similarity "
                       f"{visual_similarities[u, k]}")
             demo = objects[k].demo
+
         if demo is None:
             # ask the oracle to demonstrate the object
             demo = oracle.get_demo(objects[u])
             from_oracle = True
+
         tries, success, trajectory = try_object(objects[u], demo)
+
         if not success:
             failed_objects.append((u, from_oracle))
         else:
             objects[u].demo = trajectory
             all_tries.append((tries, from_oracle))
+
         known_objects = np.append(known_objects, u)
         unknown_objects = np.array([i for i in range(c.OBJ_NUM) if i not in known_objects])
     if c.VERBOSITY > 0:

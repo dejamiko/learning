@@ -90,7 +90,7 @@ class Object:
         For now, it is just the latent representation multiplied by the task type
         :return: The "position" of the object
         """
-        return self._latent_repr * (c.TASK_TYPES.index(self.task_type) + 1)
+        return self._latent_repr
 
     def get_demo(self):
         return self.get_position()
@@ -112,30 +112,91 @@ class TrajectoryObject(Object):
         :param task_type: The task type of the object
         """
         super().__init__(index, latent_representation, task_type)
+        self.waypoints = []
 
     def try_trajectory(self, trajectory):
         """
-        Try a trajectory of actions
+        Try a trajectory of actions. A trajectory is a list of actions that are applied to the object, and it is
+        considered successful if the object goes through all waypoints
         :param trajectory: The trajectory to try
         :return: True if the trajectory is successful and False otherwise
         """
-        pos = np.sum(trajectory, axis=0)
-        return self.check_position(pos)
+        current_position = np.zeros_like(self.get_position())
+        waypoint_index = 0
+        for action in trajectory:
+            current_position += action
+            if np.allclose(current_position, self.waypoints[waypoint_index], atol=c.POSITION_TOLERANCE):
+                waypoint_index += 1
+                if waypoint_index == len(self.waypoints):
+                    break
+        return waypoint_index == len(self.waypoints)
 
     def get_demo(self):
-        actions = generate_trajectory(self.get_position())
+        actions = generate_trajectory(self.waypoints)
         return actions
 
+    def generate_waypoints(self):
+        """
+        Generate waypoints the object needs to pass through
+        """
+        above = np.zeros_like(self.get_position())
+        above[-1] = 0.1
+        next_to = np.zeros_like(self.get_position())
+        next_to[-1] = 0.2
+        if self.task_type == "gripping":
+            # for gripping, pick a waypoint above the object, then the object, and back above the object
+            self.waypoints = [self.get_position() + above, self.get_position(), self.get_position() + above]
+        elif self.task_type == "pushing":
+            # for pushing, pick a waypoint at the object position, then a waypoint further away
+            self.waypoints = [self.get_position(), self.get_position() + next_to]
+        elif self.task_type == "inserting":
+            # for inserting, pick a waypoint above the object, then at the object position
+            self.waypoints = [self.get_position() + above, self.get_position()]
+        self.waypoints = np.array(self.waypoints)
 
-def generate_trajectory(position):
-    num_steps = max(10, np.ceil(np.linalg.norm(position) / c.MAX_ACTION * 2).astype(int))
-    traj = np.linspace(np.zeros_like(position), position, num_steps)
+
+def try_trajectory(trajectory, waypoints):
+    """
+    Try a trajectory of actions. A trajectory is a list of actions that are applied to the object, and it is
+    considered successful if the object goes through all waypoints
+    :param trajectory: The trajectory to try
+    :return: True if the trajectory is successful and False otherwise
+    """
+    current_position = np.zeros_like(waypoints[0])
+    waypoint_index = 0
+    for action in trajectory:
+        current_position += action
+        if np.allclose(current_position, waypoints[waypoint_index], atol=c.POSITION_TOLERANCE):
+            waypoint_index += 1
+            if waypoint_index == len(waypoints):
+                break
+    return waypoint_index == len(waypoints)
+
+
+def generate_trajectory(waypoints):
+    """
+    Generate a trajectory that goes through all waypoints
+    :param waypoints: The waypoints to go through
+    :return: The trajectory that goes through all waypoints
+    """
+    trajectory = []
+    trajectory.extend(generate_trajectory_between(np.zeros_like(waypoints[0]), waypoints[0]))
+    for i in range(len(waypoints) - 1):
+        trajectory.extend(generate_trajectory_between(waypoints[i], waypoints[i + 1]))
+    trajectory = np.array(trajectory)
+    assert try_trajectory(trajectory, waypoints)
+    return trajectory
+
+
+def generate_trajectory_between(start_pos, end_pos):
+    num_steps = max(5, np.ceil(np.linalg.norm(end_pos - start_pos) / c.MAX_ACTION * 2).astype(int))
+    traj = np.linspace(start_pos, end_pos, num_steps)
     actions = np.diff(traj, axis=0)
     for i in range(actions.shape[0] - 1):
         noise = np.random.normal(0, c.ACTION_EXPLORATION_DEVIATION, actions[i].shape)
         actions[i] += noise
         actions[i + 1] -= noise
-    assert np.allclose(np.sum(actions, axis=0), position, atol=c.POSITION_TOLERANCE)
+    assert np.allclose(np.sum(actions, axis=0) + start_pos, end_pos, atol=c.POSITION_TOLERANCE)
     return actions
 
 
