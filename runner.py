@@ -4,7 +4,6 @@ from solver import run_experiment
 
 if __name__ == "__main__":
     # TODO Add a cli to specify the configuration
-    # TODO Add waypoints to the trajectories (perhaps 2-3 to start with) and only accept a trajectory if it passes through all waypoints
 
     seeds_to_try = np.arange(10)
 
