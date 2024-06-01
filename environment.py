@@ -2,8 +2,6 @@ import abc
 
 import numpy as np
 
-import config as c
-
 
 class Object:
     """
@@ -11,7 +9,7 @@ class Object:
     and a task type.
     """
 
-    def __init__(self, index, latent_representation, task_type):
+    def __init__(self, index, latent_representation, task_type, c):
         """
         Initialise the object
         :param index: The index of the object
@@ -23,6 +21,7 @@ class Object:
         assert latent_representation.shape[
                    0] == c.LATENT_DIM, f"Expected array of length {c.LATENT_DIM}, got {latent_representation.shape[0]}"
 
+        self.c = c
         self.name = f"Object {index}"
         self.index = index
         self._latent_repr = latent_representation
@@ -35,7 +34,7 @@ class Object:
         Create a visible representation of the object. This is done by adding some noise to the latent representation
         :return: The visible representation of the object
         """
-        return self._latent_repr + np.random.normal(0, c.VISIBLE_REPRESENTATION_NOISE,
+        return self._latent_repr + np.random.normal(0, self.c.VISIBLE_REPRESENTATION_NOISE,
                                                     self._latent_repr.shape)
 
     def get_visual_similarity(self, other):
@@ -82,7 +81,7 @@ class Object:
         :param position: The position to check
         :return: True if the position is close to the "position" of the object
         """
-        return np.allclose(position, self.get_position(), atol=c.POSITION_TOLERANCE)
+        return np.allclose(position, self.get_position(), atol=self.c.POSITION_TOLERANCE)
 
     def get_position(self):
         """
@@ -103,7 +102,7 @@ class TrajectoryObject(Object):
     This assumes the frame is object-centric so there is no need to provide the start pose
     """
 
-    def __init__(self, index, latent_representation, task_type):
+    def __init__(self, index, latent_representation, task_type, c):
         """
         Initialise the object
 
@@ -111,7 +110,7 @@ class TrajectoryObject(Object):
         :param latent_representation: The latent representation of the object
         :param task_type: The task type of the object
         """
-        super().__init__(index, latent_representation, task_type)
+        super().__init__(index, latent_representation, task_type, c)
         self.waypoints = []
 
     def try_trajectory(self, trajectory):
@@ -125,14 +124,14 @@ class TrajectoryObject(Object):
         waypoint_index = 0
         for action in trajectory:
             current_position += action
-            if np.allclose(current_position, self.waypoints[waypoint_index], atol=c.POSITION_TOLERANCE):
+            if np.allclose(current_position, self.waypoints[waypoint_index], atol=self.c.POSITION_TOLERANCE):
                 waypoint_index += 1
                 if waypoint_index == len(self.waypoints):
                     break
         return waypoint_index == len(self.waypoints)
 
     def get_demo(self):
-        actions = generate_trajectory(self.waypoints)
+        actions = generate_trajectory(self.waypoints, self.c)
         return actions
 
     def generate_waypoints(self):
@@ -155,7 +154,7 @@ class TrajectoryObject(Object):
         self.waypoints = np.array(self.waypoints)
 
 
-def try_trajectory(trajectory, waypoints):
+def try_trajectory(trajectory, waypoints, c):
     """
     Try a trajectory of actions. A trajectory is a list of actions that are applied to the object, and it is
     considered successful if the object goes through all waypoints
@@ -173,22 +172,22 @@ def try_trajectory(trajectory, waypoints):
     return waypoint_index == len(waypoints)
 
 
-def generate_trajectory(waypoints):
+def generate_trajectory(waypoints, c):
     """
     Generate a trajectory that goes through all waypoints
     :param waypoints: The waypoints to go through
     :return: The trajectory that goes through all waypoints
     """
     trajectory = []
-    trajectory.extend(generate_trajectory_between(np.zeros_like(waypoints[0]), waypoints[0]))
+    trajectory.extend(generate_trajectory_between(np.zeros_like(waypoints[0]), waypoints[0], c))
     for i in range(len(waypoints) - 1):
-        trajectory.extend(generate_trajectory_between(waypoints[i], waypoints[i + 1]))
+        trajectory.extend(generate_trajectory_between(waypoints[i], waypoints[i + 1], c))
     trajectory = np.array(trajectory)
-    assert try_trajectory(trajectory, waypoints)
+    assert try_trajectory(trajectory, waypoints, c)
     return trajectory
 
 
-def generate_trajectory_between(start_pos, end_pos):
+def generate_trajectory_between(start_pos, end_pos, c):
     num_steps = max(5, np.ceil(np.linalg.norm(end_pos - start_pos) / c.MAX_ACTION * 2).astype(int))
     traj = np.linspace(start_pos, end_pos, num_steps)
     actions = np.diff(traj, axis=0)
@@ -218,18 +217,18 @@ class Oracle(abc.ABC):
         self.total_cost = 0
 
     @abc.abstractmethod
-    def get_demo(self, obj):
+    def get_demo(self, obj, c):
         pass
 
 
 class NoisyOracle(Oracle):
-    def get_demo(self, obj):
+    def get_demo(self, obj, c):
         self.total_cost += self.cost_per
         obj_demo = obj.get_demo()
         return obj_demo + np.random.normal(0, c.DEMO_NOISE, obj_demo.shape)
 
 
 class PerfectOracle(Oracle):
-    def get_demo(self, obj):
+    def get_demo(self, obj, c):
         self.total_cost += self.cost_per
         return obj.get_demo()

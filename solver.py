@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.cluster import KMeans
 
-import config as c
+from config import Config
 from environment import NoisyOracle, TrajectoryObject
 
 
-def try_object(obj, base_trajectory):
+def try_object(obj, base_trajectory, c):
     """
     Try to solve the object by applying the base action with some noise
     :param obj: The object to solve
@@ -30,7 +30,7 @@ def try_object(obj, base_trajectory):
     return counter, not failed, trajectory
 
 
-def select_objects_to_try(visual_similarities, known_objects, unknown_objects, object_types, objects):
+def select_objects_to_try(visual_similarities, known_objects, unknown_objects, object_types, objects, c):
     task_types = np.unique(object_types[known_objects])
     candidates = []
     for t_t in task_types:
@@ -57,7 +57,7 @@ def select_objects_to_try(visual_similarities, known_objects, unknown_objects, o
     return u, k
 
 
-def create_figure(objects, field):
+def create_figure(objects, field, c):
     to_plot = {t: [] for t in c.TASK_TYPES}
     for i, o in enumerate(objects):
         to_plot[o.task_type].append(getattr(o, field))
@@ -66,27 +66,27 @@ def create_figure(objects, field):
         plt.scatter(to_plot[t][:, 0], to_plot[t][:, 1], label=t)
 
 
-def generate_objects():
+def generate_objects(c):
     objects = []
     for i in range(c.OBJ_NUM):
-        objects.append(TrajectoryObject(i, np.random.uniform(0, 1, c.LATENT_DIM), -1))
+        objects.append(TrajectoryObject(i, np.random.uniform(0, 1, c.LATENT_DIM), -1, c))
     # cluster the objects into different task types based on the latent representation
     k = KMeans(n_clusters=len(c.TASK_TYPES)).fit(np.array([o._latent_repr for o in objects]))
     for i, o in enumerate(objects):
         o.task_type = c.TASK_TYPES[k.labels_[i]]
         o.generate_waypoints()
 
-    create_figure(objects, "_latent_repr")
+    create_figure(objects, "_latent_repr", c)
     plt.savefig("objects_latent.png")
     plt.clf()
-    create_figure(objects, "visible_repr")
+    create_figure(objects, "visible_repr", c)
     plt.savefig("objects_visible.png")
     plt.clf()
 
     return np.array(objects, dtype=TrajectoryObject)
 
 
-def generate_helper_data(objects, oracle):
+def generate_helper_data(objects, oracle, c):
     # find random objects to be provided as known but make sure all task types are represented
     known_objects = np.random.choice(c.OBJ_NUM, c.KNOWN_OBJECT_NUM, replace=False)
     while len(set([objects[i].task_type for i in known_objects])) < len(c.TASK_TYPES):
@@ -95,7 +95,7 @@ def generate_helper_data(objects, oracle):
         known_objects = np.random.choice(c.OBJ_NUM, c.KNOWN_OBJECT_NUM, replace=False)
 
     for i in known_objects:
-        objects[i].demo = oracle.get_demo(objects[i])
+        objects[i].demo = oracle.get_demo(objects[i], c)
     oracle.reset_cost()
 
     unknown_objects = np.array([i for i in range(c.OBJ_NUM) if i not in known_objects])
@@ -116,12 +116,12 @@ def generate_helper_data(objects, oracle):
     return known_objects, unknown_objects, visual_similarities, object_types
 
 
-def solve_objects(objects, known_objects, unknown_objects, visual_similarities, object_types, oracle):
+def solve_objects(objects, known_objects, unknown_objects, visual_similarities, object_types, c):
     all_tries = []
     failed_objects = []
     selection_frequency = np.zeros(c.OBJ_NUM)
     while len(known_objects) < c.OBJ_NUM:
-        u, k = select_objects_to_try(visual_similarities, known_objects, unknown_objects, object_types, objects)
+        u, k = select_objects_to_try(visual_similarities, known_objects, unknown_objects, object_types, objects, c)
         selection_frequency[k] += 1
         # if the objects are quite similar, try replaying the known demo
         if c.VERBOSITY > 0 and not objects[u].get_task_type_correspondence(objects[k]):
@@ -130,9 +130,28 @@ def solve_objects(objects, known_objects, unknown_objects, visual_similarities, 
         if c.VERBOSITY > 1:
             print(f"Replaying demo for object {objects[k]} to solve object {objects[u]} with similarity "
                   f"{visual_similarities[u, k]}")
-        demo = objects[k].demo
 
-        tries, success, trajectory = try_object(objects[u], demo)
+        if c.METHOD == "single":
+            demo = objects[k].demo
+        elif c.METHOD == "average":
+            top_k = known_objects[np.argsort((visual_similarities[u][known_objects]))]
+            # find the last k that have a demo not None
+            top_k = top_k[[objects[i].demo is not None for i in top_k]][-c.TOP_K:]
+            weights = visual_similarities[u, top_k]
+            # since demonstrations can have different weights, we need to average what we can
+            max_demo_len = max([len(objects[i].demo) for i in top_k])
+            demo = np.zeros((max_demo_len, c.LATENT_DIM))
+            demo_weights = np.zeros((max_demo_len, c.LATENT_DIM))
+            for i in range(c.TOP_K):
+                for j in range(max_demo_len):
+                    if j < len(objects[top_k[i]].demo):
+                        demo[j] += objects[top_k[i]].demo[j]
+                        demo_weights[j] += weights[i] * np.ones(c.LATENT_DIM)
+            demo = demo / demo_weights
+        else:
+            raise ValueError(f"Unknown method {c.METHOD}")
+
+        tries, success, trajectory = try_object(objects[u], demo, c)
 
         if not success:
             failed_objects.append(u)
@@ -147,16 +166,16 @@ def solve_objects(objects, known_objects, unknown_objects, visual_similarities, 
     return all_tries, failed_objects
 
 
-def run_experiment(seed):
+def run_experiment(seed, c):
     start_time = time.time()
     np.random.seed(seed)
     oracle = NoisyOracle(1)
 
-    objects = generate_objects()
-    known_objects, unknown_objects, visual_similarities, object_types = generate_helper_data(objects, oracle)
+    objects = generate_objects(c)
+    known_objects, unknown_objects, visual_similarities, object_types = generate_helper_data(objects, oracle, c)
 
     all_tries, failed_objects = solve_objects(objects, known_objects, unknown_objects, visual_similarities,
-                                              object_types, oracle)
+                                              object_types, c)
 
     total_cost = oracle.get_final_cost()
     exploration_tries = all_tries
@@ -190,5 +209,13 @@ def run_experiment(seed):
 
 
 if __name__ == "__main__":
-    # TODO Add learning so the exploration is smarter - how? Do I have a reward signal?
-    run_experiment(0)
+    # TODO Rework the storage system to distinguish between different tasks
+    c = Config()
+    c.METHOD = "single"
+    run_experiment(0, c)
+    c.METHOD = "average"
+    c.TOP_K = 1
+    run_experiment(0, c)
+    # for k in range(1, 10):
+    #     c.TOP_K = k
+    #     run_experiment(0, c)
