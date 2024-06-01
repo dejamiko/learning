@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 
 import config as c
-from environment import NoisyOracle, TrajectoryObject, generate_trajectory, PerfectOracle
+from environment import NoisyOracle, TrajectoryObject
 
 
 def try_object(obj, base_trajectory):
@@ -124,30 +124,21 @@ def solve_objects(objects, known_objects, unknown_objects, visual_similarities, 
         u, k = select_objects_to_try(visual_similarities, known_objects, unknown_objects, object_types, objects)
         selection_frequency[k] += 1
         # if the objects are quite similar, try replaying the known demo
-        from_oracle = False
-        demo = None
-
-        if visual_similarities[u, k] > c.SIMILARITY_THRESHOLD:
-            if c.VERBOSITY > 0 and not objects[u].get_task_type_correspondence(objects[k]):
-                print(f"Similarity {visual_similarities[u, k]}, matching tasks "
-                      f"{objects[u].get_task_type_correspondence(objects[k])}")
-            if c.VERBOSITY > 1:
-                print(f"Replaying demo for object {objects[k]} to solve object {objects[u]} with similarity "
-                      f"{visual_similarities[u, k]}")
-            demo = objects[k].demo
-
-        if demo is None:
-            # ask the oracle to demonstrate the object
-            demo = oracle.get_demo(objects[u])
-            from_oracle = True
+        if c.VERBOSITY > 0 and not objects[u].get_task_type_correspondence(objects[k]):
+            print(f"Similarity {visual_similarities[u, k]}, matching tasks "
+                  f"{objects[u].get_task_type_correspondence(objects[k])}")
+        if c.VERBOSITY > 1:
+            print(f"Replaying demo for object {objects[k]} to solve object {objects[u]} with similarity "
+                  f"{visual_similarities[u, k]}")
+        demo = objects[k].demo
 
         tries, success, trajectory = try_object(objects[u], demo)
 
         if not success:
-            failed_objects.append((u, from_oracle))
+            failed_objects.append(u)
         else:
             objects[u].demo = trajectory
-            all_tries.append((tries, from_oracle))
+            all_tries.append(tries)
 
         known_objects = np.append(known_objects, u)
         unknown_objects = np.array([i for i in range(c.OBJ_NUM) if i not in known_objects])
@@ -168,38 +159,31 @@ def run_experiment(seed):
                                               object_types, oracle)
 
     total_cost = oracle.get_final_cost()
-    oracle_tries = [t for t, o in all_tries if o]
-    oracle_tries_mean = np.mean(oracle_tries) if len(oracle_tries) > 0 else 0
-    exploration_tries = [t for t, o in all_tries if not o]
+    exploration_tries = all_tries
     exploration_tries_mean = np.mean(exploration_tries) if len(exploration_tries) > 0 else 0
-    failures_from_oracle_count = len([o for o in failed_objects if o[1]])
-    failures_from_exploration_count = len([o for o in failed_objects if not o[1]])
+    failures_from_exploration_count = len([o for o in failed_objects])
 
     if c.VERBOSITY > 0:
         create_figure(objects, "_latent_repr")
-        for obj_ind, _ in failed_objects:
+        for obj_ind in failed_objects:
             plt.scatter(objects[obj_ind]._latent_repr[0], objects[obj_ind]._latent_repr[1], color="red")
         plt.savefig("objects_with_failures.png")
         plt.clf()
         create_figure(objects, "visible_repr")
-        for obj_ind, _ in failed_objects:
+        for obj_ind in failed_objects:
             plt.scatter(objects[obj_ind].visible_repr[0], objects[obj_ind].visible_repr[1], color="red")
         plt.savefig("objects_visible_with_failures.png")
 
-        print(f"Total cost: {oracle.get_final_cost()}")
-        if len(oracle_tries) > 0:
-            print(f"Average tries with oracle: {np.mean(oracle_tries)}")
-        if len(exploration_tries) > 0:
-            print(f"Average tries with exploration: {np.mean(exploration_tries)}")
-        print(f"Number of failures from oracle: {failures_from_oracle_count}")
+        print(f"Average tries with exploration: {np.mean(exploration_tries)}")
+        print(f"Standard deviation of tries with exploration: {np.std(exploration_tries)}")
         print(f"Number of failures from exploration: {failures_from_exploration_count}")
+        s_exploration_tries = np.sort(exploration_tries)
+        print(f"Exploration tries: {s_exploration_tries}")
 
     return {
         "seed": seed,
         "total_cost": total_cost,
-        "oracle_tries": oracle_tries_mean,
         "exploration_tries": exploration_tries_mean,
-        "failures_from_oracle_count": failures_from_oracle_count,
         "failures_from_exploration_count": failures_from_exploration_count,
         "time": time.time() - start_time
     }

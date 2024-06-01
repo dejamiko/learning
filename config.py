@@ -13,9 +13,9 @@ TASK_TYPES = [
 
 ORACLE_COST = 1
 
-DEMO_NOISE = 0.001  # set like that by replaying trajectories for the same object, chosen when around 2-5% failed
+DEMO_NOISE = 0.002  # set like that by replaying trajectories for the same object, chosen when around 2-5% failed
 ACTION_EXPLORATION_DEVIATION = 0.5
 EXPLORATION_TRIES = 100000
-SIMILARITY_THRESHOLD = 0.999
+SIMILARITY_THRESHOLD = 0.0
 
-VERBOSITY = 1
+VERBOSITY = 0
