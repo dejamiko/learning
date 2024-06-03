@@ -1,4 +1,7 @@
 class Config:
+    """
+    The configuration for the whole system
+    """
     OBJ_NUM = 50
     KNOWN_OBJECT_NUM = 10
 
@@ -18,6 +21,7 @@ class Config:
     ACTION_EXPLORATION_DEVIATION = 0.5
     EXPLORATION_TRIES = 100000
     SIMILARITY_THRESHOLD = 0.0
+    MIN_TRAJ_STEPS = 5
     TOP_K = 5
 
     VERBOSITY = 1

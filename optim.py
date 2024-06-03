@@ -71,7 +71,8 @@ def reorder(unlabelled_object_indices, labelled_object_indices, distances, metho
             dist_sum[i] = np.sum(distances[unlabelled_object_indices][:c])
         min_ind = np.argmin(dist_sum)
 
-        return np.concatenate(([closest_indices[min_ind]], unlabelled_object_indices[unlabelled_object_indices != closest_indices[min_ind]]))
+        return np.concatenate(([closest_indices[min_ind]],
+                               unlabelled_object_indices[unlabelled_object_indices != closest_indices[min_ind]]))
     elif method == "beam_search":
         k = 25
         sequences = []

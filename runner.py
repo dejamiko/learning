@@ -1,16 +1,17 @@
 import numpy as np
 
 from solver import run_experiment
+from config import Config
 
 if __name__ == "__main__":
     # TODO Add a cli to specify the configuration
-
+    c = Config()
     seeds_to_try = np.arange(10)
 
     all_results = []
     for seed in seeds_to_try:
         print("Running experiment with seed", seed)
-        result = run_experiment(seed)
+        result = run_experiment(seed, c)
         all_results.append(result)
 
     print("Average total cost", np.mean([r["total_cost"] for r in all_results]))
