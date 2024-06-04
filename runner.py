@@ -1,22 +1,29 @@
 import numpy as np
 
-from solver import run_experiment
 from config import Config
+from solver import Solver
+
+
+def run_exp_on_seeds(seeds_to_try, c):
+    all_results = []
+    solver = Solver(c)
+    for seed in seeds_to_try:
+        print("Running experiment with seed", seed)
+        result = solver.run_experiment(seed)
+        all_results.append(result)
+
+    for r in all_results:
+        for k, v in r.items():
+            print(f"{k}: {v}")
+
 
 if __name__ == "__main__":
     # TODO Add a cli to specify the configuration
     c = Config()
-    seeds_to_try = np.arange(10)
+    c.VERBOSITY = 0
+    seeds_to_try = np.arange(1)
 
-    all_results = []
-    for seed in seeds_to_try:
-        print("Running experiment with seed", seed)
-        result = run_experiment(seed, c)
-        all_results.append(result)
-
-    print("Average total cost", np.mean([r["total_cost"] for r in all_results]))
-    print("Average oracle tries", np.mean([r["oracle_tries"] for r in all_results]))
-    print("Average exploration tries", np.mean([r["exploration_tries"] for r in all_results]))
-    print("Average failures from oracle", np.mean([r["failures_from_oracle_count"] for r in all_results]))
-    print("Average failures from exploration", np.mean([r["failures_from_exploration_count"] for r in all_results]))
-    print("Average time", np.mean([r["time"] for r in all_results]))
+    for k in range(1, 10):
+        c.TOP_K = k
+        run_exp_on_seeds(seeds_to_try, c)
+        print(f"For config {c}")

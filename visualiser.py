@@ -46,5 +46,5 @@ class Visualiser:
         Save the figure with the name provided
         :param name: The name of the file to save the figure to
         """
-        plt.savefig(name)
+        plt.savefig(f"{self.c.IMAGE_DIRECTORY}/{name}")
         plt.clf()

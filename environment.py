@@ -9,14 +9,25 @@ class Environment:
     and objects.
     """
 
-    def __init__(self, c, oracle):
+    def __init__(self, c):
         """
         Initialise the environment
         :param c: The configuration
-        :param oracle: The oracle to use
         """
         self.c = c
-        self.storage = ObjectStorage(c, oracle, self)
+        self.storage = ObjectStorage(c, self)
+
+    def generate_objects(self, object_class, oracle):
+        """
+        Generate the objects with their latent representations and waypoints
+        :param object_class: The class of the object
+        """
+        self.storage.generate_objects(object_class)
+        self.storage.generate_helper_data(oracle)
+
+    def generate_objects_ail(self, object_class):
+        self.storage.generate_objects(object_class)
+        self.storage.generate_helper_data_ail()
 
     def try_trajectory(self, trajectory, waypoints):
         """
@@ -143,3 +154,6 @@ class Environment:
         :return: The selection frequency of the known objects
         """
         return self.storage.selection_frequency
+
+    def get_similarities(self):
+        return self.storage.visual_similarities_by_task

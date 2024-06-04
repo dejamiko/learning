@@ -20,9 +20,19 @@ class Config:
     DEMO_NOISE = 0.002  # set like that by replaying trajectories for the same object, chosen when around 2-5% failed
     ACTION_EXPLORATION_DEVIATION = 0.5
     EXPLORATION_TRIES = 100000
-    SIMILARITY_THRESHOLD = 0.0
+    SIMILARITY_THRESHOLD = 0.85
     MIN_TRAJ_STEPS = 5
     TOP_K = 5
 
     VERBOSITY = 1
     METHOD = "average"
+
+    SMOOTHING_TRIES = 10
+
+    IMAGE_DIRECTORY = "images"
+
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return f"Config: {self.__dict__}"
