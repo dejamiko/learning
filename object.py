@@ -64,7 +64,7 @@ class Object:
         return self.__str__()
 
     def __str__(self):
-        return f"{self.name} ({self._latent_repr}), {self.visible_repr}, {self.task_type}, {self.demo}"
+        return f"{self.name} ({self._latent_repr}), {self.visible_repr}, {self.task_type}"
 
     def try_action(self, action):
         """

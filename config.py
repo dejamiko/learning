@@ -31,6 +31,14 @@ class Config:
 
     IMAGE_DIRECTORY = "images"
 
+    SA_T = 50
+    SA_T_MIN = 0.0001
+    SA_ALPHA = 0.9
+    SA_ITER = 5000
+
+    TS_L = 10000
+    TS_ITER = 20
+
     def __init__(self):
         pass
 
