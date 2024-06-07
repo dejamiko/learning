@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 import sklearn.cluster as sc
 
@@ -42,7 +44,8 @@ def evaluate_strategy(strategy, c, n=100):
             similarity_dict[o.index] = ([x[0] for x in ss], [x[1] for x in ss])
 
         objects = env.get_objects()
-        selected = strategy(objects, c, env.get_similarities())
+        selected = strategy(objects, c, similarity_dict)
+        # selected = strategy(objects, c, similarities) # this is the original line
         count = evaluate_selection(selected, similarity_dict, c)
         counts.append(count)
     return np.mean(counts), np.std(counts)
@@ -70,8 +73,6 @@ def hierarchical_strat(objects, c, similarities):
 
 
 if __name__ == "__main__":
-    # TODO try to run clustering on this data, both hierarchical (select split equal to budget) and parametric with
-    # TODO the param = budget. Try selecting within those clusters
     c = Config()
     random = lambda objects, c, similarities: [o.index for o in np.random.choice(objects, c.KNOWN_OBJECT_NUM, replace=False)]
 

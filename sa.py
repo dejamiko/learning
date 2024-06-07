@@ -5,7 +5,7 @@ from config import Config
 
 
 def get_cost(objects, selected, similarities, c):
-    return len(objects) - evaluate_selection(objects, selected, similarities, c)
+    return len(objects) - evaluate_selection(selected, similarities, c)
 
 
 def get_neighbour(objects, selected):
@@ -22,13 +22,13 @@ def simulated_annealing(objects, c, similarities):
     object_indices = np.arange(c.OBJ_NUM)
     selected = np.random.choice(object_indices, c.KNOWN_OBJECT_NUM, replace=False)
     best_selection = selected
-    best_cost = get_cost(objects, objects[selected], similarities, c)
+    best_cost = get_cost(objects, selected, similarities, c)
     T = c.SA_T
     alpha = c.SA_ALPHA
     curr = best_selection
     for k in range(c.SA_ITER):
         new_selection = get_neighbour(object_indices, curr)
-        new_cost = get_cost(objects, objects[new_selection], similarities, c)
+        new_cost = get_cost(objects, new_selection, similarities, c)
 
         diff = best_cost - new_cost
 
@@ -44,14 +44,14 @@ def simulated_annealing(objects, c, similarities):
             best_cost = new_cost
             best_selection = new_selection
 
-    return objects[best_selection]
+    return best_selection
 
 
 if __name__ == "__main__":
     c = Config()
 
     print(f"Simulated annealing selection for alpha={c.SA_ALPHA}, T={c.SA_T}")
-    mean, std = evaluate_strategy(simulated_annealing, c)
+    mean, std = evaluate_strategy(simulated_annealing, c, n=5)
     print(f"Mean: {mean}, std: {std}")
 
     for t in range(1, 100, 10):
@@ -60,5 +60,5 @@ if __name__ == "__main__":
             c.SA_ALPHA = alpha
 
             print(f"Simulated annealing selection for alpha={alpha}, T={t}")
-            mean, std = evaluate_strategy(simulated_annealing, c)
+            mean, std = evaluate_strategy(simulated_annealing, c, n=5)
             print(f"Mean: {mean}, std: {std}")

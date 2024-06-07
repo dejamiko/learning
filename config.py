@@ -37,7 +37,10 @@ class Config:
     SA_ITER = 5000
 
     TS_L = 10000
-    TS_ITER = 20
+    TS_ITER = 5000
+    TS_GAMMA = 2
+
+    RHC_ITER = 10
 
     def __init__(self):
         pass
