@@ -38,9 +38,3 @@ if __name__ == "__main__":
     print(f"Randomised hill climbing selection for {c.RHC_ITER} iterations")
     mean, std = evaluate_strategy(randomised_hill_climbing, c, n=5)
     print(f"Mean: {mean}, std: {std}")
-
-    # for i in range(1, 100, 10):
-    #     c.RHC_ITER = i
-    #     print(f"Randomised hill climbing selection for {c.RHC_ITER} iterations")
-    #     mean, std = evaluate_strategy(randomised_hill_climbing, c, n=5)
-    #     print(f"Mean: {mean}, std: {std}")
