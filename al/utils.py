@@ -9,18 +9,20 @@ from object import TrajectoryObject
 
 
 class NeighbourGenerator:
-    def __init__(self, object_indices, selected):
+    def __init__(self, selected):
         self.selected = selected
-        self.not_selected = list(set(object_indices) - set(selected))
 
     def __iter__(self):
-        self.selected = np.random.permutation(self.selected)
-        self.not_selected = np.random.permutation(self.not_selected)
-        for i in self.selected:
-            for j in self.not_selected:
-                neighbour = self.selected.copy()
-                neighbour[neighbour == i] = j
-                yield neighbour
+        indices = np.random.permutation(np.arange(len(self.selected)))
+        indices2 = np.random.permutation(np.arange(len(self.selected)))
+        for i in indices:
+            if self.selected[i] == 1:
+                for j in indices2:
+                    if self.selected[j] == 0:
+                        new_selected = self.selected.copy()
+                        new_selected[i] = 0
+                        new_selected[j] = 1
+                        yield new_selected
 
 
 class MetaHeuristic(ABC):
@@ -28,27 +30,30 @@ class MetaHeuristic(ABC):
         self.c = c
         self._times_taken_on_strategy = []
         self._similarity_dict = {}
-        self.objects = None
+        self.best_selection = None
 
     def get_cost(self, selected):
-        return len(self.objects) - self.evaluate_selection(selected)
+        return self.c.OBJ_NUM - self.evaluate_selection(selected)
 
-    def get_random_neighbour(self, object_ind, selected):
-        pool = set(object_ind) - set(selected)
-        addition = np.random.choice(list(pool), 1, replace=False)[0]
-        removal = np.random.choice(selected, 1, replace=False)[0]
-        selected = list(selected)
-        selected.remove(removal)
-        selected.append(addition)
-        return selected
+    @staticmethod
+    def get_random_neighbour(selected):
+        # find a random index where selected is 1 and another where it is 0
+        i = np.random.choice(np.where(selected == 1)[0])
+        j = np.random.choice(np.where(selected == 0)[0])
+        new_selected = selected.copy()
+        new_selected[i] = 0
+        new_selected[j] = 1
+        return new_selected
 
-    def evaluate_selection(self, selected_ind):
+    def evaluate_selection(self, selected):
         objects = set()
-        for s in selected_ind:
+        for i, s in enumerate(selected):
+            if s == 0:
+                continue
             # assume similarities[s] returns a sorted list of similarities to all objects
             # where o is an object in objects and s is an object in selected
             # use binary search to find the first object with similarity below threshold
-            objs, sim = self._similarity_dict[s]
+            objs, sim = self._similarity_dict[i]
             # sim is a sorted list of similarities, use bin search to find the first object with similarity
             # below threshold
             ind = np.searchsorted(sim, self.c.SIMILARITY_THRESHOLD)
@@ -73,13 +78,12 @@ class MetaHeuristic(ABC):
 
     def _initialise_data(self, i):
         np.random.seed(i)
-        self.c.TASK_TYPES = ["gripping"]
+        self.c.TASK_TYPES = ["sample task"]
         self.c.OBJ_NUM = 100
         self.c.LATENT_DIM = 10
         env = Environment(self.c)
         env.generate_objects_ail(TrajectoryObject)
-        similarities = env.get_similarities()
-        self._generate_similarity_dict(env, similarities)
+        self._generate_similarity_dict(env)
         self.objects = env.get_objects()
 
     def get_mean_time(self):
@@ -88,7 +92,8 @@ class MetaHeuristic(ABC):
     def get_total_time(self):
         return np.sum(self._times_taken_on_strategy)
 
-    def _generate_similarity_dict(self, env, similarities):
+    def _generate_similarity_dict(self, env):
+        similarities = env.get_similarities()
         for o in env.get_objects():
             s = similarities[o.task_type][o.index]
             ar = []
@@ -108,6 +113,12 @@ class MetaHeuristic(ABC):
             print("Terminating due to time limit")
             p.terminate()
             p.join()
+
+    def _get_initial_selection(self):
+        object_indices = np.arange(self.c.OBJ_NUM)
+        selected = np.zeros(self.c.OBJ_NUM)
+        selected[np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM, replace=False)] = 1
+        return selected
 
     @abstractmethod
     def strategy(self):

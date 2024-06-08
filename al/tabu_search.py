@@ -1,7 +1,5 @@
 from collections import deque
 
-import numpy as np
-
 from config import Config
 from utils import NeighbourGenerator, MetaHeuristic
 
@@ -17,18 +15,12 @@ class TabuList:
         if len(self.tabu_list) == self.L:
             neighbour_to_remove = self.tabu_list.popleft()
             self.tabu_set.remove(neighbour_to_remove)
-        # create a one-hot encoding of the neighbour
-        neighbour_z = np.zeros(self.c.OBJ_NUM)
-        neighbour_z[neighbour] = 1
-        neighbour_z = tuple(neighbour_z)
+        neighbour_z = tuple(neighbour)
         self.tabu_list.append(neighbour_z)
         self.tabu_set.add(neighbour_z)
 
     def is_tabu(self, neighbour):
-        neighbour_z = np.zeros(self.c.OBJ_NUM)
-        neighbour_z[neighbour] = 1
-        neighbour_z = tuple(neighbour_z)
-        return neighbour_z in self.tabu_set
+        return tuple(neighbour) in self.tabu_set
 
 
 class TabuSearch(MetaHeuristic):
@@ -37,14 +29,13 @@ class TabuSearch(MetaHeuristic):
         self.tabu_list = TabuList(self.c)
 
     def strategy(self):
-        object_indices = np.arange(self.c.OBJ_NUM)
-        selected = np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM, replace=False)
+        selected = self._get_initial_selection()
         g_best = self.evaluate_selection(selected)
         self.best_selection = selected
         g_s = g_best
 
         for k in range(self.c.TS_ITER):
-            neighbour_gen = NeighbourGenerator(object_indices, selected)
+            neighbour_gen = NeighbourGenerator(selected)
             for neighbour in neighbour_gen:
                 g_n = self.evaluate_selection(neighbour)
                 delta = g_n - g_s

@@ -1,5 +1,3 @@
-import numpy as np
-
 from config import Config
 from utils import MetaHeuristic, NeighbourGenerator
 
@@ -10,18 +8,16 @@ class RandomisedHillClimbing(MetaHeuristic):
         self.best_selection = None
 
     def strategy(self):
-        object_indices = np.arange(self.c.OBJ_NUM)
         best_score = 0
-
         for i in range(self.c.RHC_ITER):
-            selected = np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM, replace=False)
+            selected = self._get_initial_selection()
             curr_score = self.evaluate_selection(selected)
             count = 0
             while True:
                 count += 1
                 next_selection = None
                 next_score = 0
-                for neighbour in NeighbourGenerator(object_indices, selected):
+                for neighbour in NeighbourGenerator(selected):
                     score = self.evaluate_selection(neighbour)
                     if score > next_score:
                         next_selection = neighbour

@@ -9,15 +9,13 @@ class SimulatedAnnealing(MetaHeuristic):
         super().__init__(c)
 
     def strategy(self):
-        object_indices = np.arange(c.OBJ_NUM)
-        selected = np.random.choice(object_indices, c.KNOWN_OBJECT_NUM, replace=False)
+        selected = self._get_initial_selection()
         self.best_selection = selected
         best_cost = self.get_cost(selected)
         T = c.SA_T
         alpha = c.SA_ALPHA
-        curr = selected
         for k in range(c.SA_ITER):
-            new_selection = self.get_random_neighbour(object_indices, curr)
+            new_selection = self.get_random_neighbour(selected)
             new_cost = self.get_cost(new_selection)
 
             diff = best_cost - new_cost
@@ -29,7 +27,7 @@ class SimulatedAnnealing(MetaHeuristic):
 
             T = T * alpha
             T = max(T, c.SA_T_MIN)
-            curr = new_selection
+            selected = new_selection
             if new_cost < best_cost:
                 best_cost = new_cost
                 self.best_selection = new_selection
@@ -54,4 +52,3 @@ if __name__ == "__main__":
             print(f"Simulated annealing selection for alpha={alpha}, T={t}")
             mean, std = sa.evaluate_strategy(n=5)
             print(f"Mean: {mean}, std: {std}, time taken: {sa.get_mean_time()}")
-
