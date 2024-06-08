@@ -40,7 +40,9 @@ class Config:
     TS_ITER = 5000
     TS_GAMMA = 2
 
-    RHC_ITER = 10
+    RHC_ITER = 5
+
+    MH_TIME_BUDGET = 0.5  # in seconds
 
     def __init__(self):
         pass
