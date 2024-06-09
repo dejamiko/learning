@@ -1,20 +1,20 @@
 import numpy as np
 
+from al.utils import MetaHeuristic
 from config import Config
-from utils import MetaHeuristic
 
 
 class SimulatedAnnealing(MetaHeuristic):
-    def __init__(self, c):
-        super().__init__(c)
+    def __init__(self, c, threshold=None):
+        super().__init__(c, threshold)
 
     def strategy(self):
         selected = self._get_initial_selection()
         self.best_selection = selected
         best_cost = self.get_cost(selected)
-        T = c.SA_T
-        alpha = c.SA_ALPHA
-        for k in range(c.SA_ITER):
+        T = self.c.SA_T
+        alpha = self.c.SA_ALPHA
+        for k in range(self.c.SA_ITER):
             new_selection = self.get_random_neighbour(selected)
             new_cost = self.get_cost(new_selection)
 
@@ -26,12 +26,11 @@ class SimulatedAnnealing(MetaHeuristic):
                 self.best_selection = new_selection
 
             T = T * alpha
-            T = max(T, c.SA_T_MIN)
+            T = max(T, self.c.SA_T_MIN)
             selected = new_selection
             if new_cost < best_cost:
                 best_cost = new_cost
                 self.best_selection = new_selection
-
         return self.best_selection
 
 

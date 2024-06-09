@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from environment import Environment
-from object import TrajectoryObject
+from playground.environment import Environment
+from playground.object import TrajectoryObject
 
 
 class NeighbourGenerator:
@@ -26,11 +26,15 @@ class NeighbourGenerator:
 
 
 class MetaHeuristic(ABC):
-    def __init__(self, c):
+    def __init__(self, c, threshold=None):
         self.c = c
         self._times_taken_on_strategy = []
         self._similarity_dict = {}
         self.best_selection = None
+        if threshold is None:
+            threshold = c.SIMILARITY_THRESHOLD
+        self.threshold = threshold
+        self.count = 0
 
     def get_cost(self, selected):
         return self.c.OBJ_NUM - self.evaluate_selection(selected)
@@ -56,9 +60,10 @@ class MetaHeuristic(ABC):
             objs, sim = self._similarity_dict[i]
             # sim is a sorted list of similarities, use bin search to find the first object with similarity
             # below threshold
-            ind = np.searchsorted(sim, self.c.SIMILARITY_THRESHOLD)
+            ind = np.searchsorted(sim, self.threshold)
             # print(f"Selected: {s}, threshold: {c.SIMILARITY_THRESHOLD}, ind: {ind}")
             objects.update(objs[ind:])
+        self.count += 1
         return len(objects)
 
     def evaluate_strategy(self, n=5):
@@ -83,8 +88,7 @@ class MetaHeuristic(ABC):
         self.c.LATENT_DIM = 10
         env = Environment(self.c)
         env.generate_objects_ail(TrajectoryObject)
-        self._generate_similarity_dict(env)
-        self.objects = env.get_objects()
+        self.generate_similarity_dict(env)
 
     def get_mean_time(self):
         return np.mean(self._times_taken_on_strategy)
@@ -92,7 +96,7 @@ class MetaHeuristic(ABC):
     def get_total_time(self):
         return np.sum(self._times_taken_on_strategy)
 
-    def _generate_similarity_dict(self, env):
+    def generate_similarity_dict(self, env):
         similarities = env.get_similarities()
         for o in env.get_objects():
             s = similarities[o.task_type][o.index]
@@ -117,9 +121,24 @@ class MetaHeuristic(ABC):
     def _get_initial_selection(self):
         object_indices = np.arange(self.c.OBJ_NUM)
         selected = np.zeros(self.c.OBJ_NUM)
-        selected[np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM, replace=False)] = 1
+        selected[
+            np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM, replace=False)
+        ] = 1
         return selected
 
     @abstractmethod
     def strategy(self):
         pass
+
+    def update_threshold_estimate(self, threshold):
+        self.threshold = threshold
+
+
+def get_object_indices(selected):
+    return np.where(selected == 1)[0]
+
+
+def get_bin_representation(selected, max_len):
+    selected_z = np.zeros(max_len)
+    selected_z[selected] = 1
+    return selected_z

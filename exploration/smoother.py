@@ -24,6 +24,7 @@ class IdentitySmoother(Smoother):
     """
     A smoother that doesn't actually change the trajectory
     """
+
     def smooth(self, trajectory):
         """
         Return the trajectory as is
@@ -35,6 +36,7 @@ class AverageSmoother(Smoother):
     """
     A smoother that averages the actions to smooth the trajectory
     """
+
     def __init__(self, c, solver, alpha):
         super().__init__(c, solver)
         self.alpha = alpha
@@ -50,6 +52,8 @@ class AverageSmoother(Smoother):
             if i == 0:
                 smoothed_trajectory.append(trajectory[i])
                 continue
-            val = ((trajectory[i] + trajectory[i - 1]) / 2) * self.alpha + trajectory[i] * (1 - self.alpha)
+            val = ((trajectory[i] + trajectory[i - 1]) / 2) * self.alpha + trajectory[
+                i
+            ] * (1 - self.alpha)
             smoothed_trajectory.append(val)
         return smoothed_trajectory

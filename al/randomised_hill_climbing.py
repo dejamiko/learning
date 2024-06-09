@@ -1,10 +1,10 @@
 from config import Config
-from utils import MetaHeuristic, NeighbourGenerator
+from al.utils import MetaHeuristic, NeighbourGenerator
 
 
 class RandomisedHillClimbing(MetaHeuristic):
-    def __init__(self, c):
-        super().__init__(c)
+    def __init__(self, c, threshold=None):
+        super().__init__(c, threshold)
         self.best_selection = None
 
     def strategy(self):
@@ -38,4 +38,6 @@ if __name__ == "__main__":
     randomised_hill_climbing = RandomisedHillClimbing(c)
     print(f"Randomised hill climbing selection for {c.RHC_ITER} iterations")
     mean, std = randomised_hill_climbing.evaluate_strategy(n=5)
-    print(f"Mean: {mean}, std: {std}, time taken: {randomised_hill_climbing.get_mean_time()}")
+    print(
+        f"Mean: {mean}, std: {std}, time taken: {randomised_hill_climbing.get_mean_time()}"
+    )

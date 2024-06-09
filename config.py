@@ -2,6 +2,7 @@ class Config:
     """
     The configuration for the whole system
     """
+
     OBJ_NUM = 50
     KNOWN_OBJECT_NUM = 10
 
@@ -9,11 +10,7 @@ class Config:
     MAX_ACTION = 0.1
     POSITION_TOLERANCE = 0.04
     VISIBLE_REPRESENTATION_NOISE = 0.1
-    TASK_TYPES = [
-        "gripping",
-        "pushing",
-        "inserting"
-    ]
+    TASK_TYPES = ["gripping", "pushing", "inserting"]
 
     ORACLE_COST = 1
 
@@ -31,9 +28,9 @@ class Config:
 
     IMAGE_DIRECTORY = "images"
 
-    SA_T = 50
+    SA_T = 10000
     SA_T_MIN = 0.0001
-    SA_ALPHA = 0.9
+    SA_ALPHA = 0.99
     SA_ITER = 5000
 
     TS_L = 10000
@@ -41,6 +38,11 @@ class Config:
     TS_GAMMA = 2
 
     RHC_ITER = 5
+
+    ES_ITER = 30000 // 112
+    ES_ELITE_PROP = 0.23
+    ES_POP_SIZE = 112
+    ES_MUTATION_RATE = 0.3
 
     MH_TIME_BUDGET = 0.5  # in seconds
 

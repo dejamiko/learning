@@ -1,7 +1,7 @@
 from collections import deque
 
+from al.utils import NeighbourGenerator, MetaHeuristic
 from config import Config
-from utils import NeighbourGenerator, MetaHeuristic
 
 
 class TabuList:
@@ -24,8 +24,8 @@ class TabuList:
 
 
 class TabuSearch(MetaHeuristic):
-    def __init__(self, c):
-        super().__init__(c)
+    def __init__(self, c, threshold=None):
+        super().__init__(c, threshold)
         self.tabu_list = TabuList(self.c)
 
     def strategy(self):
@@ -39,7 +39,9 @@ class TabuSearch(MetaHeuristic):
             for neighbour in neighbour_gen:
                 g_n = self.evaluate_selection(neighbour)
                 delta = g_n - g_s
-                if (delta > - self.c.TS_GAMMA and not self.tabu_list.is_tabu(neighbour)) or g_n > g_best:
+                if (
+                        delta > -self.c.TS_GAMMA and not self.tabu_list.is_tabu(neighbour)
+                ) or g_n > g_best:
                     break
             selected = neighbour
             self.tabu_list.add(neighbour)

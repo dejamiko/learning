@@ -4,8 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Add tabu and sa">
+    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Reimplement all using np arrays">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/randomised_hill_climbing.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/randomised_hill_climbing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/sa.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/sa.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/tabu_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/tabu_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/playground/environment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/object.py" beforeDir="false" afterPath="$PROJECT_DIR$/playground/object.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/optim.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploration/optim.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/oracle.py" beforeDir="false" afterPath="$PROJECT_DIR$/playground/oracle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runner.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploration/runner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoother.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploration/smoother.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solver.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploration/solver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/playground/storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualiser.py" beforeDir="false" afterPath="$PROJECT_DIR$/exploration/visualiser.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,11 +64,13 @@
   "keyToString": {
     "Python.active_learning.executor": "Run",
     "Python.al2.executor": "Run",
+    "Python.randomised_hill_climbing.executor": "Run",
     "Python.runner.executor": "Run",
     "Python.sa.executor": "Run",
     "Python.solver.executor": "Run",
     "Python.tabu_search.executor": "Run",
     "Python.test.executor": "Run",
+    "Python.variable_threshold_solver.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "node.js.detected.package.eslint": "true",
@@ -65,8 +82,15 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.active_learning">
-    <configuration name="active_learning" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/exploration" />
+      <recent name="$PROJECT_DIR$/playground" />
+      <recent name="$PROJECT_DIR$/al" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.variable_threshold_solver">
+    <configuration name="randomised_hill_climbing" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="learning" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -80,30 +104,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/active_learning.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="al2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="learning" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al2.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/randomised_hill_climbing.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -126,7 +127,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sa.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/sa.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -144,12 +145,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/al" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/solver.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/solver.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -172,7 +173,30 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tabu_search.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/tabu_search.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="variable_threshold_solver" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="learning" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/al" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/variable_threshold_solver.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -183,11 +207,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.active_learning" />
-        <item itemvalue="Python.al2" />
-        <item itemvalue="Python.tabu_search" />
-        <item itemvalue="Python.sa" />
+        <item itemvalue="Python.variable_threshold_solver" />
         <item itemvalue="Python.solver" />
+        <item itemvalue="Python.sa" />
+        <item itemvalue="Python.randomised_hill_climbing" />
+        <item itemvalue="Python.tabu_search" />
       </list>
     </recent_temporary>
   </component>
@@ -216,7 +240,8 @@
       <workItem from="1717511587733" duration="4214000" />
       <workItem from="1717515975453" duration="13775000" />
       <workItem from="1717604101307" duration="241000" />
-      <workItem from="1717749205734" duration="11045000" />
+      <workItem from="1717749205734" duration="34091000" />
+      <workItem from="1717865387770" duration="10000000" />
     </task>
     <task id="LOCAL-00001" summary="Change config to object, support demo average for solving">
       <option name="closed" value="true" />
@@ -250,7 +275,39 @@
       <option name="project" value="LOCAL" />
       <updated>1717759434798</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add rhc and try to fix tabu and sa">
+      <option name="closed" value="true" />
+      <created>1717782761019</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1717782761019</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Remove unnecessary comments">
+      <option name="closed" value="true" />
+      <created>1717782864842</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1717782864842</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Rework all mh into classes">
+      <option name="closed" value="true" />
+      <created>1717850588403</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1717850588403</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Reimplement all using np arrays">
+      <option name="closed" value="true" />
+      <created>1717852044316</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1717852044316</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,14 +318,20 @@
     <MESSAGE value="Create separate modules, restructure, fix average of demos" />
     <MESSAGE value="Add smoothing and preliminary active learning" />
     <MESSAGE value="Add tabu and sa" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add tabu and sa" />
+    <MESSAGE value="Add rhc and try to fix tabu and sa" />
+    <MESSAGE value="Remove unnecessary comments" />
+    <MESSAGE value="Rework all mh into classes" />
+    <MESSAGE value="Reimplement all using np arrays" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reimplement all using np arrays" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1717754770659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1717513778570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1717865683409" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/learning$randomised_hill_climbing.coverage" NAME="randomised_hill_climbing Coverage Results" MODIFIED="1717865588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$al2.coverage" NAME="al2 Coverage Results" MODIFIED="1717759379905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/learning$tabu_search.coverage" NAME="tabu_search Coverage Results" MODIFIED="1717757811077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/learning$active_learning.coverage" NAME="active_learning Coverage Results" MODIFIED="1717759404610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1717867091147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$active_learning.coverage" NAME="active_learning Coverage Results" MODIFIED="1717772695392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/learning$tabu_search.coverage" NAME="tabu_search Coverage Results" MODIFIED="1717851967080" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$runner.coverage" NAME="runner Coverage Results" MODIFIED="1717444831799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1717942606618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
   </component>
 </project>

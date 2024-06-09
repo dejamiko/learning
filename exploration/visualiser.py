@@ -37,9 +37,15 @@ class Visualiser:
         """
         for i in indices:
             if colour is not None:
-                plt.scatter(getattr(objects[i], field)[0], getattr(objects[i], field)[1], color=colour)
+                plt.scatter(
+                    getattr(objects[i], field)[0],
+                    getattr(objects[i], field)[1],
+                    color=colour,
+                )
             else:
-                plt.scatter(getattr(objects[i], field)[0], getattr(objects[i], field)[1])
+                plt.scatter(
+                    getattr(objects[i], field)[0], getattr(objects[i], field)[1]
+                )
 
     def save_figure(self, name):
         """

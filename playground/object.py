@@ -15,10 +15,15 @@ class Object:
         :param task_type: The task type of the object
         :param c: The configuration object
         """
-        assert isinstance(latent_representation, np.ndarray), f"Expected np.ndarray, got {type(latent_representation)}"
-        assert len(latent_representation.shape) == 1, f"Expected 1D array, got {len(latent_representation.shape)}D"
-        assert latent_representation.shape[
-                   0] == c.LATENT_DIM, f"Expected array of length {c.LATENT_DIM}, got {latent_representation.shape[0]}"
+        assert isinstance(
+            latent_representation, np.ndarray
+        ), f"Expected np.ndarray, got {type(latent_representation)}"
+        assert (
+            len(latent_representation.shape) == 1
+        ), f"Expected 1D array, got {len(latent_representation.shape)}D"
+        assert (
+            latent_representation.shape[0] == c.LATENT_DIM
+        ), f"Expected array of length {c.LATENT_DIM}, got {latent_representation.shape[0]}"
 
         self.c = c
         self.name = f"Object {index}"
@@ -32,8 +37,9 @@ class Object:
         Create a visible representation of the object. This is done by adding some noise to the latent representation
         :return: The visible representation of the object
         """
-        return self._latent_repr + np.random.normal(0, self.c.VISIBLE_REPRESENTATION_NOISE,
-                                                    self._latent_repr.shape)
+        return self._latent_repr + np.random.normal(
+            0, self.c.VISIBLE_REPRESENTATION_NOISE, self._latent_repr.shape
+        )
 
     def get_visual_similarity(self, other):
         """
@@ -42,15 +48,18 @@ class Object:
         :return: The similarity between the visible representations. Implemented as the cosine similarity
         """
         return np.dot(self.visible_repr, other.visible_repr) / (
-                np.linalg.norm(self.visible_repr) * np.linalg.norm(other.visible_repr))
+            np.linalg.norm(self.visible_repr) * np.linalg.norm(other.visible_repr)
+        )
 
     def get_latent_similarity(self, other):
         """
         Get the similarity between the latent representations of this object and another object
         :param other: The other object
-        :return: The similarity between the latent representations. Implemented as the dot product
+        :return: The similarity between the latent representations. Implemented as the cosine similarity
         """
-        return np.dot(self._latent_repr, other._latent_repr)
+        return np.dot(self._latent_repr, other._latent_repr) / (
+            np.linalg.norm(self._latent_repr) * np.linalg.norm(other._latent_repr)
+        )
 
     def get_task_type_correspondence(self, other):
         """
@@ -64,7 +73,9 @@ class Object:
         return self.__str__()
 
     def __str__(self):
-        return f"{self.name} ({self._latent_repr}), {self.visible_repr}, {self.task_type}"
+        return (
+            f"{self.name} ({self._latent_repr}), {self.visible_repr}, {self.task_type}"
+        )
 
     def try_action(self, action):
         """
@@ -79,7 +90,9 @@ class Object:
         :param position: The position to check
         :return: True if the position is close to the "position" of the object
         """
-        return np.allclose(position, self.get_position(), atol=self.c.POSITION_TOLERANCE)
+        return np.allclose(
+            position, self.get_position(), atol=self.c.POSITION_TOLERANCE
+        )
 
     def get_position(self):
         """
@@ -119,7 +132,11 @@ class TrajectoryObject(Object):
         next_to[-1] = 0.2
         if self.task_type == "gripping":
             # for gripping, pick a waypoint above the object, then the object, and back above the object
-            self.waypoints = [self.get_position() + above, self.get_position(), self.get_position() + above]
+            self.waypoints = [
+                self.get_position() + above,
+                self.get_position(),
+                self.get_position() + above,
+            ]
         elif self.task_type == "pushing":
             # for pushing, pick a waypoint at the object position, then a waypoint further away
             self.waypoints = [self.get_position(), self.get_position() + next_to]

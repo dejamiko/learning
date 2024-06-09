@@ -1,6 +1,6 @@
 import numpy as np
 
-from storage import ObjectStorage
+from playground.storage import ObjectStorage
 
 
 class Environment:
@@ -40,7 +40,11 @@ class Environment:
         waypoint_index = 0
         for action in trajectory:
             current_position += action
-            if np.allclose(current_position, waypoints[waypoint_index], atol=self.c.POSITION_TOLERANCE):
+            if np.allclose(
+                current_position,
+                waypoints[waypoint_index],
+                atol=self.c.POSITION_TOLERANCE,
+            ):
                 waypoint_index += 1
                 if waypoint_index == len(waypoints):
                     break
@@ -53,9 +57,13 @@ class Environment:
         :return: The trajectory
         """
         trajectory = []
-        trajectory.extend(self.generate_trajectory_between(np.zeros_like(waypoints[0]), waypoints[0]))
+        trajectory.extend(
+            self.generate_trajectory_between(np.zeros_like(waypoints[0]), waypoints[0])
+        )
         for i in range(len(waypoints) - 1):
-            trajectory.extend(self.generate_trajectory_between(waypoints[i], waypoints[i + 1]))
+            trajectory.extend(
+                self.generate_trajectory_between(waypoints[i], waypoints[i + 1])
+            )
         trajectory = np.array(trajectory)
         assert self.try_trajectory(trajectory, waypoints)
         return trajectory
@@ -67,15 +75,23 @@ class Environment:
         :param end_pos: The end position
         :return: The trajectory
         """
-        num_steps = max(self.c.MIN_TRAJ_STEPS,
-                        np.ceil(np.linalg.norm(end_pos - start_pos) / self.c.MAX_ACTION * 2).astype(int))
+        num_steps = max(
+            self.c.MIN_TRAJ_STEPS,
+            np.ceil(np.linalg.norm(end_pos - start_pos) / self.c.MAX_ACTION * 2).astype(
+                int
+            ),
+        )
         traj = np.linspace(start_pos, end_pos, num_steps)
         actions = np.diff(traj, axis=0)
         for i in range(actions.shape[0] - 1):
-            noise = np.random.normal(0, self.c.ACTION_EXPLORATION_DEVIATION, actions[i].shape)
+            noise = np.random.normal(
+                0, self.c.ACTION_EXPLORATION_DEVIATION, actions[i].shape
+            )
             actions[i] += noise
             actions[i + 1] -= noise
-        assert np.allclose(np.sum(actions, axis=0) + start_pos, end_pos, atol=self.c.POSITION_TOLERANCE)
+        assert np.allclose(
+            np.sum(actions, axis=0) + start_pos, end_pos, atol=self.c.POSITION_TOLERANCE
+        )
         return actions
 
     def select_object_to_try(self):
@@ -157,3 +173,15 @@ class Environment:
 
     def get_similarities(self):
         return self.storage.visual_similarities_by_task
+
+    def get_latent_similarity(self, o, s):
+        return self.storage.get_latent_similarity(o.index, s.index)
+
+    def get_visual_similarity(self, o, s):
+        return self.storage.get_visual_similarity(o.index, s.index)
+
+    def try_transfer(self, obj, other):
+        return (
+            self.storage.get_latent_similarity(obj.index, other.index)
+            > self.c.SIMILARITY_THRESHOLD
+        ) and obj.task_type == other.task_type
