@@ -9,14 +9,15 @@ from playground.object import TrajectoryObject
 
 
 class NeighbourGenerator:
-    def __init__(self, selected):
+    def __init__(self, selected, locked_subsolution):
         self.selected = selected
+        self.locked_subsolution = locked_subsolution
 
     def __iter__(self):
         indices = np.random.permutation(np.arange(len(self.selected)))
         indices2 = np.random.permutation(np.arange(len(self.selected)))
         for i in indices:
-            if self.selected[i] == 1:
+            if self.selected[i] == 1 and i not in self.locked_subsolution:
                 for j in indices2:
                     if self.selected[j] == 0:
                         new_selected = self.selected.copy()
@@ -36,13 +37,17 @@ class MetaHeuristic(ABC):
         self.threshold = threshold
         self.count = 0
 
+        self._locked_subsolution = []
+
     def get_cost(self, selected):
         return self.c.OBJ_NUM - self.evaluate_selection(selected)
 
-    @staticmethod
-    def get_random_neighbour(selected):
+    def get_random_neighbour(self, selected):
         # find a random index where selected is 1 and another where it is 0
-        i = np.random.choice(np.where(selected == 1)[0])
+        while True:
+            i = np.random.choice(np.where(selected == 1)[0])
+            if i not in self._locked_subsolution:
+                break
         j = np.random.choice(np.where(selected == 0)[0])
         new_selected = selected.copy()
         new_selected[i] = 0
@@ -119,10 +124,11 @@ class MetaHeuristic(ABC):
             p.join()
 
     def _get_initial_selection(self):
-        object_indices = np.arange(self.c.OBJ_NUM)
+        object_indices = np.array(list(set(np.arange(self.c.OBJ_NUM)) - set(self._locked_subsolution)))
         selected = np.zeros(self.c.OBJ_NUM)
+        selected[self._locked_subsolution] = 1
         selected[
-            np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM, replace=False)
+            np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM - len(self._locked_subsolution), replace=False)
         ] = 1
         return selected
 
@@ -132,6 +138,9 @@ class MetaHeuristic(ABC):
 
     def update_threshold_estimate(self, threshold):
         self.threshold = threshold
+
+    def lock_object(self, object_index):
+        self._locked_subsolution.append(object_index)
 
 
 def get_object_indices(selected):

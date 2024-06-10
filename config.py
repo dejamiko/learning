@@ -46,6 +46,8 @@ class Config:
 
     MH_TIME_BUDGET = 0.5  # in seconds
 
+    THRESH_ESTIMATION_STRAT = "density"
+
     def __init__(self):
         pass
 

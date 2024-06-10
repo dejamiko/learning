@@ -35,7 +35,7 @@ class TabuSearch(MetaHeuristic):
         g_s = g_best
 
         for k in range(self.c.TS_ITER):
-            neighbour_gen = NeighbourGenerator(selected)
+            neighbour_gen = NeighbourGenerator(selected, self._locked_subsolution)
             for neighbour in neighbour_gen:
                 g_n = self.evaluate_selection(neighbour)
                 delta = g_n - g_s

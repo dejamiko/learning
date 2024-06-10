@@ -13,7 +13,6 @@ class SimulatedAnnealing(MetaHeuristic):
         self.best_selection = selected
         best_cost = self.get_cost(selected)
         T = self.c.SA_T
-        alpha = self.c.SA_ALPHA
         for k in range(self.c.SA_ITER):
             new_selection = self.get_random_neighbour(selected)
             new_cost = self.get_cost(new_selection)
@@ -25,7 +24,7 @@ class SimulatedAnnealing(MetaHeuristic):
             elif np.random.uniform() <= np.exp(diff / T):
                 self.best_selection = new_selection
 
-            T = T * alpha
+            T = T * self.c.SA_ALPHA
             T = max(T, self.c.SA_T_MIN)
             selected = new_selection
             if new_cost < best_cost:

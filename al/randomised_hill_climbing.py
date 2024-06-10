@@ -17,7 +17,7 @@ class RandomisedHillClimbing(MetaHeuristic):
                 count += 1
                 next_selection = None
                 next_score = 0
-                for neighbour in NeighbourGenerator(selected):
+                for neighbour in NeighbourGenerator(selected, self._locked_subsolution):
                     score = self.evaluate_selection(neighbour)
                     if score > next_score:
                         next_selection = neighbour
