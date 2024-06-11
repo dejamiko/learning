@@ -9,15 +9,15 @@ class RandomisedHillClimbing(MetaHeuristic):
 
     def strategy(self):
         best_score = 0
-        for i in range(self.c.RHC_ITER):
+        while self.count < self.c.MH_BUDGET:
             selected = self._get_initial_selection()
             curr_score = self.evaluate_selection(selected)
-            count = 0
-            while True:
-                count += 1
+            while self.count < self.c.MH_BUDGET:
                 next_selection = None
                 next_score = 0
-                for neighbour in NeighbourGenerator(selected, self._locked_subsolution):
+                for neighbour in NeighbourGenerator(selected, self.locked_subsolution):
+                    if self.count >= self.c.MH_BUDGET:
+                        break
                     score = self.evaluate_selection(neighbour)
                     if score > next_score:
                         next_selection = neighbour

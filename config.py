@@ -31,20 +31,17 @@ class Config:
     SA_T = 10000
     SA_T_MIN = 0.0001
     SA_ALPHA = 0.99
-    SA_ITER = 5000
 
     TS_L = 10000
-    TS_ITER = 5000
     TS_GAMMA = 2
 
     RHC_ITER = 5
 
-    ES_ITER = 30000 // 112
     ES_ELITE_PROP = 0.23
     ES_POP_SIZE = 112
     ES_MUTATION_RATE = 0.3
 
-    MH_TIME_BUDGET = 0.5  # in seconds
+    MH_BUDGET = 10000
 
     THRESH_ESTIMATION_STRAT = "density"
 

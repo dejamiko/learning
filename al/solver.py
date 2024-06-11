@@ -3,8 +3,11 @@ This file contains the Solver class for solving the problem based on the visual 
 the final evaluation is based on the latent similarity of the objects.
 """
 
+import time
+
 import numpy as np
 
+from al.evolutionary_strategy import EvolutionaryStrategy
 from al.randomised_hill_climbing import RandomisedHillClimbing
 from al.sa import SimulatedAnnealing
 from al.tabu_search import TabuSearch
@@ -33,9 +36,9 @@ class Solver:
         for o in self.objects:
             for s in selected:
                 if (
-                        s.task_type == o.task_type
-                        and self.environment.get_latent_similarity(o, s)
-                        > self.config.SIMILARITY_THRESHOLD
+                    s.task_type == o.task_type
+                    and self.environment.get_latent_similarity(o, s)
+                    > self.config.SIMILARITY_THRESHOLD
                 ):
                     count += 1
                     break
@@ -51,24 +54,25 @@ if __name__ == "__main__":
     c.TASK_TYPES = ["sample task"]
     c.OBJ_NUM = 100
     c.LATENT_DIM = 10
-    solver = Solver(c, TabuSearch)
-    selected = solver.solve()
-    count = solver.evaluate(selected)
-    print(f"Solved with score: {count}, evaluating {solver.heuristic.count} times")
-    print(
-        f"If latent==visible, score would be {solver.get_predicted_evaluation(selected)}"
-    )
+    c.MH_BUDGET = 20000
 
     seeds = np.arange(10)
-    heuristics = [SimulatedAnnealing, RandomisedHillClimbing, TabuSearch]
+    heuristics = [
+        SimulatedAnnealing,
+        RandomisedHillClimbing,
+        TabuSearch,
+        EvolutionaryStrategy,
+    ]
     for h in heuristics:
         solved, times = 0, 0
+        start = time.time()
         for seed in seeds:
             np.random.seed(seed)
             solver = Solver(c, h)
             selected = solver.solve()
             solved += solver.evaluate(selected)
             times += solver.heuristic.count
+        end = time.time()
         print(
-            f"{h.__name__} solved {solved / len(seeds)} with average {times / len(seeds)} evaluations"
+            f"{h.__name__} solved {solved / len(seeds)} with average {times / len(seeds)} evaluations, taking {end - start} seconds."
         )

@@ -34,13 +34,15 @@ class TabuSearch(MetaHeuristic):
         self.best_selection = selected
         g_s = g_best
 
-        for k in range(self.c.TS_ITER):
-            neighbour_gen = NeighbourGenerator(selected, self._locked_subsolution)
+        while self.count < self.c.MH_BUDGET:
+            neighbour_gen = NeighbourGenerator(selected, self.locked_subsolution)
             for neighbour in neighbour_gen:
+                if self.count >= self.c.MH_BUDGET:
+                    break
                 g_n = self.evaluate_selection(neighbour)
                 delta = g_n - g_s
                 if (
-                        delta > -self.c.TS_GAMMA and not self.tabu_list.is_tabu(neighbour)
+                    delta > -self.c.TS_GAMMA and not self.tabu_list.is_tabu(neighbour)
                 ) or g_n > g_best:
                     break
             selected = neighbour

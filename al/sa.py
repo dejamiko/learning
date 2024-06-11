@@ -13,7 +13,8 @@ class SimulatedAnnealing(MetaHeuristic):
         self.best_selection = selected
         best_cost = self.get_cost(selected)
         T = self.c.SA_T
-        for k in range(self.c.SA_ITER):
+
+        while self.count < self.c.MH_BUDGET:
             new_selection = self.get_random_neighbour(selected)
             new_cost = self.get_cost(new_selection)
 

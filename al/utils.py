@@ -37,7 +37,7 @@ class MetaHeuristic(ABC):
         self.threshold = threshold
         self.count = 0
 
-        self._locked_subsolution = []
+        self.locked_subsolution = []
 
     def get_cost(self, selected):
         return self.c.OBJ_NUM - self.evaluate_selection(selected)
@@ -46,7 +46,7 @@ class MetaHeuristic(ABC):
         # find a random index where selected is 1 and another where it is 0
         while True:
             i = np.random.choice(np.where(selected == 1)[0])
-            if i not in self._locked_subsolution:
+            if i not in self.locked_subsolution:
                 break
         j = np.random.choice(np.where(selected == 0)[0])
         new_selected = selected.copy()
@@ -124,11 +124,17 @@ class MetaHeuristic(ABC):
             p.join()
 
     def _get_initial_selection(self):
-        object_indices = np.array(list(set(np.arange(self.c.OBJ_NUM)) - set(self._locked_subsolution)))
+        object_indices = np.array(
+            list(set(np.arange(self.c.OBJ_NUM)) - set(self.locked_subsolution))
+        )
         selected = np.zeros(self.c.OBJ_NUM)
-        selected[self._locked_subsolution] = 1
+        selected[self.locked_subsolution] = 1
         selected[
-            np.random.choice(object_indices, self.c.KNOWN_OBJECT_NUM - len(self._locked_subsolution), replace=False)
+            np.random.choice(
+                object_indices,
+                self.c.KNOWN_OBJECT_NUM - len(self.locked_subsolution),
+                replace=False,
+            )
         ] = 1
         return selected
 
@@ -140,7 +146,7 @@ class MetaHeuristic(ABC):
         self.threshold = threshold
 
     def lock_object(self, object_index):
-        self._locked_subsolution.append(object_index)
+        self.locked_subsolution.append(object_index)
 
 
 def get_object_indices(selected):
