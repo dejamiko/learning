@@ -5,6 +5,6 @@
 #SBATCH --output=out_sa_hyper_%j.out
 
 
-source /vol/bitbucket/md1823/taskmaster/learning/venv
+source /vol/bitbucket/md1823/taskmaster/learning/venv/bin/activate
 
 python al/sa.py
