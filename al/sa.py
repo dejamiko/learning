@@ -55,8 +55,10 @@ if __name__ == "__main__":
             sa = SimulatedAnnealing(c)
             mean, std = sa.evaluate_strategy(n=10)
             results.append((t_max, t_min, mean, std))
+            print(f"Simulated annealing selection for T={c.SA_T}, T_MIN={c.SA_T_MIN} - Mean: {mean}, std: {std}")
 
     sorted_results = sorted(results, key=lambda x: x[2], reverse=True)
-    print(sorted_results[:10])
-
-
+    # print the best 10 combinations
+    for i in range(10):
+        print(f"Best selection for T={sorted_results[i][0]}, T_MIN={sorted_results[i][1]} - "
+              f"Mean: {sorted_results[i][2]}, std: {sorted_results[i][3]}")
