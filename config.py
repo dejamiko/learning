@@ -1,3 +1,6 @@
+import math
+
+
 class Config:
     """
     The configuration for the whole system
@@ -28,9 +31,8 @@ class Config:
 
     IMAGE_DIRECTORY = "images"
 
-    SA_T = 10000
-    SA_T_MIN = 0.0001
-    SA_ALPHA = 0.99
+    SA_T = 29.402
+    SA_T_MIN = 0.1139
 
     TS_L = 10000
     TS_GAMMA = 2
@@ -39,7 +41,7 @@ class Config:
 
     ES_ELITE_PROP = 0.23
     ES_POP_SIZE = 112
-    ES_MUTATION_RATE = 0.3
+    ES_MUTATION_RATE = 0.15
 
     MH_BUDGET = 10000
 

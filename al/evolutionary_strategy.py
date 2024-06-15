@@ -104,22 +104,25 @@ if __name__ == "__main__":
     c = Config()
     es = EvolutionaryStrategy(c)
 
-    results = []
-    for pop_size in np.linspace(50, 300, 5):
-        for mutation_rate in np.linspace(0.01, 0.3, 5):
-            for elite_prop in np.linspace(0.01, 0.3, 5):
-                pop_size = int(pop_size)
-                c.ES_POP_SIZE = pop_size
-                c.ES_MUTATION_RATE = mutation_rate
-                c.ES_ELITE_PROP = elite_prop
-                c.ES_ITER = 30000 // pop_size
+    mean, std = es.evaluate_strategy(n=100)
+    print(f"Mean: {mean}, std: {std}")
+    print(f"Time: {es.get_mean_time()}")
 
-                mean, std = es.evaluate_strategy(n=5)
-                time = es.get_mean_time()
-                results.append((pop_size, mutation_rate, elite_prop, mean, std, time))
-
-    results = sorted(results, key=lambda x: x[3], reverse=True)
-    for result in results[:5]:
-        print(
-            f"Population size: {result[0]}, Mutation rate: {result[1]}, Elite proportion: {result[2]}, Mean: {result[3]}, Std: {result[4]}, Time: {result[5]}"
-        )
+    # results = []
+    # for pop_size in np.linspace(50, 300, 5):
+    #     for mutation_rate in np.linspace(0.01, 0.3, 5):
+    #         for elite_prop in np.linspace(0.01, 0.3, 5):
+    #             pop_size = int(pop_size)
+    #             c.ES_POP_SIZE = pop_size
+    #             c.ES_MUTATION_RATE = mutation_rate
+    #             c.ES_ELITE_PROP = elite_prop
+    #
+    #             mean, std = es.evaluate_strategy(n=5)
+    #             time = es.get_mean_time()
+    #             results.append((pop_size, mutation_rate, elite_prop, mean, std, time))
+    #
+    # results = sorted(results, key=lambda x: x[3], reverse=True)
+    # for result in results[:5]:
+    #     print(
+    #         f"Population size: {result[0]}, Mutation rate: {result[1]}, Elite proportion: {result[2]}, Mean: {result[3]}, Std: {result[4]}, Time: {result[5]}"
+    #     )

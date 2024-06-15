@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     randomised_hill_climbing = RandomisedHillClimbing(c)
     print(f"Randomised hill climbing selection for {c.RHC_ITER} iterations")
-    mean, std = randomised_hill_climbing.evaluate_strategy(n=5)
+    mean, std = randomised_hill_climbing.evaluate_strategy(n=100)
     print(
         f"Mean: {mean}, std: {std}, time taken: {randomised_hill_climbing.get_mean_time()}"
     )

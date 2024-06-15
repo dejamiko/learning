@@ -176,44 +176,58 @@ def _run_experiment(method, heuristic, threshold=False):
 
 
 if __name__ == "__main__":
-    for heuristic in [
+    results = {}
+    methods = ["density", "random", "intervals", "greedy"]
+    heuristics = [
         SimulatedAnnealing,
         TabuSearch,
         RandomisedHillClimbing,
         EvolutionaryStrategy,
-    ]:
-        print(f"Running experiments for heuristic: {heuristic.__name__}")
+    ]
+    for heuristic in heuristics:
         avg_performance = 0
-        for method in ["density", "random", "intervals", "greedy"]:
+        for method in methods:
             counts = []
+            counts2 = []
             for s in range(150):
                 count = _run_experiment(method, heuristic)
                 count2 = _run_experiment(method, heuristic, True)
+                counts.append(count)
+                counts2.append(count2)
+            results[(method, heuristic)] = (np.mean(counts), np.mean(counts2))
 
-                counts.append((count, count2))
-
-            # find the average gain in performance by knowing the threshold
-            total_without = 0
-            total_using_known = 0
-            for c1, c2 in counts:
-                total_without += c1
-                total_using_known += c2
-            total_without /= len(counts)
-            total_using_known /= len(counts)
-            print(
-                f"Method: {method} gave an average performance of {total_without} without knowing the threshold and "
-                f"{total_using_known} with knowing the threshold"
-            )
-            print(
-                f"Average gain in performance by knowing the threshold: {total_using_known - total_without}"
-            )
-            # also report this as a percentage of the number of objects successfully transferred
-            print(
-                "Average gain in performance by knowing the threshold as a percentage of the total: "
-                f"{(total_using_known - total_without) / total_using_known * 100}%"
-            )
-            avg_performance += total_without
-        avg_performance /= 4
+    # report the average per heuristic
+    for heuristic in heuristics:
+        avg = 0
+        avg2 = 0
+        for method in ["density", "random", "intervals", "greedy"]:
+            avg += results[(method, heuristic)][0]
+            avg2 += results[(method, heuristic)][1]
+        avg /= len(methods)
+        avg2 /= len(methods)
         print(
-            f"Average performance for heuristic {heuristic.__name__}: {avg_performance}"
+            f"{heuristic.__name__} average performance: {avg}, average performance with true threshold: {avg2}"
         )
+
+    for method in methods:
+        avg = 0
+        avg2 = 0
+        for heuristic in heuristics:
+            avg += results[(method, heuristic)][0]
+            avg2 += results[(method, heuristic)][1]
+        avg /= len(heuristics)
+        avg2 /= len(heuristics)
+        print(
+            f"{method} average performance: {avg}, average performance with true threshold: {avg2}"
+        )
+
+    # SimulatedAnnealing average performance: 65.16833333333334, average performance with true threshold: 65.355
+    # TabuSearch average performance: 65.31833333333334, average performance with true threshold: 64.85833333333333
+    # RandomisedHillClimbing average performance: 66.40666666666667, average performance with true threshold: 75.78
+    # EvolutionaryStrategy average performance: 66.56666666666666, average performance with true threshold: 75.78
+    # density average performance: 66.59, average performance with true threshold: 71.005
+    # random average performance: 66.19999999999999, average performance with true threshold: 71.005
+    # intervals average performance: 66.39666666666668, average performance with true threshold: 71.005
+    # greedy average performance: 64.27333333333334, average performance with true threshold: 68.75833333333333
+
+

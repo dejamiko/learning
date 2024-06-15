@@ -94,6 +94,7 @@ class MetaHeuristic(ABC):
         env = Environment(self.c)
         env.generate_objects_ail(TrajectoryObject)
         self.generate_similarity_dict(env)
+        self.count = 0
 
     def get_mean_time(self):
         return np.mean(self._times_taken_on_strategy)
