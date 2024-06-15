@@ -7,4 +7,4 @@
 
 source /vol/bitbucket/md1823/taskmaster/learning/venv/bin/activate
 
-python al/sa.py
+python3 -m al.sa

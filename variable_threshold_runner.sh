@@ -7,4 +7,4 @@
 
 source /vol/bitbucket/md1823/taskmaster/learning/venv/bin/activate
 
-python al/variable_threshold_solver.py
+python3 al.variable_threshold_solver
