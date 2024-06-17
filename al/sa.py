@@ -63,4 +63,3 @@ if __name__ == "__main__":
     # for i in range(10):
     #     print(f"Best selection for T={sorted_results[i][0]}, T_MIN={sorted_results[i][1]} - "
     #           f"Mean: {sorted_results[i][2]}, std: {sorted_results[i][3]}")
-

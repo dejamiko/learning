@@ -1,10 +1,9 @@
 import numpy as np
-from pyswarms.discrete import BinaryPSO
 import wandb
+from pyswarms.discrete import BinaryPSO
 
-
+from al.utils import MetaHeuristic
 from config import Config
-from utils import MetaHeuristic
 
 
 class SwarmHeuristic(MetaHeuristic):
@@ -15,16 +14,32 @@ class SwarmHeuristic(MetaHeuristic):
         # this is a cost function which penalises the solutions that select more objects than allowed
         x = np.array(x)
         res = np.apply_along_axis(
-            lambda a: np.sum(a) if np.sum(a) > self.c.KNOWN_OBJECT_NUM else -self.evaluate_selection(a),
+            lambda a: (
+                np.sum(a)
+                if np.sum(a) > self.c.KNOWN_OBJECT_NUM
+                else -self.evaluate_selection(a)
+            ),
             axis=1,
-            arr=x.reshape(-1, self.c.OBJ_NUM)
+            arr=x.reshape(-1, self.c.OBJ_NUM),
         )
         return res
 
     def strategy(self):
-        options = {'c1': self.c.PSO_C1, 'c2': self.c.PSO_C2, 'w': self.c.PSO_W, 'k': self.c.PSO_K, 'p': self.c.PSO_P}
-        optimizer = BinaryPSO(n_particles=self.c.PSO_PARTICLES, dimensions=self.c.OBJ_NUM, options=options)
-        cost, pos = optimizer.optimize(self.cost_function, iters=self.c.MH_BUDGET // self.c.PSO_PARTICLES, verbose=False)
+        options = {
+            "c1": self.c.PSO_C1,
+            "c2": self.c.PSO_C2,
+            "w": self.c.PSO_W,
+            "k": self.c.PSO_K,
+            "p": self.c.PSO_P,
+        }
+        optimizer = BinaryPSO(
+            n_particles=self.c.PSO_PARTICLES, dimensions=self.c.OBJ_NUM, options=options
+        )
+        cost, pos = optimizer.optimize(
+            self.cost_function,
+            iters=self.c.MH_BUDGET // self.c.PSO_PARTICLES,
+            verbose=False,
+        )
         if np.sum(pos) > self.c.KNOWN_OBJECT_NUM:
             return np.zeros(self.c.OBJ_NUM)
         return pos
@@ -64,30 +79,13 @@ if __name__ == "__main__":
         "method": "bayes",
         "metric": {"name": "cost", "goal": "minimize"},
         "parameters": {
-            "PSO_PARTICLES": {
-                "min": 10,
-                "max": 200
-            },
-            "PSO_C1": {
-                "min": 0.1,
-                "max": 3.0
-            },
-            "PSO_C2": {
-                "min": 0.1,
-                "max": 3.0
-            },
-            "PSO_W": {
-                "min": 0.1,
-                "max": 3.0
-            },
-            "PSO_K": {
-                "min": 10,
-                "max": 200
-            },
-            "PSO_P": {
-                "values": [1, 2]
-            }
-        }
+            "PSO_PARTICLES": {"min": 10, "max": 200},
+            "PSO_C1": {"min": 0.1, "max": 3.0},
+            "PSO_C2": {"min": 0.1, "max": 3.0},
+            "PSO_W": {"min": 0.1, "max": 3.0},
+            "PSO_K": {"min": 10, "max": 200},
+            "PSO_P": {"values": [1, 2]},
+        },
     }
 
     sweep_id = wandb.sweep(sweep_config, project="swarm")

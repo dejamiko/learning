@@ -57,6 +57,6 @@ if __name__ == "__main__":
     print(f"Time taken: {time.time() - start}")
     # Mean: 30.18, std: 2.8915278544972267
     # Mean: 30.173333333333332, std: 2.8838554440578714
-    print(np.mean(avg_schedule['tmax']))
-    print(np.mean(avg_schedule['tmin']))
-    print(np.mean(avg_schedule['steps']))
+    print(np.mean(avg_schedule["tmax"]))
+    print(np.mean(avg_schedule["tmin"]))
+    print(np.mean(avg_schedule["steps"]))

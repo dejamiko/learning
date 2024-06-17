@@ -229,5 +229,3 @@ if __name__ == "__main__":
     # random average performance: 66.19999999999999, average performance with true threshold: 71.005
     # intervals average performance: 66.39666666666668, average performance with true threshold: 71.005
     # greedy average performance: 64.27333333333334, average performance with true threshold: 68.75833333333333
-
-
