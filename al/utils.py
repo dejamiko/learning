@@ -82,6 +82,9 @@ class MetaHeuristic(ABC):
             end = time.time()
             # selected = strategy(objects, c, similarities) # this is the original line
             count = self.evaluate_selection(selected)
+            # early stopping
+            if count == 0:
+                return 0, 0
             counts.append(count)
             self._times_taken_on_strategy.append(end - start)
         return np.mean(counts), np.std(counts)

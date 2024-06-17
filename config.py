@@ -43,6 +43,13 @@ class Config:
     ES_POP_SIZE = 112
     ES_MUTATION_RATE = 0.15
 
+    PSO_PARTICLES = 15
+    PSO_C1 = 2
+    PSO_C2 = 2
+    PSO_W = 0.9
+    PSO_K = PSO_PARTICLES
+    PSO_P = 2
+
     MH_BUDGET = 10000
 
     THRESH_ESTIMATION_STRAT = "density"
