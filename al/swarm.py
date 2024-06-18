@@ -37,7 +37,7 @@ class SwarmHeuristic(MetaHeuristic):
         )
         cost, pos = optimizer.optimize(
             self.cost_function,
-            iters=self.c.MH_BUDGET // self.c.PSO_PARTICLES,
+            iters=(self.c.MH_BUDGET * 5) // self.c.PSO_PARTICLES,
             verbose=False,
         )
         if np.sum(pos) > self.c.KNOWN_OBJECT_NUM:
