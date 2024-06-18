@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Update sh files to clear buffer">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/sa.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/sa.py" afterDir="false" />
+    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="rename metric">
+      <change beforePath="$PROJECT_DIR$/al/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,12 +52,14 @@
     "Python.active_learning.executor": "Run",
     "Python.al2.executor": "Run",
     "Python.evolutionary_strategy.executor": "Run",
+    "Python.mealpy_lib.executor": "Run",
     "Python.randomised_hill_climbing.executor": "Run",
     "Python.runner.executor": "Run",
     "Python.sa (1).executor": "Run",
     "Python.sa.executor": "Run",
     "Python.sa_lib.executor": "Run",
     "Python.solver.executor": "Run",
+    "Python.swarm.executor": "Run",
     "Python.tabu_search.executor": "Run",
     "Python.test.executor": "Run",
     "Python.variable_threshold_solver.executor": "Run",
@@ -86,8 +87,8 @@
       <recent name="$PROJECT_DIR$/playground" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.sa">
-    <configuration name="evolutionary_strategy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.mealpy_lib">
+    <configuration name="mealpy_lib" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="learning" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -101,7 +102,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/evolutionary_strategy.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/mealpy_lib.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -179,7 +180,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="variable_threshold_solver" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="swarm" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="learning" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -193,7 +194,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/variable_threshold_solver.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/al/swarm.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -204,11 +205,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.mealpy_lib" />
+        <item itemvalue="Python.swarm" />
+        <item itemvalue="Python.sa" />
         <item itemvalue="Python.sa (1)" />
         <item itemvalue="Python.sa_lib" />
-        <item itemvalue="Python.variable_threshold_solver" />
-        <item itemvalue="Python.sa" />
-        <item itemvalue="Python.evolutionary_strategy" />
       </list>
     </recent_temporary>
   </component>
@@ -240,7 +241,7 @@
       <workItem from="1717749205734" duration="34091000" />
       <workItem from="1717865387770" duration="34661000" />
       <workItem from="1718097006770" duration="64871000" />
-      <workItem from="1718625654762" duration="321000" />
+      <workItem from="1718625654762" duration="27444000" />
     </task>
     <task id="LOCAL-00001" summary="Change config to object, support demo average for solving">
       <option name="closed" value="true" />
@@ -378,7 +379,55 @@
       <option name="project" value="LOCAL" />
       <updated>1718471248410</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Add PSO library implementation">
+      <option name="closed" value="true" />
+      <created>1718658455170</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1718658455170</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Reformat and fix import">
+      <option name="closed" value="true" />
+      <created>1718658773784</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1718658773784</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Update wandb">
+      <option name="closed" value="true" />
+      <created>1718699076799</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1718699076799</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Update wandb">
+      <option name="closed" value="true" />
+      <created>1718700049453</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1718700049453</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Up budget">
+      <option name="closed" value="true" />
+      <created>1718706465175</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1718706465175</updated>
+    </task>
+    <task id="LOCAL-00023" summary="rename metric">
+      <option name="closed" value="true" />
+      <created>1718709054139</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1718709054139</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -402,19 +451,26 @@
     <MESSAGE value="Fix python running command" />
     <MESSAGE value="Add cpu speed test" />
     <MESSAGE value="Update sh files to clear buffer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update sh files to clear buffer" />
+    <MESSAGE value="Add PSO library implementation" />
+    <MESSAGE value="Reformat and fix import" />
+    <MESSAGE value="Update wandb" />
+    <MESSAGE value="Up budget" />
+    <MESSAGE value="rename metric" />
+    <option name="LAST_COMMIT_MESSAGE" value="rename metric" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1718624058541" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1718645920523" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$randomised_hill_climbing.coverage" NAME="randomised_hill_climbing Coverage Results" MODIFIED="1718451808445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$sa__1_.coverage" NAME="sa (1) Coverage Results" MODIFIED="1718466954987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskmaster/al" />
-    <SUITE FILE_PATH="coverage/learning$al2.coverage" NAME="al2 Coverage Results" MODIFIED="1717759379905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718095927105" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$active_learning.coverage" NAME="active_learning Coverage Results" MODIFIED="1717772695392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/learning$tabu_search.coverage" NAME="tabu_search Coverage Results" MODIFIED="1718451707851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$evolutionary_strategy.coverage" NAME="evolutionary_strategy Coverage Results" MODIFIED="1718451868968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$sa_lib.coverage" NAME="sa_lib Coverage Results" MODIFIED="1718457514697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$runner.coverage" NAME="runner Coverage Results" MODIFIED="1717444831799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718453387773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$mealpy_lib.coverage" NAME="mealpy_lib Coverage Results" MODIFIED="1718742294116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$swarm.coverage" NAME="swarm Coverage Results" MODIFIED="1718706120953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$sa__1_.coverage" NAME="sa (1) Coverage Results" MODIFIED="1718466954987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskmaster/al" />
+    <SUITE FILE_PATH="coverage/learning$al2.coverage" NAME="al2 Coverage Results" MODIFIED="1717759379905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/learning$tabu_search.coverage" NAME="tabu_search Coverage Results" MODIFIED="1718451707851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$runner.coverage" NAME="runner Coverage Results" MODIFIED="1717444831799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

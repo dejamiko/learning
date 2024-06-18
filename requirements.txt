@@ -2,3 +2,6 @@ numpy
 matplotlib
 scikit-learn
 black
+mealpy
+wandb
+pyswarms
