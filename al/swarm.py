@@ -92,7 +92,7 @@ if __name__ == "__main__":
             swarm = SwarmHeuristic(c)
             mean, std = swarm.evaluate_strategy(n=100)
             print(f"Mean: {mean}, std: {std}")
-            wandb.log({"mean score": mean})
+            wandb.log({"mean": mean})
             return mean
 
 
