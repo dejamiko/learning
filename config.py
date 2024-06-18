@@ -51,7 +51,6 @@ class Config:
     PSO_P = 2
 
     MH_BUDGET = 10000
-    TIME_LIMIT = 1.0
 
     THRESH_ESTIMATION_STRAT = "density"
 

@@ -53,7 +53,7 @@ if __name__ == "__main__":
         try:
             mealpy_heuristic = MealpyHeuristic(config, optimizer_name=optimizer_name)
             mean, std = mealpy_heuristic.evaluate_strategy(n=200)
-            if mean > 0:
+            if mean > 0 and mealpy_heuristic.get_mean_time() < 1.0:
                 results.append((optimizer_name, mean, std))
         except Exception as e:
             continue
