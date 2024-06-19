@@ -19,7 +19,7 @@ class VariableThresholdSolver(Solver):
         self.threshold_lower_bound = threshold_lower_bound
         self.threshold_upper_bound = threshold_upper_bound
 
-    def solve(self, n=5, use_actual_evaluation=False):
+    def solve(self, n=5):
         counts = []
         for i in range(n):
             start = time.time()
@@ -28,6 +28,8 @@ class VariableThresholdSolver(Solver):
                 set_seed(i)
                 self.config.SEED = i
                 self.heuristic.initialise_data()
+                self.objects = self.heuristic.get_objects()
+                self.environment = self.heuristic.get_environment()
                 heuristic_selected = self.heuristic.strategy()
                 obj_to_try = self.select_object_to_try(heuristic_selected)
                 assert heuristic_selected[obj_to_try] == 1
@@ -35,7 +37,7 @@ class VariableThresholdSolver(Solver):
                 self.heuristic.lock_object(obj_to_try)
                 # update the lower and upper bounds based on the interactions of the selected object
                 self.update_bounds(obj_to_try)
-            count = self.evaluate(selected, use_actual_evaluation)
+            count = self.evaluate(selected)
             counts.append(count)
             self._times_taken_on_strategy.append(time.time() - start)
         return np.mean(counts), np.std(counts)
@@ -155,9 +157,10 @@ if __name__ == "__main__":
 
     methods = ["density", "random", "intervals", "greedy"]
 
+    # TODO fix this, makes no sense to output `4` or `6` as a mean
     for method in methods:
         c.THRESH_ESTIMATION_STRATEGY = method
         print(f"Solved with method: {method}")
-        results = evaluate_all_heuristics(VariableThresholdSolver, c, n=200)
+        results = evaluate_all_heuristics(VariableThresholdSolver, c, n=1)
         for name, mean, std, total_time in results:
             print(f"{name}: {mean} +/- {std}, time: {total_time}")

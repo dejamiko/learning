@@ -19,7 +19,7 @@ def find_es_hyperparameters(config):
                 config.ES_ELITE_PROP = elite_prop
 
                 mean, std, time = evaluate_heuristic(
-                    Solver, config, EvolutionaryStrategy, n=5
+                    Solver, config, EvolutionaryStrategy(config), n=5
                 )
                 results.append((pop_size, mutation_rate, elite_prop, mean, std, time))
 
@@ -84,7 +84,7 @@ def find_sa_hyperparameters(config):
             config.SA_T_MIN = t_min
 
             mean, std, time = evaluate_heuristic(
-                Solver, config, SimulatedAnnealing, n=10
+                Solver, config, SimulatedAnnealing(config), n=10
             )
             results.append((t_max, t_min, mean, std, time))
 
@@ -98,7 +98,7 @@ def find_ts_hyperparameters(config):
     for tabu_list_size in [10, 100, 1000, 10000, 100000]:
         config.TS_L = tabu_list_size
         print(f"Tabu search selection for L={config.TS_L}")
-        mean, std, time = evaluate_heuristic(Solver, config, TabuSearch, n=5)
+        mean, std, time = evaluate_heuristic(Solver, config, TabuSearch(config), n=5)
         print(f"Mean: {mean} +/- {std}, Time: {time}")
 
 

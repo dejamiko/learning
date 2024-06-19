@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Major reformatting and cleanup" />
+    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Fix imports and paths">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/hyperparam.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/hyperparam.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/mh/metaheuristic.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/metaheuristic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/mh/tabu_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/tabu_search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/solver.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/solver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/variable_threshold_solver.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/variable_threshold_solver.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,7 +95,7 @@
       <recent name="$PROJECT_DIR$/exploration" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.variable_threshold_solver">
+  <component name="RunManager" selected="Python.solver">
     <configuration name="evolutionary_strategy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="learning" />
       <option name="ENV_FILES" value="" />
@@ -206,10 +213,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.variable_threshold_solver" />
         <item itemvalue="Python.solver" />
-        <item itemvalue="Python.evolutionary_strategy" />
+        <item itemvalue="Python.variable_threshold_solver" />
         <item itemvalue="Python.tabu_search" />
+        <item itemvalue="Python.evolutionary_strategy" />
         <item itemvalue="Python.hyperparam" />
       </list>
     </recent_temporary>
@@ -242,7 +249,7 @@
       <workItem from="1717749205734" duration="34091000" />
       <workItem from="1717865387770" duration="34661000" />
       <workItem from="1718097006770" duration="64871000" />
-      <workItem from="1718625654762" duration="54125000" />
+      <workItem from="1718625654762" duration="55901000" />
     </task>
     <task id="LOCAL-00001" summary="Change config to object, support demo average for solving">
       <option name="closed" value="true" />
@@ -468,14 +475,21 @@
       <option name="project" value="LOCAL" />
       <updated>1718835087931</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Fix imports and paths">
+      <option name="closed" value="true" />
+      <created>1718835344622</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1718835344622</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add smoothing and preliminary active learning" />
     <MESSAGE value="Add tabu and sa" />
     <MESSAGE value="Add rhc and try to fix tabu and sa" />
     <MESSAGE value="Remove unnecessary comments" />
@@ -500,24 +514,25 @@
     <MESSAGE value="Manually test some configs, adjust time budget" />
     <MESSAGE value="Reformat and add the libs notebook" />
     <MESSAGE value="Major reformatting and cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Major reformatting and cleanup" />
+    <MESSAGE value="Fix imports and paths" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix imports and paths" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1718645920523" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$randomised_hill_climbing.coverage" NAME="randomised_hill_climbing Coverage Results" MODIFIED="1718818835816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$sko_lib.coverage" NAME="sko_lib Coverage Results" MODIFIED="1718806280059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718834912808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718836920732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$active_learning.coverage" NAME="active_learning Coverage Results" MODIFIED="1717772695392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$evolutionary_strategy.coverage" NAME="evolutionary_strategy Coverage Results" MODIFIED="1718834871653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$sa_lib.coverage" NAME="sa_lib Coverage Results" MODIFIED="1718457514697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718834929991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718835872382" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$simulated_annealing.coverage" NAME="simulated_annealing Coverage Results" MODIFIED="1718818894456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$mealpy_lib.coverage" NAME="mealpy_lib Coverage Results" MODIFIED="1718818072117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$swarm.coverage" NAME="swarm Coverage Results" MODIFIED="1718789553846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$sa__1_.coverage" NAME="sa (1) Coverage Results" MODIFIED="1718466954987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskmaster/al" />
     <SUITE FILE_PATH="coverage/learning$hyperparam.coverage" NAME="hyperparam Coverage Results" MODIFIED="1718819304093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$al2.coverage" NAME="al2 Coverage Results" MODIFIED="1717759379905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/learning$tabu_search.coverage" NAME="tabu_search Coverage Results" MODIFIED="1718820198434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
+    <SUITE FILE_PATH="coverage/learning$tabu_search.coverage" NAME="tabu_search Coverage Results" MODIFIED="1718835531043" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$runner.coverage" NAME="runner Coverage Results" MODIFIED="1717444831799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

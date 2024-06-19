@@ -17,8 +17,8 @@ class MetaHeuristic(ABC):
             threshold = c.SIMILARITY_THRESHOLD
         self.threshold = threshold
         self.count = 0
-
         self.locked_subsolution = []
+        self.environment = None
 
     def evaluate_selection_with_constraint_penalty(self, selected):
         constraint_penalty = 0
@@ -44,9 +44,11 @@ class MetaHeuristic(ABC):
         return len(objects)
 
     def initialise_data(self):
-        env = Environment(self.c)
-        self._similarity_dict = env.generate_objects_ail(TrajectoryObject)
+        self.environment = Environment(self.c)
+        self._similarity_dict = self.environment.generate_objects_ail(TrajectoryObject)
         self.count = 0
+        self.locked_subsolution = []
+        self.best_selection = None
 
     def _run_strategy_with_timer(self):
         # TODO fix this because the child object for some reason cannot send back the best selection
@@ -82,3 +84,9 @@ class MetaHeuristic(ABC):
 
     def lock_object(self, object_index):
         self.locked_subsolution.append(object_index)
+
+    def get_objects(self):
+        return self.environment.get_objects()
+
+    def get_environment(self):
+        return self.environment

@@ -29,6 +29,10 @@ class TabuSearch(MetaHeuristic):
         super().__init__(c, threshold)
         self.tabu_list = TabuList(self.c)
 
+    def initialise_data(self):
+        super().initialise_data()
+        self.tabu_list = TabuList(self.c)
+
     def strategy(self):
         selected = self._get_random_initial_selection()
         g_best = self.evaluate_selection(selected)

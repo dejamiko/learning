@@ -5,18 +5,15 @@ import numpy as np
 from al.mh import get_all_heuristics
 from al.utils import get_object_indices, set_seed
 from config import Config
-from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class Solver:
     def __init__(self, config, heuristic):
         self.config = config
-        self.environment = Environment(config)
-        self.environment.generate_objects_ail(TrajectoryObject)
-        self.heuristic = heuristic(config)
-        self.objects = self.environment.get_objects()
+        self.heuristic = heuristic
         self._times_taken_on_strategy = []
+        self.objects = []
+        self.environment = None
 
     def get_real_evaluation(self, selected):
         selected = get_object_indices(selected)
@@ -38,6 +35,8 @@ class Solver:
             set_seed(i)
             self.config.SEED = i
             self.heuristic.initialise_data()
+            self.objects = self.heuristic.get_objects()
+            self.environment = self.heuristic.get_environment()
             start = time.time()
             selected = self.heuristic.strategy()
             end = time.time()
@@ -63,8 +62,8 @@ class Solver:
         return np.sum(self._times_taken_on_strategy)
 
 
-def evaluate_heuristic(solver, config, heuristic, n=100):
-    solver = solver(config, heuristic)
+def evaluate_heuristic(solver_class, config, heuristic, n=100):
+    solver = solver_class(config, heuristic)
     mean, std = solver.solve(n)
     return mean, std, solver.get_mean_time()
 
@@ -72,7 +71,8 @@ def evaluate_heuristic(solver, config, heuristic, n=100):
 def evaluate_all_heuristics(solver, config, n=100):
     results = []
     for h in get_all_heuristics():
-        mean, std, total_time = evaluate_heuristic(solver, config, h, n)
+        heuristic = h(config)
+        mean, std, total_time = evaluate_heuristic(solver, config, heuristic, n)
         results.append((h.__name__, mean, std, total_time))
     return results
 
@@ -81,11 +81,11 @@ if __name__ == "__main__":
     c = Config()
     c.TASK_TYPES = ["sample task"]
 
-    results = evaluate_all_heuristics(Solver, c, n=1)
+    results = evaluate_all_heuristics(Solver, c, n=500)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")
 
     c.USE_ACTUAL_EVALUATION = True
-    results = evaluate_all_heuristics(Solver, c, n=1)
+    results = evaluate_all_heuristics(Solver, c, n=500)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")
