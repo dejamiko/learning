@@ -28,6 +28,7 @@ class Environment:
     def generate_objects_ail(self, object_class):
         self.storage.generate_objects(object_class)
         self.storage.generate_helper_data_ail()
+        return self.get_obj_to_similarity_list_dict()
 
     def try_trajectory(self, trajectory, waypoints):
         """
@@ -156,7 +157,8 @@ class Environment:
         """
         return self.try_trajectory(trajectory, self.storage.objects[obj_ind].waypoints)
 
-    def get_trajectory_end(self, trajectory):
+    @staticmethod
+    def get_trajectory_end(trajectory):
         """
         Get the end position of a trajectory
         :param trajectory: The trajectory
@@ -185,3 +187,17 @@ class Environment:
             self.storage.get_latent_similarity(obj.index, other.index)
             > self.c.SIMILARITY_THRESHOLD
         ) and obj.task_type == other.task_type
+
+    def get_obj_to_similarity_list_dict(self):
+        similarity_dict = {}
+        similarities = self.get_similarities()
+        for o in self.get_objects():
+            s = similarities[o.task_type][o.index]
+            ar = []
+            for o2 in self.get_objects():
+                if o.task_type != o2.task_type:
+                    continue
+                ar.append((o2.index, s[o2.index]))
+            ss = sorted(ar, key=lambda x: x[1])
+            similarity_dict[o.index] = ([x[0] for x in ss], [x[1] for x in ss])
+        return similarity_dict

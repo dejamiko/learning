@@ -9,4 +9,4 @@ source /vol/bitbucket/md1823/taskmaster/learning/venv/bin/activate
 
 export PYTHONUNBUFFERED=TRUE
 
-python3 -m al.swarm
+python3 -m al.mh.swarm_lib

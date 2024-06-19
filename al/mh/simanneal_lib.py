@@ -6,7 +6,7 @@ import time
 import numpy as np
 from simanneal import Annealer
 
-from al.sa import SimulatedAnnealing
+from al.mh.simulated_annealing import SimulatedAnnealing
 from config import Config
 
 
@@ -14,7 +14,7 @@ class SA(Annealer):
     def __init__(self, state, heuristic, seed):
         super(SA, self).__init__(state)
         self.mh = heuristic
-        self.mh._initialise_data(seed)
+        self.mh.initialise_data(seed)
 
     def move(self):
         while True:
@@ -40,9 +40,9 @@ if __name__ == "__main__":
 
     for s in range(500):
         c = Config()
-        sa = SimulatedAnnealing(c)
-        state = sa._get_initial_selection()
-        sa = SA(state, sa, s)
+        heuristic = SimulatedAnnealing(c)
+        sel = heuristic._get_random_initial_selection()
+        sa = SA(sel, heuristic, s)
         auto_schedule = sa.auto(minutes=1 / 120)
         for key in auto_schedule.keys():
             if key in avg_schedule.keys():

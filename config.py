@@ -6,10 +6,10 @@ class Config:
     The configuration for the whole system
     """
 
-    OBJ_NUM = 50
+    OBJ_NUM = 100
     KNOWN_OBJECT_NUM = 10
 
-    LATENT_DIM = 2
+    LATENT_DIM = 10
     MAX_ACTION = 0.1
     POSITION_TOLERANCE = 0.04
     VISIBLE_REPRESENTATION_NOISE = 0.1
@@ -52,7 +52,11 @@ class Config:
 
     MH_BUDGET = 10000
 
-    THRESH_ESTIMATION_STRAT = "density"
+    THRESH_ESTIMATION_STRATEGY = "density"
+    USE_REAL_THRESHOLD = False
+    USE_ACTUAL_EVALUATION = False
+
+    SEED = 0
 
     def __init__(self):
         pass

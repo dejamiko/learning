@@ -1,17 +1,9 @@
-"""
-This file contains the Solver class for solving the problem based on the visual similarity of the objects but
-the final evaluation is based on the latent similarity of the objects.
-"""
-
 import time
 
 import numpy as np
 
-from al.evolutionary_strategy import EvolutionaryStrategy
-from al.randomised_hill_climbing import RandomisedHillClimbing
-from al.sa import SimulatedAnnealing
-from al.tabu_search import TabuSearch
-from al.utils import get_object_indices, get_bin_representation
+from al.mh import get_all_heuristics
+from al.utils import get_object_indices, set_seed
 from config import Config
 from playground.environment import Environment
 from playground.object import TrajectoryObject
@@ -23,56 +15,77 @@ class Solver:
         self.environment = Environment(config)
         self.environment.generate_objects_ail(TrajectoryObject)
         self.heuristic = heuristic(config)
-        self.heuristic.generate_similarity_dict(self.environment)
         self.objects = self.environment.get_objects()
+        self._times_taken_on_strategy = []
 
-    def solve(self):
-        selected = self.heuristic.strategy()
-        return get_object_indices(selected)
-
-    def evaluate(self, selected):
+    def get_real_evaluation(self, selected):
+        selected = get_object_indices(selected)
         count = 0
         selected = self.objects[selected]
         for o in self.objects:
             for s in selected:
-                if (
-                    s.task_type == o.task_type
-                    and self.environment.get_latent_similarity(o, s)
-                    > self.config.SIMILARITY_THRESHOLD
-                ):
+                if self.environment.try_transfer(o, s):
                     count += 1
                     break
         return count
 
     def get_predicted_evaluation(self, selected):
-        selected = get_bin_representation(selected, self.config.OBJ_NUM)
         return self.heuristic.evaluate_selection(selected)
+
+    def solve(self, n=5):
+        counts = []
+        for i in range(n):
+            set_seed(i)
+            self.config.SEED = i
+            self.heuristic.initialise_data()
+            start = time.time()
+            selected = self.heuristic.strategy()
+            end = time.time()
+            count = self.evaluate(selected)
+            # early stopping for when the score is lower than the number of known objects
+            if count < self.config.KNOWN_OBJECT_NUM:
+                return -1, -1
+            counts.append(count)
+            self._times_taken_on_strategy.append(end - start)
+        return np.mean(counts), np.std(counts)
+
+    def evaluate(self, selected):
+        if self.config.USE_ACTUAL_EVALUATION:
+            count = self.get_real_evaluation(selected)
+        else:
+            count = self.get_predicted_evaluation(selected)
+        return count
+
+    def get_mean_time(self):
+        return np.mean(self._times_taken_on_strategy)
+
+    def get_total_time(self):
+        return np.sum(self._times_taken_on_strategy)
+
+
+def evaluate_heuristic(solver, config, heuristic, n=100):
+    solver = solver(config, heuristic)
+    mean, std = solver.solve(n)
+    return mean, std, solver.get_mean_time()
+
+
+def evaluate_all_heuristics(solver, config, n=100):
+    results = []
+    for h in get_all_heuristics():
+        mean, std, total_time = evaluate_heuristic(solver, config, h, n)
+        results.append((h.__name__, mean, std, total_time))
+    return results
 
 
 if __name__ == "__main__":
     c = Config()
     c.TASK_TYPES = ["sample task"]
-    c.OBJ_NUM = 100
-    c.LATENT_DIM = 10
-    c.MH_BUDGET = 20000
 
-    seeds = np.arange(10)
-    heuristics = [
-        SimulatedAnnealing,
-        RandomisedHillClimbing,
-        TabuSearch,
-        EvolutionaryStrategy,
-    ]
-    for h in heuristics:
-        solved, times = 0, 0
-        start = time.time()
-        for seed in seeds:
-            np.random.seed(seed)
-            solver = Solver(c, h)
-            selected = solver.solve()
-            solved += solver.evaluate(selected)
-            times += solver.heuristic.count
-        end = time.time()
-        print(
-            f"{h.__name__} solved {solved / len(seeds)} with average {times / len(seeds)} evaluations, taking {end - start} seconds."
-        )
+    results = evaluate_all_heuristics(Solver, c, n=1)
+    for name, mean, std, total_time in results:
+        print(f"{name}: {mean} +/- {std}, time: {total_time}")
+
+    c.USE_ACTUAL_EVALUATION = True
+    results = evaluate_all_heuristics(Solver, c, n=1)
+    for name, mean, std, total_time in results:
+        print(f"{name}: {mean} +/- {std}, time: {total_time}")

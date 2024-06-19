@@ -1,6 +1,7 @@
 import numpy as np
 
-from al.utils import MetaHeuristic, get_object_indices
+from al.utils import get_object_indices, set_seed
+from al.mh.metaheuristic import MetaHeuristic
 from config import Config
 
 
@@ -25,7 +26,7 @@ class EvolutionaryStrategy(MetaHeuristic):
     def _get_initial_population(self):
         population = []
         for _ in range(self.c.ES_POP_SIZE):
-            s = self._get_initial_selection()
+            s = self._get_random_initial_selection()
             population.append((s, self.evaluate_selection(s)))
         return population
 
@@ -78,7 +79,7 @@ class EvolutionaryStrategy(MetaHeuristic):
 
     @staticmethod
     def _select_roulette(population, num_elites):
-        scores = [score for _, score in population]
+        scores = np.array([score for _, score in population])
         probabilities = scores / np.sum(scores)
         indices = np.arange(len(population))
         indices = np.random.choice(
@@ -102,28 +103,10 @@ class EvolutionaryStrategy(MetaHeuristic):
 
 
 if __name__ == "__main__":
-    c = Config()
-    es = EvolutionaryStrategy(c)
+    config = Config()
+    set_seed(config.SEED)
+    es = EvolutionaryStrategy(config)
 
-    mean, std = es.evaluate_strategy(n=100)
-    print(f"Mean: {mean}, std: {std}")
-    print(f"Time: {es.get_mean_time()}")
-
-    # results = []
-    # for pop_size in np.linspace(50, 300, 5):
-    #     for mutation_rate in np.linspace(0.01, 0.3, 5):
-    #         for elite_prop in np.linspace(0.01, 0.3, 5):
-    #             pop_size = int(pop_size)
-    #             c.ES_POP_SIZE = pop_size
-    #             c.ES_MUTATION_RATE = mutation_rate
-    #             c.ES_ELITE_PROP = elite_prop
-    #
-    #             mean, std = es.evaluate_strategy(n=5)
-    #             time = es.get_mean_time()
-    #             results.append((pop_size, mutation_rate, elite_prop, mean, std, time))
-    #
-    # results = sorted(results, key=lambda x: x[3], reverse=True)
-    # for result in results[:5]:
-    #     print(
-    #         f"Population size: {result[0]}, Mutation rate: {result[1]}, Elite proportion: {result[2]}, Mean: {result[3]}, Std: {result[4]}, Time: {result[5]}"
-    #     )
+    es.initialise_data()
+    selected = es.strategy()
+    print(es.evaluate_selection_with_constraint_penalty(selected))

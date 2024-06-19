@@ -1,5 +1,6 @@
 from config import Config
-from al.utils import MetaHeuristic, NeighbourGenerator
+from al.utils import NeighbourGenerator, set_seed
+from al.mh.metaheuristic import MetaHeuristic
 
 
 class RandomisedHillClimbing(MetaHeuristic):
@@ -10,7 +11,7 @@ class RandomisedHillClimbing(MetaHeuristic):
     def strategy(self):
         best_score = 0
         while self.count < self.c.MH_BUDGET:
-            selected = self._get_initial_selection()
+            selected = self._get_random_initial_selection()
             curr_score = self.evaluate_selection(selected)
             while self.count < self.c.MH_BUDGET:
                 next_selection = None
@@ -34,10 +35,10 @@ class RandomisedHillClimbing(MetaHeuristic):
 
 if __name__ == "__main__":
     c = Config()
+    set_seed(c.SEED)
 
-    randomised_hill_climbing = RandomisedHillClimbing(c)
-    print(f"Randomised hill climbing selection for {c.RHC_ITER} iterations")
-    mean, std = randomised_hill_climbing.evaluate_strategy(n=100)
-    print(
-        f"Mean: {mean}, std: {std}, time taken: {randomised_hill_climbing.get_mean_time()}"
-    )
+    rhc = RandomisedHillClimbing(c)
+
+    rhc.initialise_data()
+    selected = rhc.strategy()
+    print(rhc.evaluate_selection(selected))

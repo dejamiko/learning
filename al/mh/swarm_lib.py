@@ -2,7 +2,7 @@ import numpy as np
 import wandb
 from pyswarms.discrete import BinaryPSO
 
-from al.utils import MetaHeuristic
+from al.mh.metaheuristic import MetaHeuristic
 from config import Config
 
 

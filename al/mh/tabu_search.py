@@ -1,6 +1,7 @@
 from collections import deque
 
-from al.utils import NeighbourGenerator, MetaHeuristic
+from al.utils import NeighbourGenerator, set_seed
+from al.mh.metaheuristic import MetaHeuristic
 from config import Config
 
 
@@ -29,24 +30,27 @@ class TabuSearch(MetaHeuristic):
         self.tabu_list = TabuList(self.c)
 
     def strategy(self):
-        selected = self._get_initial_selection()
+        selected = self._get_random_initial_selection()
         g_best = self.evaluate_selection(selected)
         self.best_selection = selected
         g_s = g_best
 
         while self.count < self.c.MH_BUDGET:
             neighbour_gen = NeighbourGenerator(selected, self.locked_subsolution)
+            current = None
+            g_n = 0
             for neighbour in neighbour_gen:
                 if self.count >= self.c.MH_BUDGET:
                     break
+                current = neighbour
                 g_n = self.evaluate_selection(neighbour)
                 delta = g_n - g_s
                 if (
                     delta > -self.c.TS_GAMMA and not self.tabu_list.is_tabu(neighbour)
                 ) or g_n > g_best:
                     break
-            selected = neighbour
-            self.tabu_list.add(neighbour)
+            selected = current
+            self.tabu_list.add(selected)
             if g_n > g_best:
                 g_best = g_n
                 self.best_selection = selected
@@ -55,11 +59,9 @@ class TabuSearch(MetaHeuristic):
 
 if __name__ == "__main__":
     c = Config()
+    set_seed(c.SEED)
 
     ts = TabuSearch(c)
-
-    for tabu_list_size in [10, 100, 1000, 10000, 100000]:
-        c.TS_L = tabu_list_size
-        print(f"Tabu search selection for L={c.TS_L}")
-        mean, std = ts.evaluate_strategy()
-        print(f"Mean: {mean}, std: {std}, time taken: {ts.get_mean_time()}")
+    ts.initialise_data()
+    selected = ts.strategy()
+    print(ts.evaluate_selection(selected))
