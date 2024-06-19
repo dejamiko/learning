@@ -76,7 +76,8 @@ class EvolutionaryStrategy(MetaHeuristic):
         new_population = new_population[: len(population)]
         return new_population
 
-    def _select_roulette(self, population, num_elites):
+    @staticmethod
+    def _select_roulette(population, num_elites):
         scores = [score for _, score in population]
         probabilities = scores / np.sum(scores)
         indices = np.arange(len(population))

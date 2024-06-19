@@ -33,12 +33,26 @@ class MealpyHeuristic(MetaHeuristic):
         return self.evaluate_selection(x)
 
     def strategy(self):
-        bounds = mealpy.IntegerVar(lb=[0, ] * self.c.OBJ_NUM, ub=[1, ] * self.c.OBJ_NUM, name="object_selection")
-        problem = ObjectProblem(bounds=bounds, heuristic=self, minmax="max", log_to=None)
+        bounds = mealpy.IntegerVar(
+            lb=[
+                0,
+            ]
+            * self.c.OBJ_NUM,
+            ub=[
+                1,
+            ]
+            * self.c.OBJ_NUM,
+            name="object_selection",
+        )
+        problem = ObjectProblem(
+            bounds=bounds, heuristic=self, minmax="max", log_to=None
+        )
         optimizer = mealpy.get_optimizer_by_name(self.optimizer_name)()
         termination = mealpy.Termination(max_fe=self.c.MH_BUDGET)
         optimizer.solve(problem, termination=termination)
-        final = optimizer.problem.decode_solution(optimizer.g_best.solution)["object_selection"]
+        final = optimizer.problem.decode_solution(optimizer.g_best.solution)[
+            "object_selection"
+        ]
         if np.sum(final) > self.c.KNOWN_OBJECT_NUM:
             return np.zeros(self.c.OBJ_NUM)
         return final

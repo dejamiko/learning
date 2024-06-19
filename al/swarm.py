@@ -85,7 +85,6 @@ if __name__ == "__main__":
 
     sweep_id = wandb.sweep(sweep_config, project="swarm")
 
-
     def train(config=None):
         with wandb.init(config=config):
             config = wandb.config
@@ -106,7 +105,6 @@ if __name__ == "__main__":
             print(f"Mean: {mean}, std: {std}")
             wandb.log({"mean": mean})
             return mean
-
 
     wandb.agent(sweep_id, train, count=5000)
 
