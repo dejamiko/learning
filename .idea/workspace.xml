@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Add mealpy implementation">
+    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Remove time early stopping">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/swarm.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/swarm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +88,7 @@
       <recent name="$PROJECT_DIR$/playground" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.mealpy_lib">
+  <component name="RunManager" selected="Python.swarm">
     <configuration name="mealpy_lib" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="learning" />
       <option name="ENV_FILES" value="" />
@@ -204,8 +206,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.mealpy_lib" />
         <item itemvalue="Python.swarm" />
+        <item itemvalue="Python.mealpy_lib" />
         <item itemvalue="Python.sa" />
         <item itemvalue="Python.sa (1)" />
         <item itemvalue="Python.sa_lib" />
@@ -240,7 +242,7 @@
       <workItem from="1717749205734" duration="34091000" />
       <workItem from="1717865387770" duration="34661000" />
       <workItem from="1718097006770" duration="64871000" />
-      <workItem from="1718625654762" duration="28965000" />
+      <workItem from="1718625654762" duration="32763000" />
     </task>
     <task id="LOCAL-00001" summary="Change config to object, support demo average for solving">
       <option name="closed" value="true" />
@@ -434,7 +436,15 @@
       <option name="project" value="LOCAL" />
       <updated>1718743605474</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Remove time early stopping">
+      <option name="closed" value="true" />
+      <created>1718746583828</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1718746583828</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -464,7 +474,8 @@
     <MESSAGE value="Up budget" />
     <MESSAGE value="rename metric" />
     <MESSAGE value="Add mealpy implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add mealpy implementation" />
+    <MESSAGE value="Remove time early stopping" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove time early stopping" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1718645920523" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -475,7 +486,7 @@
     <SUITE FILE_PATH="coverage/learning$sa_lib.coverage" NAME="sa_lib Coverage Results" MODIFIED="1718457514697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718453387773" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$mealpy_lib.coverage" NAME="mealpy_lib Coverage Results" MODIFIED="1718742294116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$swarm.coverage" NAME="swarm Coverage Results" MODIFIED="1718706120953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$swarm.coverage" NAME="swarm Coverage Results" MODIFIED="1718789209370" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$sa__1_.coverage" NAME="sa (1) Coverage Results" MODIFIED="1718466954987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskmaster/al" />
     <SUITE FILE_PATH="coverage/learning$al2.coverage" NAME="al2 Coverage Results" MODIFIED="1717759379905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$tabu_search.coverage" NAME="tabu_search Coverage Results" MODIFIED="1718451707851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />

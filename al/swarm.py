@@ -37,7 +37,7 @@ class SwarmHeuristic(MetaHeuristic):
         )
         cost, pos = optimizer.optimize(
             self.cost_function,
-            iters=(self.c.MH_BUDGET * 5) // self.c.PSO_PARTICLES,
+            iters=int((self.c.MH_BUDGET * 4) / self.c.PSO_PARTICLES),
             verbose=False,
         )
         if np.sum(pos) > self.c.KNOWN_OBJECT_NUM:
@@ -54,6 +54,18 @@ if __name__ == "__main__":
     # mean, std = swarm.evaluate_strategy(n=100)
     # print(f"Mean: {mean}, std: {std}")
     # print(f"Time taken: {swarm.get_mean_time()}")
+    # Swarm selection for particles=102, c1=1.281673661126473, c2=2.8857261217146544, w=0.9852035038869308, k=19, p=2
+    # Mean: 33.53, std: 2.4349743325135895
+    # Time taken: 0.8894623279571533
+    # Swarm selection for particles=150, c1=2.761736180148006, c2=2.913460174519915, w=0.981294961364985, k=49, p=2
+    # Mean: 33.75, std: 2.5509802037648197
+    # Time taken: 1.042764675617218
+    # Swarm selection for particles=120, c1=2.761736180148006, c2=2.913460174519915, w=0.981294961364985, k=49, p=2
+    # Mean: 33.79, std: 2.5349358966253956
+    # Time taken: 1.0736425518989563
+    # Swarm selection for particles=150, c1=2.761736180148006, c2=2.913460174519915, w=0.981294961364985, k=49, p=2
+    # Mean: 33.63, std: 2.536355653294703
+    # Time taken: 0.8535159039497375
 
     wandb.login(key="8d9dd70311672d46669adf913d75468f2ba2095b")
 
