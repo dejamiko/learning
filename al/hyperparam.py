@@ -4,8 +4,8 @@ import numpy as np
 from al.mh import EvolutionaryStrategy, TabuSearch
 from al.mh.mealpy_lib import MealpyHeuristic
 from al.mh.simulated_annealing import SimulatedAnnealing
+from al.solver import evaluate_heuristic, Solver
 from config import Config
-from solver import evaluate_heuristic, Solver
 
 
 def find_es_hyperparameters(config):
@@ -18,7 +18,9 @@ def find_es_hyperparameters(config):
                 config.ES_MUTATION_RATE = mutation_rate
                 config.ES_ELITE_PROP = elite_prop
 
-                mean, std, time = evaluate_heuristic(Solver, config, EvolutionaryStrategy, n=5)
+                mean, std, time = evaluate_heuristic(
+                    Solver, config, EvolutionaryStrategy, n=5
+                )
                 results.append((pop_size, mutation_rate, elite_prop, mean, std, time))
 
     results = sorted(results, key=lambda x: x[3], reverse=True)
@@ -49,8 +51,20 @@ def find_mealpy_optimiser(config):
 def evaluate_mealpy_optimisers(config):
     results = []
 
-    for optimizer_name in ["DevSPBO", "OriginalWarSO", "OriginalWaOA", "DevSCA", "OriginalServalOA", "OriginalNGO",
-                           "OriginalCoatiOA", "AdaptiveBA", "ImprovedSFO", "OriginalGTO", "DevBRO", "OriginalFFA"]:
+    for optimizer_name in [
+        "DevSPBO",
+        "OriginalWarSO",
+        "OriginalWaOA",
+        "DevSCA",
+        "OriginalServalOA",
+        "OriginalNGO",
+        "OriginalCoatiOA",
+        "AdaptiveBA",
+        "ImprovedSFO",
+        "OriginalGTO",
+        "DevBRO",
+        "OriginalFFA",
+    ]:
         mealpy_heuristic = MealpyHeuristic(config, optimizer_name=optimizer_name)
         mean, std, time = evaluate_heuristic(Solver, config, mealpy_heuristic, n=500)
         results.append((optimizer_name, mean, std, time))
@@ -69,7 +83,9 @@ def find_sa_hyperparameters(config):
             config.SA_T = t_max
             config.SA_T_MIN = t_min
 
-            mean, std, time = evaluate_heuristic(Solver, config, SimulatedAnnealing, n=10)
+            mean, std, time = evaluate_heuristic(
+                Solver, config, SimulatedAnnealing, n=10
+            )
             results.append((t_max, t_min, mean, std, time))
 
     sorted_results = sorted(results, key=lambda x: x[2], reverse=True)

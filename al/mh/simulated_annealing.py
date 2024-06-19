@@ -56,5 +56,3 @@ if __name__ == "__main__":
     sa.initialise_data()
     selected = sa.strategy()
     print(sa.evaluate_selection(selected))
-
-
