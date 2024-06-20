@@ -26,11 +26,11 @@ class MealpyHeuristic(MetaHeuristic):
         super().__init__(c, threshold)
 
     def strategy(self):
-        bounds = mealpy.IntegerVar(
-            lb=[0] * self.c.OBJ_NUM,
-            ub=[1] * self.c.OBJ_NUM,
-            name="object_selection",
-        )
+        lb = [0] * self.c.OBJ_NUM
+        for i in self.locked_subsolution:
+            lb[i] = 1
+        ub = [1] * self.c.OBJ_NUM
+        bounds = mealpy.IntegerVar(lb=lb, ub=ub, name="object_selection")
         problem = ObjectProblem(
             bounds=bounds, heuristic=self, minmax="max", log_to=None, seed=self.c.SEED
         )

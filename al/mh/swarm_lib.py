@@ -1,5 +1,4 @@
 import numpy as np
-import wandb
 from pyswarms.discrete import BinaryPSO
 
 from al.mh.metaheuristic import MetaHeuristic
@@ -11,13 +10,16 @@ class SwarmHeuristic(MetaHeuristic):
     def __init__(self, c, threshold=None):
         super().__init__(c, threshold)
 
+    def get_cost_for_selection(self, selection):
+        selection[self.locked_subsolution] = 1
+        return -self.evaluate_selection_with_constraint_penalty(selection)
+
     def cost_function(self, x):
-        # this is a cost function which penalises the solutions that select more objects than allowed
         x = np.array(x)
         res = np.apply_along_axis(
-            lambda x: -self.evaluate_selection_with_constraint_penalty(x),
+            self.get_cost_for_selection,
             axis=1,
-            arr=x.reshape(-1, self.c.OBJ_NUM),
+            arr=x.reshape(-1, self.c.OBJ_NUM)
         )
         return res
 
@@ -34,7 +36,7 @@ class SwarmHeuristic(MetaHeuristic):
         )
         cost, pos = optimizer.optimize(
             self.cost_function,
-            iters=int((self.c.MH_BUDGET * 4) / self.c.PSO_PARTICLES),
+            iters=int(self.c.MH_BUDGET / self.c.PSO_PARTICLES),
             verbose=False,
         )
         if np.sum(pos) > self.c.KNOWN_OBJECT_NUM:

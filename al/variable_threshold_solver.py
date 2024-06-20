@@ -2,8 +2,9 @@ import time
 
 import numpy as np
 
-from al.mh import get_all_heuristics
-from al.solver import Solver, evaluate_all_heuristics
+from al.mh import get_all_heuristics, SwarmHeuristic, SimulatedAnnealing, TabuSearch, EvolutionaryStrategy, \
+    RandomisedHillClimbing, MealpyHeuristic
+from al.solver import Solver, evaluate_all_heuristics, evaluate_heuristic
 from al.utils import get_bin_representation, get_object_indices, set_seed
 from config import Config
 
@@ -25,9 +26,8 @@ class VariableThresholdSolver(Solver):
         return np.mean(counts), np.std(counts)
 
     def _init_data(self, i):
-        set_seed(i)
+        super()._init_data(i)
         self.reset_bounds()
-        self.config.SEED = i
         self.config.SIMILARITY_THRESHOLD = np.random.uniform(0.5, 0.9)
         self.heuristic = self.heuristic_class(
             self.config, (self.threshold_lower_bound + self.threshold_upper_bound) / 2

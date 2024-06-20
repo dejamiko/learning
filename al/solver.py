@@ -33,12 +33,7 @@ class Solver:
     def solve(self, n=5):
         counts = []
         for i in range(n):
-            set_seed(i)
-            self.config.SEED = i
-            self.heuristic = self.heuristic_class(self.config)
-            self.heuristic.initialise_data()
-            self.objects = self.heuristic.get_objects()
-            self.environment = self.heuristic.get_environment()
+            self._init_data(i)
             start = time.time()
             selected = self.heuristic.strategy()
             end = time.time()
@@ -49,6 +44,14 @@ class Solver:
             counts.append(count)
             self._times_taken_on_strategy.append(end - start)
         return np.mean(counts), np.std(counts)
+
+    def _init_data(self, i):
+        set_seed(i)
+        self.config.SEED = i
+        self.heuristic = self.heuristic_class(self.config)
+        self.heuristic.initialise_data()
+        self.objects = self.heuristic.get_objects()
+        self.environment = self.heuristic.get_environment()
 
     def evaluate(self, selected):
         if self.config.USE_ACTUAL_EVALUATION:

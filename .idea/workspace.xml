@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Init heuristic data at every iteration">
+    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Add back swarms">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/hyperparam.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/hyperparam.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/mh/metaheuristic.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/metaheuristic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/al/mh/swarm_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/swarm_lib.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/al/solver.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/solver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/al/variable_threshold_solver.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/variable_threshold_solver.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +96,7 @@
       <recent name="$PROJECT_DIR$/exploration" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.swarm_lib">
+  <component name="RunManager" selected="Python.variable_threshold_solver">
     <configuration name="hyperparam" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="learning" />
       <option name="ENV_FILES" value="" />
@@ -215,10 +214,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.swarm_lib" />
-        <item itemvalue="Python.solver" />
-        <item itemvalue="Python.variable_threshold_solver_old" />
         <item itemvalue="Python.variable_threshold_solver" />
+        <item itemvalue="Python.solver" />
+        <item itemvalue="Python.swarm_lib" />
+        <item itemvalue="Python.variable_threshold_solver_old" />
         <item itemvalue="Python.hyperparam" />
       </list>
     </recent_temporary>
@@ -251,7 +250,7 @@
       <workItem from="1717749205734" duration="34091000" />
       <workItem from="1717865387770" duration="34661000" />
       <workItem from="1718097006770" duration="64871000" />
-      <workItem from="1718625654762" duration="72242000" />
+      <workItem from="1718625654762" duration="75041000" />
     </task>
     <task id="LOCAL-00001" summary="Change config to object, support demo average for solving">
       <option name="closed" value="true" />
@@ -509,14 +508,21 @@
       <option name="project" value="LOCAL" />
       <updated>1718897495746</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Add back swarms">
+      <option name="closed" value="true" />
+      <created>1718902814517</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1718902814517</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rework all mh into classes" />
     <MESSAGE value="Reimplement all using np arrays" />
     <MESSAGE value="Reformat, add ES and variable threshold estimation" />
     <MESSAGE value="Lock part of a solution" />
@@ -541,18 +547,19 @@
     <MESSAGE value="Try fix bugs" />
     <MESSAGE value="Fix variable threshold bug" />
     <MESSAGE value="Init heuristic data at every iteration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Init heuristic data at every iteration" />
+    <MESSAGE value="Add back swarms" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add back swarms" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1718645920523" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$randomised_hill_climbing.coverage" NAME="randomised_hill_climbing Coverage Results" MODIFIED="1718818835816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$sko_lib.coverage" NAME="sko_lib Coverage Results" MODIFIED="1718806280059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718900215819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718903425590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$active_learning.coverage" NAME="active_learning Coverage Results" MODIFIED="1717772695392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$evolutionary_strategy.coverage" NAME="evolutionary_strategy Coverage Results" MODIFIED="1718834871653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$sa_lib.coverage" NAME="sa_lib Coverage Results" MODIFIED="1718457514697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718888601876" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$swarm_lib.coverage" NAME="swarm_lib Coverage Results" MODIFIED="1718900122211" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
+    <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718904224471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$swarm_lib.coverage" NAME="swarm_lib Coverage Results" MODIFIED="1718903083696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$simulated_annealing.coverage" NAME="simulated_annealing Coverage Results" MODIFIED="1718818894456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$mealpy_lib.coverage" NAME="mealpy_lib Coverage Results" MODIFIED="1718818072117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$swarm.coverage" NAME="swarm Coverage Results" MODIFIED="1718789553846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />

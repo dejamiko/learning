@@ -47,7 +47,6 @@ class MetaHeuristic(ABC):
         self.environment = Environment(self.c)
         self._similarity_dict = self.environment.generate_objects_ail(TrajectoryObject)
         self.count = 0
-        self.locked_subsolution = []
         self.best_selection = None
 
     def _run_strategy_with_timer(self):
