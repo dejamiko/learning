@@ -19,7 +19,7 @@ def find_es_hyperparameters(config):
                 config.ES_ELITE_PROP = elite_prop
 
                 mean, std, time = evaluate_heuristic(
-                    Solver, config, EvolutionaryStrategy(config), n=5
+                    Solver, config, EvolutionaryStrategy, n=50
                 )
                 results.append((pop_size, mutation_rate, elite_prop, mean, std, time))
 
@@ -36,8 +36,8 @@ def find_mealpy_optimiser(config):
 
     for optimizer_name in mealpy.get_all_optimizers().keys():
         try:
-            mealpy_heuristic = MealpyHeuristic(config, optimizer_name=optimizer_name)
-            mean, std, time = evaluate_heuristic(Solver, config, mealpy_heuristic, n=1)
+            config.MP_OPTIMISER_NAME = optimizer_name
+            mean, std, time = evaluate_heuristic(Solver, config, MealpyHeuristic, n=100)
             if mean > 0 and time < 1.0:
                 results.append((optimizer_name, mean, std, time))
         except Exception:
@@ -65,8 +65,8 @@ def evaluate_mealpy_optimisers(config):
         "DevBRO",
         "OriginalFFA",
     ]:
-        mealpy_heuristic = MealpyHeuristic(config, optimizer_name=optimizer_name)
-        mean, std, time = evaluate_heuristic(Solver, config, mealpy_heuristic, n=500)
+        config.MP_OPTIMISER_NAME = optimizer_name
+        mean, std, time = evaluate_heuristic(Solver, config, MealpyHeuristic, n=500)
         results.append((optimizer_name, mean, std, time))
     results.sort(key=lambda x: x[1], reverse=True)
     for name, mean, std, time in results:
@@ -84,7 +84,7 @@ def find_sa_hyperparameters(config):
             config.SA_T_MIN = t_min
 
             mean, std, time = evaluate_heuristic(
-                Solver, config, SimulatedAnnealing(config), n=10
+                Solver, config, SimulatedAnnealing, n=100
             )
             results.append((t_max, t_min, mean, std, time))
 
@@ -98,15 +98,15 @@ def find_ts_hyperparameters(config):
     for tabu_list_size in [10, 100, 1000, 10000, 100000]:
         config.TS_L = tabu_list_size
         print(f"Tabu search selection for L={config.TS_L}")
-        mean, std, time = evaluate_heuristic(Solver, config, TabuSearch(config), n=5)
+        mean, std, time = evaluate_heuristic(Solver, config, TabuSearch, n=10)
         print(f"Mean: {mean} +/- {std}, Time: {time}")
 
 
 if __name__ == "__main__":
     c = Config()
     c.TASK_TYPES = ["sample task"]
-    # find_es_hyperparameters(c)
-    # find_mealpy_optimiser(c)
-    # find_sa_hyperparameters(c)
-    # find_ts_hyperparameters(c)
+    find_es_hyperparameters(c)
+    find_mealpy_optimiser(c)
+    find_sa_hyperparameters(c)
+    find_ts_hyperparameters(c)
     evaluate_mealpy_optimisers(c)

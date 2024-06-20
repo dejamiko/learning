@@ -22,9 +22,8 @@ class ObjectProblem(Problem):
 
 
 class MealpyHeuristic(MetaHeuristic):
-    def __init__(self, c, threshold=None, optimizer_name="DevSPBO"):
+    def __init__(self, c, threshold=None):
         super().__init__(c, threshold)
-        self.optimizer_name = optimizer_name
 
     def strategy(self):
         bounds = mealpy.IntegerVar(
@@ -35,7 +34,7 @@ class MealpyHeuristic(MetaHeuristic):
         problem = ObjectProblem(
             bounds=bounds, heuristic=self, minmax="max", log_to=None, seed=self.c.SEED
         )
-        optimizer = mealpy.get_optimizer_by_name(self.optimizer_name)()
+        optimizer = mealpy.get_optimizer_by_name(self.c.MP_OPTIMISER_NAME)()
         termination = mealpy.Termination(max_fe=self.c.MH_BUDGET)
         optimizer.solve(problem, termination=termination)
         final = optimizer.problem.decode_solution(optimizer.g_best.solution)[

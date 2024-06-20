@@ -50,6 +50,8 @@ class Config:
     PSO_K = 49
     PSO_P = 2
 
+    MP_OPTIMISER_NAME = "OriginalWarSO"
+
     MH_BUDGET = 10000
 
     THRESH_ESTIMATION_STRATEGY = "density"

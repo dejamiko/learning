@@ -8,12 +8,13 @@ from config import Config
 
 
 class Solver:
-    def __init__(self, config, heuristic):
+    def __init__(self, config, heuristic_class):
         self.config = config
-        self.heuristic = heuristic
+        self.heuristic_class = heuristic_class
         self._times_taken_on_strategy = []
         self.objects = []
         self.environment = None
+        self.heuristic = None
 
     def get_real_evaluation(self, selected):
         selected = get_object_indices(selected)
@@ -34,6 +35,7 @@ class Solver:
         for i in range(n):
             set_seed(i)
             self.config.SEED = i
+            self.heuristic = self.heuristic_class(self.config)
             self.heuristic.initialise_data()
             self.objects = self.heuristic.get_objects()
             self.environment = self.heuristic.get_environment()
@@ -71,8 +73,7 @@ def evaluate_heuristic(solver_class, config, heuristic, n=100):
 def evaluate_all_heuristics(solver, config, n=100):
     results = []
     for h in get_all_heuristics():
-        heuristic = h(config)
-        mean, std, total_time = evaluate_heuristic(solver, config, heuristic, n)
+        mean, std, total_time = evaluate_heuristic(solver, config, h, n)
         results.append((h.__name__, mean, std, total_time))
     return results
 
@@ -81,11 +82,11 @@ if __name__ == "__main__":
     c = Config()
     c.TASK_TYPES = ["sample task"]
 
-    results = evaluate_all_heuristics(Solver, c, n=500)
+    results = evaluate_all_heuristics(Solver, c, n=1)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")
 
     c.USE_ACTUAL_EVALUATION = True
-    results = evaluate_all_heuristics(Solver, c, n=500)
+    results = evaluate_all_heuristics(Solver, c, n=1)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")

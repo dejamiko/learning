@@ -28,7 +28,7 @@ class Environment:
     def generate_objects_ail(self, object_class):
         self.storage.generate_objects(object_class)
         self.storage.generate_helper_data_ail()
-        return self.get_obj_to_similarity_list_dict()
+        return self.get_obj_to_similarity_list_dict().copy()
 
     def try_trajectory(self, trajectory, waypoints):
         """
@@ -171,10 +171,10 @@ class Environment:
         Get the selection frequency of the known objects
         :return: The selection frequency of the known objects
         """
-        return self.storage.selection_frequency
+        return self.storage.selection_frequency.copy()
 
     def get_similarities(self):
-        return self.storage.visual_similarities_by_task
+        return self.storage.visual_similarities_by_task.copy()
 
     def get_latent_similarity(self, o, s):
         return self.storage.get_latent_similarity(o.index, s.index)
