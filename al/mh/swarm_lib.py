@@ -3,6 +3,7 @@ import wandb
 from pyswarms.discrete import BinaryPSO
 
 from al.mh.metaheuristic import MetaHeuristic
+from al.utils import set_seed
 from config import Config
 
 
@@ -14,11 +15,7 @@ class SwarmHeuristic(MetaHeuristic):
         # this is a cost function which penalises the solutions that select more objects than allowed
         x = np.array(x)
         res = np.apply_along_axis(
-            lambda a: (
-                np.sum(a)
-                if np.sum(a) > self.c.KNOWN_OBJECT_NUM
-                else -self.evaluate_selection(a)
-            ),
+            lambda x: -self.evaluate_selection_with_constraint_penalty(x),
             axis=1,
             arr=x.reshape(-1, self.c.OBJ_NUM),
         )
@@ -47,65 +44,9 @@ class SwarmHeuristic(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
+    set_seed(config.SEED)
     swarm = SwarmHeuristic(config)
 
-    # print(f"Swarm selection for particles={config.PSO_PARTICLES}, c1={config.PSO_C1}, c2={config.PSO_C2}, "
-    #       f"w={config.PSO_W}, k={config.PSO_K}, p={config.PSO_P}")
-    # mean, std = swarm.evaluate_strategy(n=100)
-    # print(f"Mean: {mean}, std: {std}")
-    # print(f"Time taken: {swarm.get_mean_time()}")
-    # Swarm selection for particles=102, c1=1.281673661126473, c2=2.8857261217146544, w=0.9852035038869308, k=19, p=2
-    # Mean: 33.53, std: 2.4349743325135895
-    # Time taken: 0.8894623279571533
-    # Swarm selection for particles=150, c1=2.761736180148006, c2=2.913460174519915, w=0.981294961364985, k=49, p=2
-    # Mean: 33.75, std: 2.5509802037648197
-    # Time taken: 1.042764675617218
-    # Swarm selection for particles=120, c1=2.761736180148006, c2=2.913460174519915, w=0.981294961364985, k=49, p=2
-    # Mean: 33.79, std: 2.5349358966253956
-    # Time taken: 1.0736425518989563
-    # Swarm selection for particles=150, c1=2.761736180148006, c2=2.913460174519915, w=0.981294961364985, k=49, p=2
-    # Mean: 33.63, std: 2.536355653294703
-    # Time taken: 0.8535159039497375
-
-    wandb.login(key="8d9dd70311672d46669adf913d75468f2ba2095b")
-
-    sweep_config = {
-        "name": "Swarm",
-        "method": "bayes",
-        "metric": {"name": "mean", "goal": "maximize"},
-        "parameters": {
-            "PSO_PARTICLES": {"min": 10, "max": 200},
-            "PSO_C1": {"min": 0.1, "max": 3.0},
-            "PSO_C2": {"min": 0.1, "max": 3.0},
-            "PSO_W": {"min": 0.1, "max": 3.0},
-            "PSO_K": {"min": 10, "max": 200},
-            "PSO_P": {"values": [1, 2]},
-        },
-    }
-
-    sweep_id = wandb.sweep(sweep_config, project="swarm")
-
-    def train(config=None):
-        with wandb.init(config=config):
-            config = wandb.config
-            c = Config()
-            c.PSO_PARTICLES = config["PSO_PARTICLES"]
-            c.PSO_C1 = config["PSO_C1"]
-            c.PSO_C2 = config["PSO_C2"]
-            c.PSO_W = config["PSO_W"]
-            c.PSO_K = config["PSO_K"]
-            c.PSO_P = config["PSO_P"]
-            wandb.log({"config": c.__dict__})
-            print(f"Config: {c.__dict__}")
-            if c.PSO_K > c.PSO_PARTICLES:
-                return 0
-
-            swarm = SwarmHeuristic(c)
-            mean, std = swarm.evaluate_strategy(n=100)
-            print(f"Mean: {mean}, std: {std}")
-            wandb.log({"mean": mean})
-            return mean
-
-    wandb.agent(sweep_id, train, count=5000)
-
-    wandb.finish()
+    swarm.initialise_data()
+    selected = swarm.strategy()
+    print(swarm.evaluate_selection_with_constraint_penalty(selected))

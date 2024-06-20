@@ -43,11 +43,11 @@ class Config:
     ES_POP_SIZE = 112
     ES_MUTATION_RATE = 0.15
 
-    PSO_PARTICLES = 150
-    PSO_C1 = 2.761736180148006
-    PSO_C2 = 2.913460174519915
-    PSO_W = 0.981294961364985
-    PSO_K = 49
+    PSO_PARTICLES = 110
+    PSO_C1 = 2.6
+    PSO_C2 = 1.5
+    PSO_W = 0.99
+    PSO_K = 25
     PSO_P = 2
 
     MP_OPTIMISER_NAME = "OriginalWarSO"
