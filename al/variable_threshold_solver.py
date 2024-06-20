@@ -39,7 +39,7 @@ class VariableThresholdSolver(Solver):
     def solve_one(self):
         selected = []
         while len(selected) < self.config.KNOWN_OBJECT_NUM:
-            self.heuristic.count = 0
+            self.heuristic.initialise_data()
             heuristic_selected = self.heuristic.strategy()
             obj_to_try = self.select_object_to_try(heuristic_selected)
             assert heuristic_selected[obj_to_try] == 1
