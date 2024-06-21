@@ -4,19 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Try resetting locked_subsolution manually">
+    <list default="true" id="08b47e36-6574-4cb1-8fcb-eddcdeb30193" name="Changes" comment="Make metaheuristic more stateless">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/evolutionary_strategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/evolutionary_strategy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/mealpy_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/mealpy_lib.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/metaheuristic.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/metaheuristic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/randomised_hill_climbing.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/randomised_hill_climbing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/simanneal_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/simanneal_lib.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/simulated_annealing.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/simulated_annealing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/swarm_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/swarm_lib.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/mh/tabu_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/mh/tabu_search.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/solver.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/solver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/al/variable_threshold_solver.py" beforeDir="false" afterPath="$PROJECT_DIR$/al/variable_threshold_solver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,7 +248,7 @@
       <workItem from="1717865387770" duration="34661000" />
       <workItem from="1718097006770" duration="64871000" />
       <workItem from="1718625654762" duration="76905000" />
-      <workItem from="1718917187427" duration="6690000" />
+      <workItem from="1718917187427" duration="10682000" />
     </task>
     <task id="LOCAL-00001" summary="Change config to object, support demo average for solving">
       <option name="closed" value="true" />
@@ -541,14 +530,21 @@
       <option name="project" value="LOCAL" />
       <updated>1718922906918</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Make metaheuristic more stateless">
+      <option name="closed" value="true" />
+      <created>1718965804700</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1718965804700</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Lock part of a solution" />
     <MESSAGE value="Fix a bug in ES and add a&#10;common budget" />
     <MESSAGE value="Fix sa using a library and fix a bug with count" />
     <MESSAGE value="Add shell scripts" />
@@ -573,17 +569,18 @@
     <MESSAGE value="Add back swarms" />
     <MESSAGE value="Add locked subsolutions to swarms and mealpy" />
     <MESSAGE value="Try resetting locked_subsolution manually" />
-    <option name="LAST_COMMIT_MESSAGE" value="Try resetting locked_subsolution manually" />
+    <MESSAGE value="Make metaheuristic more stateless" />
+    <option name="LAST_COMMIT_MESSAGE" value="Make metaheuristic more stateless" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/learning$sa.coverage" NAME="sa Coverage Results" MODIFIED="1718645920523" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$randomised_hill_climbing.coverage" NAME="randomised_hill_climbing Coverage Results" MODIFIED="1718963023073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$sko_lib.coverage" NAME="sko_lib Coverage Results" MODIFIED="1718806280059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718963639619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$solver.coverage" NAME="solver Coverage Results" MODIFIED="1718964897789" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$active_learning.coverage" NAME="active_learning Coverage Results" MODIFIED="1717772695392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/learning$evolutionary_strategy.coverage" NAME="evolutionary_strategy Coverage Results" MODIFIED="1718961635184" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$sa_lib.coverage" NAME="sa_lib Coverage Results" MODIFIED="1718457514697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
-    <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718922354194" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
+    <SUITE FILE_PATH="coverage/learning$variable_threshold_solver.coverage" NAME="variable_threshold_solver Coverage Results" MODIFIED="1718964948066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al" />
     <SUITE FILE_PATH="coverage/learning$swarm_lib.coverage" NAME="swarm_lib Coverage Results" MODIFIED="1718963319024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$simulated_annealing.coverage" NAME="simulated_annealing Coverage Results" MODIFIED="1718963229928" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />
     <SUITE FILE_PATH="coverage/learning$mealpy_lib.coverage" NAME="mealpy_lib Coverage Results" MODIFIED="1718962951066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/al/mh" />

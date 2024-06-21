@@ -42,7 +42,7 @@ class SwarmHeuristic(MetaHeuristic):
             verbose=False,
         )
         if np.sum(pos) > self.c.KNOWN_OBJECT_NUM:
-            return np.zeros(self.c.OBJ_NUM)
+            return self._get_random_initial_selection()
         return pos
 
 

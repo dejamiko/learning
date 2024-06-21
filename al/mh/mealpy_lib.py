@@ -43,7 +43,7 @@ class MealpyHeuristic(MetaHeuristic):
             "object_selection"
         ]
         if np.sum(final) > self.c.KNOWN_OBJECT_NUM:
-            return np.zeros(self.c.OBJ_NUM)
+            return self._get_random_initial_selection()
         return final
 
 
