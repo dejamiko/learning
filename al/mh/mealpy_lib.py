@@ -42,7 +42,7 @@ class MealpyHeuristic(MetaHeuristic):
         final = optimizer.problem.decode_solution(optimizer.g_best.solution)[
             "object_selection"
         ]
-        if np.sum(final) > self.c.KNOWN_OBJECT_NUM:
+        if np.sum(final) != self.c.KNOWN_OBJECT_NUM:
             return self._get_random_initial_selection()
         return final
 

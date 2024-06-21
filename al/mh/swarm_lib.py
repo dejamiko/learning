@@ -41,7 +41,7 @@ class SwarmHeuristic(MetaHeuristic):
             iters=int(self.c.MH_BUDGET / self.c.PSO_PARTICLES),
             verbose=False,
         )
-        if np.sum(pos) > self.c.KNOWN_OBJECT_NUM:
+        if np.sum(pos) != self.c.KNOWN_OBJECT_NUM:
             return self._get_random_initial_selection()
         return pos
 
