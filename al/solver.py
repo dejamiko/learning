@@ -5,6 +5,8 @@ import numpy as np
 from al.mh import get_all_heuristics
 from al.utils import get_object_indices, set_seed
 from config import Config
+from playground.environment import Environment
+from playground.object import TrajectoryObject
 
 
 class Solver:
@@ -15,6 +17,7 @@ class Solver:
         self.objects = []
         self.environment = None
         self.heuristic = None
+        self.similarity_dict = None
 
     def get_real_evaluation(self, selected):
         selected = get_object_indices(selected)
@@ -48,10 +51,10 @@ class Solver:
     def _init_data(self, i):
         set_seed(i)
         self.config.SEED = i
-        self.heuristic = self.heuristic_class(self.config)
-        self.heuristic.initialise_data()
-        self.objects = self.heuristic.get_objects()
-        self.environment = self.heuristic.get_environment()
+        self.environment = Environment(self.config)
+        self.similarity_dict = self.environment.generate_objects_ail(TrajectoryObject)
+        self.objects = self.environment.get_objects()
+        self.heuristic = self.heuristic_class(self.config, self.similarity_dict, [])
 
     def evaluate(self, selected):
         if self.config.USE_ACTUAL_EVALUATION:
@@ -68,6 +71,7 @@ class Solver:
 
 
 def evaluate_heuristic(solver_class, config, heuristic, n=100):
+    print(f"Evaluating {heuristic.__name__} with config {config}")
     solver = solver_class(config, heuristic)
     mean, std = solver.solve(n)
     return mean, std, solver.get_mean_time()
@@ -85,11 +89,11 @@ if __name__ == "__main__":
     c = Config()
     c.TASK_TYPES = ["sample task"]
 
-    results = evaluate_all_heuristics(Solver, c, n=1)
+    results = evaluate_all_heuristics(Solver, c, n=100)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")
 
     c.USE_ACTUAL_EVALUATION = True
-    results = evaluate_all_heuristics(Solver, c, n=1)
+    results = evaluate_all_heuristics(Solver, c, n=100)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")

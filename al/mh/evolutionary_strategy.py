@@ -3,13 +3,16 @@ import numpy as np
 from al.utils import get_object_indices, set_seed
 from al.mh.metaheuristic import MetaHeuristic
 from config import Config
+from playground.environment import Environment
+from playground.object import TrajectoryObject
 
 
 class EvolutionaryStrategy(MetaHeuristic):
-    def __init__(self, c, threshold=None):
-        super().__init__(c, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
+        super().__init__(c, similarity_dict, locked_subsolution, threshold)
 
     def strategy(self):
+        best_selection = None
         population = self._get_initial_population()
         while self.count < self.c.MH_BUDGET:
             elites = (
@@ -20,8 +23,8 @@ class EvolutionaryStrategy(MetaHeuristic):
             population = self._crossover(population, len(elites))
             population = self._mutate(population)
             population.extend(elites)
-            self.best_selection = self._get_best_selection(population)
-        return self.best_selection
+            best_selection = self._get_best_selection(population)
+        return best_selection
 
     def _get_initial_population(self):
         population = []
@@ -105,8 +108,9 @@ class EvolutionaryStrategy(MetaHeuristic):
 if __name__ == "__main__":
     config = Config()
     set_seed(config.SEED)
-    es = EvolutionaryStrategy(config)
+    env = Environment(config)
+    similarity_dict = env.generate_objects_ail(TrajectoryObject)
+    es = EvolutionaryStrategy(config, similarity_dict, [])
 
-    es.initialise_data()
     selected = es.strategy()
     print(es.evaluate_selection_with_constraint_penalty(selected))

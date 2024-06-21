@@ -3,11 +3,13 @@ import numpy as np
 from al.mh.metaheuristic import MetaHeuristic
 from al.utils import set_seed
 from config import Config
+from playground.environment import Environment
+from playground.object import TrajectoryObject
 
 
 class SimulatedAnnealing(MetaHeuristic):
-    def __init__(self, c, threshold=None):
-        super().__init__(c, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
+        super().__init__(c, similarity_dict, locked_subsolution, threshold)
 
     def _get_random_neighbour(self, selected):
         # find a random index where selected is 1 and another where it is 0
@@ -24,7 +26,7 @@ class SimulatedAnnealing(MetaHeuristic):
     def strategy(self):
         selection = self._get_random_initial_selection()
         score = self.evaluate_selection(selection)
-        self.best_selection = selection.copy()
+        best_selection = selection.copy()
         best_score = score
         prev_state = selection.copy()
         prev_score = score
@@ -44,15 +46,16 @@ class SimulatedAnnealing(MetaHeuristic):
                 prev_score = score
                 if score > best_score:
                     best_score = score
-                    self.best_selection = selection.copy()
-        return self.best_selection
+                    best_selection = selection.copy()
+        return best_selection
 
 
 if __name__ == "__main__":
     c = Config()
     set_seed(c.SEED)
-    sa = SimulatedAnnealing(c)
+    env = Environment(c)
+    similarity_dict = env.generate_objects_ail(TrajectoryObject)
+    sa = SimulatedAnnealing(c, similarity_dict, [])
 
-    sa.initialise_data()
     selected = sa.strategy()
     print(sa.evaluate_selection(selected))

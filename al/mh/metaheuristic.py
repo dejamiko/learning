@@ -3,22 +3,16 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from playground.environment import Environment
-from playground.object import TrajectoryObject
-
 
 class MetaHeuristic(ABC):
-    def __init__(self, c, threshold=None):
+    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         self.c = c
-
-        self._similarity_dict = {}
-        self.best_selection = None
         if threshold is None:
             threshold = c.SIMILARITY_THRESHOLD
         self.threshold = threshold
         self.count = 0
-        self.locked_subsolution = []
-        self.environment = None
+        self.locked_subsolution = locked_subsolution
+        self._similarity_dict = similarity_dict
 
     def evaluate_selection_with_constraint_penalty(self, selected):
         constraint_penalty = 0
@@ -42,12 +36,6 @@ class MetaHeuristic(ABC):
             objects.update(objs[ind:])
         self.count += 1
         return len(objects)
-
-    def initialise_data(self):
-        self.environment = Environment(self.c)
-        self._similarity_dict = self.environment.generate_objects_ail(TrajectoryObject)
-        self.count = 0
-        self.best_selection = None
 
     def _run_strategy_with_timer(self):
         # TODO fix this because the child object for some reason cannot send back the best selection
@@ -77,15 +65,3 @@ class MetaHeuristic(ABC):
     @abstractmethod
     def strategy(self):
         pass
-
-    def update_threshold_estimate(self, threshold):
-        self.threshold = threshold
-
-    def lock_object(self, object_index):
-        self.locked_subsolution.append(object_index)
-
-    def get_objects(self):
-        return self.environment.get_objects()
-
-    def get_environment(self):
-        return self.environment

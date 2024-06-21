@@ -7,6 +7,8 @@ from mealpy import Problem
 from al.mh.metaheuristic import MetaHeuristic
 from al.utils import set_seed
 from config import Config
+from playground.environment import Environment
+from playground.object import TrajectoryObject
 
 
 class ObjectProblem(Problem):
@@ -22,8 +24,8 @@ class ObjectProblem(Problem):
 
 
 class MealpyHeuristic(MetaHeuristic):
-    def __init__(self, c, threshold=None):
-        super().__init__(c, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
+        super().__init__(c, similarity_dict, locked_subsolution, threshold)
 
     def strategy(self):
         lb = [0] * self.c.OBJ_NUM
@@ -48,9 +50,10 @@ class MealpyHeuristic(MetaHeuristic):
 if __name__ == "__main__":
     config = Config()
     set_seed(config.SEED)
-    mealpyh = MealpyHeuristic(config)
+    env = Environment(config)
+    similarity_dict = env.generate_objects_ail(TrajectoryObject)
+    mealpyh = MealpyHeuristic(config, similarity_dict, [])
 
-    mealpyh.initialise_data()
     selected = mealpyh.strategy()
     print(mealpyh.evaluate_selection_with_constraint_penalty(selected))
 

@@ -7,14 +7,16 @@ import numpy as np
 from simanneal import Annealer
 
 from al.mh.simulated_annealing import SimulatedAnnealing
+from al.utils import set_seed
 from config import Config
+from playground.environment import Environment
+from playground.object import TrajectoryObject
 
 
 class SA(Annealer):
     def __init__(self, state, heuristic, seed):
         super(SA, self).__init__(state)
         self.mh = heuristic
-        self.mh.initialise_data(seed)
 
     def move(self):
         while True:
@@ -38,9 +40,13 @@ if __name__ == "__main__":
 
     avg_schedule = dict()
 
-    for s in range(500):
+    for s in range(1):
         c = Config()
-        heuristic = SimulatedAnnealing(c)
+        c.SEED = s
+        set_seed(c.SEED)
+        env = Environment(c)
+        similarity_dict = env.generate_objects_ail(TrajectoryObject)
+        heuristic = SimulatedAnnealing(c, similarity_dict, [])
         sel = heuristic._get_random_initial_selection()
         sa = SA(sel, heuristic, s)
         auto_schedule = sa.auto(minutes=1 / 120)

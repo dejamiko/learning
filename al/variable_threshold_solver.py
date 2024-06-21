@@ -18,33 +18,25 @@ class VariableThresholdSolver(Solver):
         counts = []
         for i in range(n):
             self._init_data(i)
+            self.reset_bounds()
+            self.config.SIMILARITY_THRESHOLD = np.random.uniform(0.5, 0.9)
             start = time.time()
             count = self.solve_one()
             counts.append(count)
             self._times_taken_on_strategy.append(time.time() - start)
         return np.mean(counts), np.std(counts)
 
-    def _init_data(self, i):
-        super()._init_data(i)
-        self.reset_bounds()
-        self.config.SIMILARITY_THRESHOLD = np.random.uniform(0.5, 0.9)
-        self.heuristic = self.heuristic_class(
-            self.config, (self.threshold_lower_bound + self.threshold_upper_bound) / 2
-        )
-        self.heuristic.initialise_data()
-        self.heuristic.locked_subsolution = []
-        self.objects = self.heuristic.get_objects()
-        self.environment = self.heuristic.get_environment()
-
     def solve_one(self):
         selected = []
         while len(selected) < self.config.KNOWN_OBJECT_NUM:
-            self.heuristic.initialise_data()
+            self.heuristic = self.heuristic_class(
+                self.config, self.similarity_dict, selected,
+                (self.threshold_lower_bound + self.threshold_upper_bound) / 2
+            )
             heuristic_selected = self.heuristic.strategy()
             obj_to_try = self.select_object_to_try(heuristic_selected)
             assert heuristic_selected[obj_to_try] == 1
             selected.append(obj_to_try)
-            self.heuristic.lock_object(obj_to_try)
             # update the lower and upper bounds based on the interactions of the selected object
             self.update_bounds(obj_to_try)
         count = self.evaluate(selected)
@@ -163,9 +155,6 @@ class VariableThresholdSolver(Solver):
                 f"Lower bound: {self.threshold_lower_bound}, upper bound: {self.threshold_upper_bound}, "
                 f"real threshold: {self.config.SIMILARITY_THRESHOLD}"
             )
-        self.heuristic.update_threshold_estimate(
-            (self.threshold_lower_bound + self.threshold_upper_bound) / 2
-        )
 
 
 if __name__ == "__main__":
@@ -180,11 +169,11 @@ if __name__ == "__main__":
         config.THRESH_ESTIMATION_STRATEGY = method
         config.TASK_TYPES = ["sample task"]
         config.VERBOSITY = 0
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=200)
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
         for name, mean, std, time_taken in single_results:
             results[(name, method)] = (mean, std, time_taken)
         config.USE_REAL_THRESHOLD = True
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=200)
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
         for name, mean, std, time_taken in single_results:
             results_threshold_known[(name, method)] = (mean, std, time_taken)
 

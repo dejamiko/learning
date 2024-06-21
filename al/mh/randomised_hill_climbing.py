@@ -1,15 +1,17 @@
 from config import Config
 from al.utils import NeighbourGenerator, set_seed
 from al.mh.metaheuristic import MetaHeuristic
+from playground.environment import Environment
+from playground.object import TrajectoryObject
 
 
 class RandomisedHillClimbing(MetaHeuristic):
-    def __init__(self, c, threshold=None):
-        super().__init__(c, threshold)
-        self.best_selection = None
+    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
+        super().__init__(c, similarity_dict, locked_subsolution, threshold)
 
     def strategy(self):
         best_score = 0
+        best_selection = None
         while self.count < self.c.MH_BUDGET:
             selected = self._get_random_initial_selection()
             curr_score = self.evaluate_selection(selected)
@@ -24,21 +26,21 @@ class RandomisedHillClimbing(MetaHeuristic):
                         next_selection = neighbour
                         next_score = score
                         if next_score > best_score:
-                            self.best_selection = next_selection
+                            best_selection = next_selection
                             best_score = next_score
                 if next_score <= curr_score:
                     break
                 selected = next_selection
                 curr_score = next_score
-        return self.best_selection
+        return best_selection
 
 
 if __name__ == "__main__":
-    c = Config()
-    set_seed(c.SEED)
+    config = Config()
+    set_seed(config.SEED)
+    env = Environment(config)
+    similarity_dict = env.generate_objects_ail(TrajectoryObject)
+    rhc = RandomisedHillClimbing(config, similarity_dict, [])
 
-    rhc = RandomisedHillClimbing(c)
-
-    rhc.initialise_data()
     selected = rhc.strategy()
     print(rhc.evaluate_selection(selected))
