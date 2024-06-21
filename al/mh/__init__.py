@@ -8,10 +8,10 @@ from al.mh.tabu_search import TabuSearch
 
 def get_all_heuristics():
     return [
-        # EvolutionaryStrategy,
-        # RandomisedHillClimbing,
-        # SimulatedAnnealing,
-        # TabuSearch,
+        EvolutionaryStrategy,
+        RandomisedHillClimbing,
+        SimulatedAnnealing,
+        TabuSearch,
         SwarmHeuristic,
-        # MealpyHeuristic,
+        MealpyHeuristic,
     ]
