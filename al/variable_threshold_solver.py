@@ -169,11 +169,11 @@ if __name__ == "__main__":
         config.THRESH_ESTIMATION_STRATEGY = method
         config.TASK_TYPES = ["sample task"]
         config.VERBOSITY = 0
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=200)
         for name, mean, std, time_taken in single_results:
             results[(name, method)] = (mean, std, time_taken)
         config.USE_REAL_THRESHOLD = True
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=200)
         for name, mean, std, time_taken in single_results:
             results_threshold_known[(name, method)] = (mean, std, time_taken)
 
