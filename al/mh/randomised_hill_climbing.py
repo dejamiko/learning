@@ -1,8 +1,7 @@
-from config import Config
-from al.utils import NeighbourGenerator, set_seed
 from al.mh.metaheuristic import MetaHeuristic
+from al.utils import NeighbourGenerator, set_seed
+from config import Config
 from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class RandomisedHillClimbing(MetaHeuristic):
@@ -13,7 +12,7 @@ class RandomisedHillClimbing(MetaHeuristic):
         best_score = 0
         best_selection = None
         while self.count < self.c.MH_BUDGET:
-            selected = self._get_random_initial_selection()
+            selected = self.get_random_initial_selection()
             curr_score = self.evaluate_selection(selected)
             while self.count < self.c.MH_BUDGET:
                 next_selection = None
@@ -39,8 +38,7 @@ if __name__ == "__main__":
     config = Config()
     set_seed(config.SEED)
     env = Environment(config)
-    similarity_dict = env.generate_objects_ail(TrajectoryObject)
-    rhc = RandomisedHillClimbing(config, similarity_dict, [])
+    rhc = RandomisedHillClimbing(config, env, [])
 
     selected = rhc.strategy()
     print(rhc.evaluate_selection(selected))

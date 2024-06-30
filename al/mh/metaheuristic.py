@@ -1,18 +1,17 @@
-import multiprocessing
 from abc import ABC, abstractmethod
 
 import numpy as np
 
 
 class MetaHeuristic(ABC):
-    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
+    def __init__(self, c, environment, locked_subsolution, threshold=None):
         self.c = c
         if threshold is None:
             threshold = c.SIMILARITY_THRESHOLD
         self.threshold = threshold
         self.count = 0
         self.locked_subsolution = locked_subsolution
-        self._similarity_dict = similarity_dict
+        self.environment = environment
 
     def evaluate_selection_with_constraint_penalty(self, selected):
         constraint_penalty = 0
@@ -21,33 +20,15 @@ class MetaHeuristic(ABC):
         return self.evaluate_selection(selected) + constraint_penalty
 
     def evaluate_selection(self, selected):
-        objects = set()
-        for i, s in enumerate(selected):
-            if s == 0:
-                continue
-            # assume similarities[s] returns a sorted list of similarities to all objects
-            # where o is an object in objects and s is an object in selected
-            # use binary search to find the first object with similarity below threshold
-            objs, sim = self._similarity_dict[i]
-            # sim is a sorted list of similarities, use bin search to find the first object with similarity
-            # below threshold
-            ind = np.searchsorted(sim, self.threshold)
-            # print(f"Selected: {s}, threshold: {c.SIMILARITY_THRESHOLD}, ind: {ind}")
-            objects.update(objs[ind:])
         self.count += 1
-        return len(objects)
+        if self.c.USE_TRANSFER_EVALUATION:
+            return self.environment.evaluate_selection_transfer_based(selected)
+        else:
+            return self.environment.evaluate_selection_similarity_based(
+                selected, self.threshold
+            )
 
-    def _run_strategy_with_timer(self):
-        # TODO fix this because the child object for some reason cannot send back the best selection
-        p = multiprocessing.Process(target=self.strategy)
-        p.start()
-        p.join(20)
-        if p.is_alive():
-            print("Terminating due to time limit")
-            p.terminate()
-            p.join()
-
-    def _get_random_initial_selection(self):
+    def get_random_initial_selection(self):
         object_indices_not_locked = np.array(
             list(set(np.arange(self.c.OBJ_NUM)) - set(self.locked_subsolution))
         )

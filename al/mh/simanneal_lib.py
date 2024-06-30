@@ -10,7 +10,6 @@ from al.mh.simulated_annealing import SimulatedAnnealing
 from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class SA(Annealer):
@@ -45,9 +44,8 @@ if __name__ == "__main__":
         c.SEED = s
         set_seed(c.SEED)
         env = Environment(c)
-        similarity_dict = env.generate_objects_ail(TrajectoryObject)
-        heuristic = SimulatedAnnealing(c, similarity_dict, [])
-        sel = heuristic._get_random_initial_selection()
+        heuristic = SimulatedAnnealing(c, env, [])
+        sel = heuristic.get_random_initial_selection()
         sa = SA(sel, heuristic, s)
         auto_schedule = sa.auto(minutes=1 / 120)
         for key in auto_schedule.keys():

@@ -1,10 +1,9 @@
 from collections import deque
 
-from al.utils import NeighbourGenerator, set_seed
 from al.mh.metaheuristic import MetaHeuristic
+from al.utils import NeighbourGenerator, set_seed
 from config import Config
 from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class TabuList:
@@ -32,7 +31,7 @@ class TabuSearch(MetaHeuristic):
         self.tabu_list = TabuList(self.c)
 
     def strategy(self):
-        selected = self._get_random_initial_selection()
+        selected = self.get_random_initial_selection()
         g_best = self.evaluate_selection(selected)
         best_selection = selected
         g_s = g_best
@@ -63,8 +62,7 @@ if __name__ == "__main__":
     config = Config()
     set_seed(config.SEED)
     env = Environment(config)
-    similarity_dict = env.generate_objects_ail(TrajectoryObject)
-    ts = TabuSearch(config, similarity_dict, [])
+    ts = TabuSearch(config, env, [])
 
     selected = ts.strategy()
     print(ts.evaluate_selection(selected))

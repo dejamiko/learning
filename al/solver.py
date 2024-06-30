@@ -3,10 +3,9 @@ import time
 import numpy as np
 
 from al.mh import get_all_heuristics
-from al.utils import get_object_indices, set_seed
+from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class Solver:
@@ -17,21 +16,6 @@ class Solver:
         self.objects = []
         self.environment = None
         self.heuristic = None
-        self.similarity_dict = None
-
-    def get_real_evaluation(self, selected):
-        selected = get_object_indices(selected)
-        count = 0
-        selected = self.objects[selected]
-        for o in self.objects:
-            for s in selected:
-                if self.environment.try_transfer(o, s):
-                    count += 1
-                    break
-        return count
-
-    def get_predicted_evaluation(self, selected):
-        return self.heuristic.evaluate_selection(selected)
 
     def solve(self, n=5):
         counts = []
@@ -52,15 +36,14 @@ class Solver:
         set_seed(i)
         self.config.SEED = i
         self.environment = Environment(self.config)
-        self.similarity_dict = self.environment.generate_objects_ail(TrajectoryObject)
         self.objects = self.environment.get_objects()
-        self.heuristic = self.heuristic_class(self.config, self.similarity_dict, [])
+        self.heuristic = self.heuristic_class(self.config, self.environment, [])
 
     def evaluate(self, selected):
-        if self.config.USE_ACTUAL_EVALUATION:
-            count = self.get_real_evaluation(selected)
+        if self.config.USE_TRANSFER_EVALUATION:
+            count = self.environment.evaluate_selection_transfer_based(selected)
         else:
-            count = self.get_predicted_evaluation(selected)
+            count = self.environment.evaluate_selection_similarity_based(selected)
         return count
 
     def get_mean_time(self):
@@ -93,7 +76,7 @@ if __name__ == "__main__":
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")
 
-    c.USE_ACTUAL_EVALUATION = True
+    c.USE_TRANSFER_EVALUATION = True
     results = evaluate_all_heuristics(Solver, c, n=100)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")

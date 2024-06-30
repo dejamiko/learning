@@ -4,7 +4,7 @@ import numpy as np
 
 from al.mh import get_all_heuristics
 from al.solver import Solver, evaluate_all_heuristics
-from al.utils import get_bin_representation, get_object_indices
+from al.utils import get_object_indices
 from config import Config
 
 
@@ -30,8 +30,10 @@ class VariableThresholdSolver(Solver):
         selected = []
         while len(selected) < self.config.KNOWN_OBJECT_NUM:
             self.heuristic = self.heuristic_class(
-                self.config, self.similarity_dict, selected,
-                (self.threshold_lower_bound + self.threshold_upper_bound) / 2
+                self.config,
+                self.environment,
+                selected,
+                (self.threshold_lower_bound + self.threshold_upper_bound) / 2,
             )
             heuristic_selected = self.heuristic.strategy()
             obj_to_try = self.select_object_to_try(heuristic_selected)
@@ -49,10 +51,6 @@ class VariableThresholdSolver(Solver):
         else:
             self.threshold_lower_bound = 0.0
             self.threshold_upper_bound = 1.0
-
-    def get_predicted_evaluation(self, selected):
-        selected = get_bin_representation(selected, self.config.OBJ_NUM)
-        return self.heuristic.evaluate_selection(selected)
 
     def select_object_to_try(self, selected):
         selected = get_object_indices(selected)
@@ -80,9 +78,9 @@ class VariableThresholdSolver(Solver):
             score = 0
             for o in self.objects:
                 if (
-                        self.threshold_lower_bound
-                        < self.environment.get_visual_similarity(self.objects[s], o)
-                        < self.threshold_upper_bound
+                    self.threshold_lower_bound
+                    < self.environment.get_visual_similarity(self.objects[s], o)
+                    < self.threshold_upper_bound
                 ) and self.objects[s].task_type == o.task_type:
                     score += 1
             if score > best_score:
@@ -98,9 +96,9 @@ class VariableThresholdSolver(Solver):
             sim_objects_between_bounds = []
             for o in self.objects:
                 if (
-                        self.threshold_lower_bound
-                        < self.environment.get_visual_similarity(self.objects[s], o)
-                        < self.threshold_upper_bound
+                    self.threshold_lower_bound
+                    < self.environment.get_visual_similarity(self.objects[s], o)
+                    < self.threshold_upper_bound
                 ) and self.objects[s].task_type == o.task_type:
                     sim_objects_between_bounds.append(
                         self.environment.get_latent_similarity(self.objects[s], o)
@@ -108,7 +106,7 @@ class VariableThresholdSolver(Solver):
             sim_objects_between_bounds.sort()
             for i in range(len(sim_objects_between_bounds) - 1):
                 score = (
-                        sim_objects_between_bounds[i + 1] - sim_objects_between_bounds[i]
+                    sim_objects_between_bounds[i + 1] - sim_objects_between_bounds[i]
                 )
                 if score < best_score:
                     best_score = score
@@ -124,8 +122,8 @@ class VariableThresholdSolver(Solver):
             score = 0
             for o in self.objects:
                 if (
-                        self.environment.get_visual_similarity(self.objects[s], o)
-                        < (self.threshold_lower_bound + self.threshold_upper_bound) / 2
+                    self.environment.get_visual_similarity(self.objects[s], o)
+                    < (self.threshold_lower_bound + self.threshold_upper_bound) / 2
                 ):
                     score += 1
             if score > best_score:
@@ -169,11 +167,11 @@ if __name__ == "__main__":
         config.THRESH_ESTIMATION_STRATEGY = method
         config.TASK_TYPES = ["sample task"]
         config.VERBOSITY = 0
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=200)
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
         for name, mean, std, time_taken in single_results:
             results[(name, method)] = (mean, std, time_taken)
         config.USE_REAL_THRESHOLD = True
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=200)
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
         for name, mean, std, time_taken in single_results:
             results_threshold_known[(name, method)] = (mean, std, time_taken)
 

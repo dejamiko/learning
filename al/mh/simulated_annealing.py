@@ -4,7 +4,6 @@ from al.mh.metaheuristic import MetaHeuristic
 from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class SimulatedAnnealing(MetaHeuristic):
@@ -24,7 +23,7 @@ class SimulatedAnnealing(MetaHeuristic):
         return new_selected
 
     def strategy(self):
-        selection = self._get_random_initial_selection()
+        selection = self.get_random_initial_selection()
         score = self.evaluate_selection(selection)
         best_selection = selection.copy()
         best_score = score
@@ -54,8 +53,7 @@ if __name__ == "__main__":
     c = Config()
     set_seed(c.SEED)
     env = Environment(c)
-    similarity_dict = env.generate_objects_ail(TrajectoryObject)
-    sa = SimulatedAnnealing(c, similarity_dict, [])
+    sa = SimulatedAnnealing(c, env, [])
 
     selected = sa.strategy()
     print(sa.evaluate_selection(selected))

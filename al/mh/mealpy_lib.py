@@ -8,7 +8,6 @@ from al.mh.metaheuristic import MetaHeuristic
 from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class ObjectProblem(Problem):
@@ -43,7 +42,7 @@ class MealpyHeuristic(MetaHeuristic):
             "object_selection"
         ]
         if np.sum(final) != self.c.KNOWN_OBJECT_NUM:
-            return self._get_random_initial_selection()
+            return self.get_random_initial_selection()
         return final
 
 
@@ -51,8 +50,7 @@ if __name__ == "__main__":
     config = Config()
     set_seed(config.SEED)
     env = Environment(config)
-    similarity_dict = env.generate_objects_ail(TrajectoryObject)
-    mealpyh = MealpyHeuristic(config, similarity_dict, [])
+    mealpyh = MealpyHeuristic(config, env, [])
 
     selected = mealpyh.strategy()
     print(mealpyh.evaluate_selection_with_constraint_penalty(selected))

@@ -5,7 +5,6 @@ from al.mh.metaheuristic import MetaHeuristic
 from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
-from playground.object import TrajectoryObject
 
 
 class SwarmHeuristic(MetaHeuristic):
@@ -19,9 +18,7 @@ class SwarmHeuristic(MetaHeuristic):
     def cost_function(self, x):
         x = np.array(x)
         res = np.apply_along_axis(
-            self.get_cost_for_selection,
-            axis=1,
-            arr=x.reshape(-1, self.c.OBJ_NUM)
+            self.get_cost_for_selection, axis=1, arr=x.reshape(-1, self.c.OBJ_NUM)
         )
         return res
 
@@ -42,7 +39,7 @@ class SwarmHeuristic(MetaHeuristic):
             verbose=False,
         )
         if np.sum(pos) != self.c.KNOWN_OBJECT_NUM:
-            return self._get_random_initial_selection()
+            return self.get_random_initial_selection()
         return pos
 
 
@@ -50,8 +47,7 @@ if __name__ == "__main__":
     config = Config()
     set_seed(config.SEED)
     env = Environment(config)
-    similarity_dict = env.generate_objects_ail(TrajectoryObject)
-    swarm = SwarmHeuristic(config, similarity_dict, [])
+    swarm = SwarmHeuristic(config, env, [])
 
     selected = swarm.strategy()
     print(swarm.evaluate_selection_with_constraint_penalty(selected))
