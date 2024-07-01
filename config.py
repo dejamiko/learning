@@ -36,12 +36,15 @@ class Config:
     MP_OPTIMISER_NAME = "OriginalWarSO"
 
     MH_BUDGET = 10000
+    MH_TIME_BUDGET = 0.8  # in seconds
 
     THRESH_ESTIMATION_STRATEGY = "density"
     USE_REAL_THRESHOLD = False
     USE_TRANSFER_EVALUATION = False
 
     SEED = 0
+
+    VISUALISATION_METHOD = "pca"
 
     def __init__(self):
         pass

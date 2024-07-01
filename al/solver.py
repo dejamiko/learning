@@ -1,3 +1,4 @@
+import logging
 import time
 
 import numpy as np
@@ -22,7 +23,7 @@ class Solver:
         for i in range(n):
             self._init_data(i)
             start = time.time()
-            selected = self.heuristic.strategy()
+            selected = self.heuristic.solve()
             end = time.time()
             count = self.evaluate(selected)
             # early stopping for when the score is lower than the number of known objects
@@ -71,6 +72,9 @@ def evaluate_all_heuristics(solver, config, n=100):
 if __name__ == "__main__":
     c = Config()
     c.TASK_TYPES = ["sample task"]
+
+    stopit_logger = logging.getLogger("stopit")
+    stopit_logger.setLevel(logging.ERROR)
 
     results = evaluate_all_heuristics(Solver, c, n=100)
     for name, mean, std, total_time in results:

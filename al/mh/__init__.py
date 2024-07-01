@@ -1,4 +1,5 @@
 from al.mh.evolutionary_strategy import EvolutionaryStrategy
+from al.mh.exhaustive_search import ExhaustiveSearch
 from al.mh.mealpy_lib import MealpyHeuristic
 from al.mh.randomised_hill_climbing import RandomisedHillClimbing
 from al.mh.simulated_annealing import SimulatedAnnealing
@@ -14,4 +15,5 @@ def get_all_heuristics():
         TabuSearch,
         SwarmHeuristic,
         MealpyHeuristic,
+        ExhaustiveSearch,
     ]

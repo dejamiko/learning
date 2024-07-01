@@ -7,10 +7,10 @@ from playground.environment import Environment
 class RandomisedHillClimbing(MetaHeuristic):
     def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         super().__init__(c, similarity_dict, locked_subsolution, threshold)
+        self.best_selection = None
 
     def strategy(self):
         best_score = 0
-        best_selection = None
         while self.count < self.c.MH_BUDGET:
             selected = self.get_random_initial_selection()
             curr_score = self.evaluate_selection(selected)
@@ -25,13 +25,16 @@ class RandomisedHillClimbing(MetaHeuristic):
                         next_selection = neighbour
                         next_score = score
                         if next_score > best_score:
-                            best_selection = next_selection
+                            self.best_selection = next_selection
                             best_score = next_score
                 if next_score <= curr_score:
                     break
                 selected = next_selection
                 curr_score = next_score
-        return best_selection
+        return self.best_selection
+
+    def get_best_solution(self):
+        return self.best_selection
 
 
 if __name__ == "__main__":

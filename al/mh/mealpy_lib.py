@@ -25,6 +25,7 @@ class ObjectProblem(Problem):
 class MealpyHeuristic(MetaHeuristic):
     def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         super().__init__(c, similarity_dict, locked_subsolution, threshold)
+        self.best_selection = None
 
     def strategy(self):
         lb = [0] * self.c.OBJ_NUM
@@ -35,15 +36,29 @@ class MealpyHeuristic(MetaHeuristic):
         problem = ObjectProblem(
             bounds=bounds, heuristic=self, minmax="max", log_to=None, seed=self.c.SEED
         )
-        optimizer = mealpy.get_optimizer_by_name(self.c.MP_OPTIMISER_NAME)()
+        self.optimizer = mealpy.get_optimizer_by_name(self.c.MP_OPTIMISER_NAME)()
         termination = mealpy.Termination(max_fe=self.c.MH_BUDGET)
-        optimizer.solve(problem, termination=termination)
-        final = optimizer.problem.decode_solution(optimizer.g_best.solution)[
+        self.optimizer.solve(problem, termination=termination)
+        final = self.optimizer.problem.decode_solution(self.optimizer.g_best.solution)[
             "object_selection"
         ]
         if np.sum(final) != self.c.KNOWN_OBJECT_NUM:
-            return self.get_random_initial_selection()
-        return final
+            self.best_selection = self.get_random_initial_selection()
+        else:
+            self.best_selection = final
+        return self.best_selection
+
+    def get_best_solution(self):
+        if self.best_selection is not None:
+            return self.best_selection
+        final = self.optimizer.problem.decode_solution(self.optimizer.g_best.solution)[
+            "object_selection"
+        ]
+        if np.sum(final) != self.c.KNOWN_OBJECT_NUM:
+            self.best_selection = self.get_random_initial_selection()
+        else:
+            self.best_selection = final
+        return self.best_selection
 
 
 if __name__ == "__main__":

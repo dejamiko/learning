@@ -29,11 +29,12 @@ class TabuSearch(MetaHeuristic):
     def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         super().__init__(c, similarity_dict, locked_subsolution, threshold)
         self.tabu_list = TabuList(self.c)
+        self.best_selection = None
 
     def strategy(self):
         selected = self.get_random_initial_selection()
         g_best = self.evaluate_selection(selected)
-        best_selection = selected
+        self.best_selection = selected
         g_s = g_best
 
         while self.count < self.c.MH_BUDGET:
@@ -54,8 +55,11 @@ class TabuSearch(MetaHeuristic):
             self.tabu_list.add(selected)
             if g_n > g_best:
                 g_best = g_n
-                best_selection = selected
-        return best_selection
+                self.best_selection = selected
+        return self.best_selection
+
+    def get_best_solution(self):
+        return self.best_selection
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ from playground.environment import Environment
 class SimulatedAnnealing(MetaHeuristic):
     def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         super().__init__(c, similarity_dict, locked_subsolution, threshold)
+        self.best_selection = None
 
     def _get_random_neighbour(self, selected):
         # find a random index where selected is 1 and another where it is 0
@@ -25,7 +26,7 @@ class SimulatedAnnealing(MetaHeuristic):
     def strategy(self):
         selection = self.get_random_initial_selection()
         score = self.evaluate_selection(selection)
-        best_selection = selection.copy()
+        self.best_selection = selection.copy()
         best_score = score
         prev_state = selection.copy()
         prev_score = score
@@ -45,8 +46,11 @@ class SimulatedAnnealing(MetaHeuristic):
                 prev_score = score
                 if score > best_score:
                     best_score = score
-                    best_selection = selection.copy()
-        return best_selection
+                    self.best_selection = selection.copy()
+        return self.best_selection
+
+    def get_best_solution(self):
+        return self.best_selection
 
 
 if __name__ == "__main__":

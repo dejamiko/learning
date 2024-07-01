@@ -9,9 +9,9 @@ from playground.environment import Environment
 class EvolutionaryStrategy(MetaHeuristic):
     def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         super().__init__(c, similarity_dict, locked_subsolution, threshold)
+        self.best_selection = None
 
     def strategy(self):
-        best_selection = None
         population = self._get_initial_population()
         while self.count < self.c.MH_BUDGET:
             elites = (
@@ -22,8 +22,11 @@ class EvolutionaryStrategy(MetaHeuristic):
             population = self._crossover(population, len(elites))
             population = self._mutate(population)
             population.extend(elites)
-            best_selection = self._get_best_selection(population)
-        return best_selection
+            self.best_selection = self._get_best_selection(population)
+        return self.best_selection
+
+    def get_best_solution(self):
+        return self.best_selection
 
     def _get_initial_population(self):
         population = []

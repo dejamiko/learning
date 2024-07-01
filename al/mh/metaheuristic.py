@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 import numpy as np
+from stopit import threading_timeoutable
 
 
 class MetaHeuristic(ABC):
@@ -46,3 +47,15 @@ class MetaHeuristic(ABC):
     @abstractmethod
     def strategy(self):
         pass
+
+    @abstractmethod
+    def get_best_solution(self):
+        pass
+
+    @threading_timeoutable()
+    def _strategy_with_timeout(self):
+        return self.strategy()
+
+    def solve(self):
+        self._strategy_with_timeout(timeout=self.c.MH_TIME_BUDGET)
+        return self.get_best_solution()

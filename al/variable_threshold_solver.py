@@ -1,3 +1,4 @@
+import logging
 import time
 
 import numpy as np
@@ -35,7 +36,7 @@ class VariableThresholdSolver(Solver):
                 selected,
                 (self.threshold_lower_bound + self.threshold_upper_bound) / 2,
             )
-            heuristic_selected = self.heuristic.strategy()
+            heuristic_selected = self.heuristic.solve()
             obj_to_try = self.select_object_to_try(heuristic_selected)
             assert heuristic_selected[obj_to_try] == 1
             selected.append(obj_to_try)
@@ -162,8 +163,12 @@ if __name__ == "__main__":
     methods = ["density", "random", "intervals", "greedy"]
     heuristics = get_all_heuristics()
 
+    stopit_logger = logging.getLogger("stopit")
+    stopit_logger.setLevel(logging.ERROR)
+
     for method in methods:
         config = Config()
+        config.MH_TIME_BUDGET = 0.1
         config.THRESH_ESTIMATION_STRATEGY = method
         config.TASK_TYPES = ["sample task"]
         config.VERBOSITY = 0

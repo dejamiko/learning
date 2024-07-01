@@ -10,6 +10,7 @@ from playground.environment import Environment
 class SwarmHeuristic(MetaHeuristic):
     def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         super().__init__(c, similarity_dict, locked_subsolution, threshold)
+        self.best_selection = None
 
     def get_cost_for_selection(self, selection):
         selection[self.locked_subsolution] = 1
@@ -30,17 +31,29 @@ class SwarmHeuristic(MetaHeuristic):
             "k": self.c.PSO_K,
             "p": self.c.PSO_P,
         }
-        optimizer = BinaryPSO(
+        self.optimizer = BinaryPSO(
             n_particles=self.c.PSO_PARTICLES, dimensions=self.c.OBJ_NUM, options=options
         )
-        cost, pos = optimizer.optimize(
+        cost, pos = self.optimizer.optimize(
             self.cost_function,
             iters=int(self.c.MH_BUDGET / self.c.PSO_PARTICLES),
             verbose=False,
         )
         if np.sum(pos) != self.c.KNOWN_OBJECT_NUM:
+            self.best_selection = self.get_random_initial_selection()
+        else:
+            self.best_selection = pos
+        return self.best_selection
+
+    def get_best_solution(self):
+        if self.best_selection is not None:
+            return self.best_selection
+        final_best_pos = self.optimizer.swarm.pbest_pos[
+            self.optimizer.swarm.pbest_cost.argmin()
+        ].copy()
+        if np.sum(final_best_pos) != self.c.KNOWN_OBJECT_NUM:
             return self.get_random_initial_selection()
-        return pos
+        return final_best_pos
 
 
 if __name__ == "__main__":
