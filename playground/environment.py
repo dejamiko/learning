@@ -60,13 +60,18 @@ class Environment:
         return similarity_dict
 
     def get_reachable_object_indices(self, selected_indices):
-        similarity_dict = self.get_obj_to_similarity_list_dict()
-        reachable_indices = set()
-        for index in selected_indices:
-            obj, sim = similarity_dict[index]
-            ind = np.searchsorted(sim, self.c.SIMILARITY_THRESHOLD)
-            reachable_indices.update(obj[ind:])
-        return reachable_indices
+        reachable_indices_to_selected = {}
+        for o in self.get_objects():
+            reachable_indices_to_selected[o.index] = set()
+            for s in selected_indices:
+                if self.try_transfer(o, self.get_objects()[s]):
+                    reachable_indices_to_selected[o.index].add(
+                        (s, self.get_latent_similarity(o, self.get_objects()[s]))
+                    )
+        for o in self.get_objects():
+            if len(reachable_indices_to_selected[o.index]) == 0:
+                reachable_indices_to_selected.pop(o.index)
+        return reachable_indices_to_selected
 
     def evaluate_selection_transfer_based(self, selected):
         count = 0
