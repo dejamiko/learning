@@ -1,5 +1,3 @@
-from typing import Dict
-
 import numpy as np
 from sklearn.cluster import KMeans
 
@@ -8,7 +6,7 @@ from playground.random_object import RandomObject
 
 class ObjectStorage:
     """
-    Class to store the objects and their demonstrations
+    Class to store the objects, their similarities, transfer rates, and so on
     """
 
     def __init__(self, c, env):
@@ -20,13 +18,13 @@ class ObjectStorage:
         self.c = c
         self.env = env
 
-        self.objects: np.ndarray = np.array([])
-        self.latent_similarity: np.ndarray = np.zeros((c.OBJ_NUM, c.OBJ_NUM))
+        self.objects = None
 
         self.visual_similarities_by_task = {
             t: np.zeros((c.OBJ_NUM, c.OBJ_NUM)) for t in c.TASK_TYPES
         }
-        self.object_demos: Dict[int, np.ndarray] = {}
+
+        self._latent_similarities = None
 
     def generate_random_objects(self):
         """
@@ -50,7 +48,6 @@ class ObjectStorage:
         """
         Generate the helper data
         """
-        # this is only the similarity matrix
         visual_similarities = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
         for i in range(self.c.OBJ_NUM):
             for j in range(self.c.OBJ_NUM):
@@ -63,16 +60,17 @@ class ObjectStorage:
         max_ = 1
         visual_similarities = (visual_similarities - min_) / (max_ - min_)
 
+        latent_similarities = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
         for i in range(self.c.OBJ_NUM):
             for j in range(self.c.OBJ_NUM):
-                self.latent_similarity[i, j] = self.objects[i].get_latent_similarity(
+                latent_similarities[i, j] = self.objects[i].get_latent_similarity(
                     self.objects[j]
                 )
 
         # apply min-max normalization to the latent similarities
         min_ = -1
         max_ = 1
-        self.latent_similarity = (self.latent_similarity - min_) / (max_ - min_)
+        self._latent_similarities = (latent_similarities - min_) / (max_ - min_)
 
         for i in range(self.c.OBJ_NUM):
             for j in range(self.c.OBJ_NUM):
@@ -81,8 +79,9 @@ class ObjectStorage:
                         i, j
                     ] = visual_similarities[i, j]
 
-    def get_latent_similarity(self, i, j):
-        return self.latent_similarity[i, j]
-
     def get_visual_similarity(self, i, j):
         return self.visual_similarities_by_task[self.objects[i].task_type][i, j]
+
+    def get_success(self, i, j, sim_threshold):
+        # TODO For actual objects this will be just a lookup in the transfer success rate table so remove sim_threshold
+        return self._latent_similarities[i, j] > sim_threshold

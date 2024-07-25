@@ -102,7 +102,7 @@ class VariableThresholdSolver(Solver):
                     < self.threshold_upper_bound
                 ) and self.objects[s].task_type == o.task_type:
                     sim_objects_between_bounds.append(
-                        self.environment.get_latent_similarity(self.objects[s], o)
+                        self.environment.get_visual_similarity(self.objects[s], o)
                     )
             sim_objects_between_bounds.sort()
             for i in range(len(sim_objects_between_bounds) - 1):
@@ -133,6 +133,7 @@ class VariableThresholdSolver(Solver):
         return best_object_index
 
     def _update_bounds(self, obj_ind):
+        # TODO Work on this taking into account the noisy bound problem
         successes = []
         failures = []
         obj = self.objects[obj_ind]
@@ -142,17 +143,17 @@ class VariableThresholdSolver(Solver):
             else:
                 failures.append(o)
         for s in successes:
-            sim = self.environment.get_latent_similarity(obj, s)
+            sim = self.environment.get_visual_similarity(obj, s)
             self.threshold_upper_bound = min(self.threshold_upper_bound, sim)
         for f in failures:
             if f.task_type != obj.task_type:
                 continue
-            sim = self.environment.get_latent_similarity(obj, f)
+            sim = self.environment.get_visual_similarity(obj, f)
             self.threshold_lower_bound = max(self.threshold_lower_bound, sim)
         if self.config.VERBOSITY > 0:
             print(
                 f"Lower bound: {self.threshold_lower_bound}, upper bound: {self.threshold_upper_bound}, "
-                f"real threshold: {self.config.SIMILARITY_THRESHOLD}"
+                f"estimate {(self.threshold_lower_bound + self.threshold_upper_bound) / 2}, real threshold: {self.config.SIMILARITY_THRESHOLD}"
             )
 
 

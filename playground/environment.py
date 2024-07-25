@@ -25,16 +25,14 @@ class Environment:
         """
         return self.storage.objects
 
-    def get_latent_similarity(self, o, s):
-        return self.storage.get_latent_similarity(o.index, s.index)
-
     def get_visual_similarity(self, o, s):
         return self.storage.get_visual_similarity(o.index, s.index)
 
     def try_transfer(self, obj, other):
+        # TODO introduce a real transfer metric (bool or real) for the actual transfer success and a hypothesis one
+        # which includes the similarity threshold
         return (
-            self.storage.get_latent_similarity(obj.index, other.index)
-            > self.c.SIMILARITY_THRESHOLD
+            self.storage.get_success(obj.index, other.index, self.c.SIMILARITY_THRESHOLD)
         ) and obj.task_type == other.task_type
 
     def get_reachable_object_indices(self, selected_indices):
@@ -44,7 +42,7 @@ class Environment:
             for s in selected_indices:
                 if self.try_transfer(o, self.get_objects()[s]):
                     reachable_indices_to_selected[o.index].add(
-                        (s, self.get_latent_similarity(o, self.get_objects()[s]))
+                        (s, self.get_visual_similarity(o, self.get_objects()[s]))
                     )
         for o in self.get_objects():
             if len(reachable_indices_to_selected[o.index]) == 0:
