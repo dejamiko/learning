@@ -1,70 +1,36 @@
-import numpy as np
+from abc import ABC, abstractmethod
 
 
-class Object:
+class Object(ABC):
     """
     The basic class for objects in the environment. Each object has a latent representation, a visible representation,
     and a task type.
     """
 
-    def __init__(self, index, latent_representation, task_type, c):
+    def __init__(self, c, task):
         """
         Initialise the object
-        :param index: The index of the object
-        :param latent_representation: The latent representation of the object
-        :param task_type: The task type of the object
         :param c: The configuration object
+        :param task: The task this object is prepared for
         """
-        assert isinstance(
-            latent_representation, np.ndarray
-        ), f"Expected np.ndarray, got {type(latent_representation)}"
-        assert (
-            len(latent_representation.shape) == 1
-        ), f"Expected 1D array, got {len(latent_representation.shape)}D"
-        assert (
-            latent_representation.shape[0] == c.LATENT_DIM
-        ), f"Expected array of length {c.LATENT_DIM}, got {latent_representation.shape[0]}"
-
         self.c = c
-        self.name = f"Object {index}"
-        self.index = index
-        self.latent_repr = latent_representation
-        self.visible_repr = self._create_visible_representation()
-        self.task_type = task_type
+        self.task = task
 
+    @abstractmethod
     def get_visual_similarity(self, other):
         """
         Get the similarity between the visible representations of this object and another object
         :param other: The other object
-        :return: The similarity between the visible representations. Implemented as the cosine similarity
+        :return: The similarity between the visible representations.
         """
-        return np.dot(self.visible_repr, other.visible_repr) / (
-            np.linalg.norm(self.visible_repr) * np.linalg.norm(other.visible_repr)
-        )
-
-    def get_latent_similarity(self, other):
-        """
-        Get the similarity between the latent representations of this object and another object
-        :param other: The other object
-        :return: The similarity between the latent representations. Implemented as the cosine similarity
-        """
-        return np.dot(self.latent_repr, other.latent_repr) / (
-            np.linalg.norm(self.latent_repr) * np.linalg.norm(other.latent_repr)
-        )
-
-    def _create_visible_representation(self):
-        """
-        Create a visible representation of the object. This is done by adding some noise to the latent representation
-        :return: The visible representation of the object
-        """
-        return self.latent_repr + np.random.normal(
-            0, self.c.VISIBLE_REPRESENTATION_NOISE, self.latent_repr.shape
-        )
+        pass
 
     def __repr__(self):
+        """
+        This is used for printing collections of objects in a readable way.
+        """
         return self.__str__()
 
+    @abstractmethod
     def __str__(self):
-        return (
-            f"{self.name} ({self.latent_repr}), {self.visible_repr}, {self.task_type}"
-        )
+        pass

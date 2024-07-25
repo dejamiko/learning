@@ -3,7 +3,7 @@ from typing import Dict
 import numpy as np
 from sklearn.cluster import KMeans
 
-from playground.object import Object
+from playground.random_object import RandomObject
 
 
 class ObjectStorage:
@@ -35,7 +35,7 @@ class ObjectStorage:
         objects = []
         for i in range(self.c.OBJ_NUM):
             objects.append(
-                Object(i, np.random.uniform(-1, 1, self.c.LATENT_DIM), -1, self.c)
+                RandomObject(i, np.random.uniform(-1, 1, self.c.LATENT_DIM), -1, self.c)
             )
         # cluster the objects into different task types based on the latent representation
         k = KMeans(n_clusters=len(self.c.TASK_TYPES)).fit(
@@ -44,7 +44,7 @@ class ObjectStorage:
         for i, o in enumerate(objects):
             o.task_type = self.c.TASK_TYPES[k.labels_[i]]
 
-        self.objects = np.array(objects, dtype=Object)
+        self.objects = np.array(objects, dtype=RandomObject)
 
     def generate_helper_data(self):
         """
