@@ -11,6 +11,7 @@ class SwarmHeuristic(MetaHeuristic):
     def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
         super().__init__(c, similarity_dict, locked_subsolution, threshold)
         self.best_selection = None
+        self.optimiser = None
 
     def get_cost_for_selection(self, selection):
         selection[self.locked_subsolution] = 1
@@ -31,10 +32,10 @@ class SwarmHeuristic(MetaHeuristic):
             "k": self.c.PSO_K,
             "p": self.c.PSO_P,
         }
-        self.optimizer = BinaryPSO(
+        self.optimiser = BinaryPSO(
             n_particles=self.c.PSO_PARTICLES, dimensions=self.c.OBJ_NUM, options=options
         )
-        cost, pos = self.optimizer.optimize(
+        cost, pos = self.optimiser.optimize(
             self.cost_function,
             iters=int(self.c.MH_BUDGET / self.c.PSO_PARTICLES),
             verbose=False,
@@ -48,8 +49,8 @@ class SwarmHeuristic(MetaHeuristic):
     def get_best_solution(self):
         if self.best_selection is not None:
             return self.best_selection
-        final_best_pos = self.optimizer.swarm.pbest_pos[
-            self.optimizer.swarm.pbest_cost.argmin()
+        final_best_pos = self.optimiser.swarm.pbest_pos[
+            self.optimiser.swarm.pbest_cost.argmin()
         ].copy()
         if np.sum(final_best_pos) != self.c.KNOWN_OBJECT_NUM:
             return self.get_random_initial_selection()

@@ -19,7 +19,7 @@ class VariableThresholdSolver(Solver):
         counts = []
         for i in range(n):
             self._init_data(i)
-            self.reset_bounds()
+            self._reset_bounds()
             self.config.SIMILARITY_THRESHOLD = np.random.uniform(0.5, 0.9)
             start = time.time()
             count = self.solve_one()
@@ -37,15 +37,15 @@ class VariableThresholdSolver(Solver):
                 (self.threshold_lower_bound + self.threshold_upper_bound) / 2,
             )
             heuristic_selected = self.heuristic.solve()
-            obj_to_try = self.select_object_to_try(heuristic_selected)
+            obj_to_try = self._select_object_to_try(heuristic_selected)
             assert heuristic_selected[obj_to_try] == 1
             selected.append(obj_to_try)
             # update the lower and upper bounds based on the interactions of the selected object
-            self.update_bounds(obj_to_try)
+            self._update_bounds(obj_to_try)
         count = self.evaluate(selected)
         return count
 
-    def reset_bounds(self):
+    def _reset_bounds(self):
         if self.config.USE_REAL_THRESHOLD:
             self.threshold_lower_bound = self.config.SIMILARITY_THRESHOLD
             self.threshold_upper_bound = self.config.SIMILARITY_THRESHOLD
@@ -53,7 +53,7 @@ class VariableThresholdSolver(Solver):
             self.threshold_lower_bound = 0.0
             self.threshold_upper_bound = 1.0
 
-    def select_object_to_try(self, selected):
+    def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
         # go through the objects and select the one that maximizes the expected information gain
         if self.config.THRESH_ESTIMATION_STRATEGY == "density":
@@ -132,7 +132,7 @@ class VariableThresholdSolver(Solver):
                 best_object_index = s
         return best_object_index
 
-    def update_bounds(self, obj_ind):
+    def _update_bounds(self, obj_ind):
         successes = []
         failures = []
         obj = self.objects[obj_ind]

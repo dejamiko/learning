@@ -29,17 +29,8 @@ class Object:
         self.name = f"Object {index}"
         self.index = index
         self.latent_repr = latent_representation
-        self.visible_repr = self.create_visible_representation()
+        self.visible_repr = self._create_visible_representation()
         self.task_type = task_type
-
-    def create_visible_representation(self):
-        """
-        Create a visible representation of the object. This is done by adding some noise to the latent representation
-        :return: The visible representation of the object
-        """
-        return self.latent_repr + np.random.normal(
-            0, self.c.VISIBLE_REPRESENTATION_NOISE, self.latent_repr.shape
-        )
 
     def get_visual_similarity(self, other):
         """
@@ -61,13 +52,14 @@ class Object:
             np.linalg.norm(self.latent_repr) * np.linalg.norm(other.latent_repr)
         )
 
-    def get_task_type_correspondence(self, other):
+    def _create_visible_representation(self):
         """
-        Get the task type correspondence between this object and another object
-        :param other: The other object
-        :return: True if the task types are the same and False otherwise
+        Create a visible representation of the object. This is done by adding some noise to the latent representation
+        :return: The visible representation of the object
         """
-        return self.task_type == other.task_type
+        return self.latent_repr + np.random.normal(
+            0, self.c.VISIBLE_REPRESENTATION_NOISE, self.latent_repr.shape
+        )
 
     def __repr__(self):
         return self.__str__()

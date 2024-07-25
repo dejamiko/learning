@@ -33,13 +33,6 @@ class Solver:
             self._times_taken_on_strategy.append(end - start)
         return np.mean(counts), np.std(counts)
 
-    def _init_data(self, i):
-        set_seed(i)
-        self.config.SEED = i
-        self.environment = Environment(self.config)
-        self.objects = self.environment.get_objects()
-        self.heuristic = self.heuristic_class(self.config, self.environment, [])
-
     def evaluate(self, selected):
         if self.config.USE_TRANSFER_EVALUATION:
             count = self.environment.evaluate_selection_transfer_based(selected)
@@ -50,8 +43,12 @@ class Solver:
     def get_mean_time(self):
         return np.mean(self._times_taken_on_strategy)
 
-    def get_total_time(self):
-        return np.sum(self._times_taken_on_strategy)
+    def _init_data(self, i):
+        set_seed(i)
+        self.config.SEED = i
+        self.environment = Environment(self.config)
+        self.objects = self.environment.get_objects()
+        self.heuristic = self.heuristic_class(self.config, self.environment, [])
 
 
 def evaluate_heuristic(solver_class, config, heuristic, n=100):

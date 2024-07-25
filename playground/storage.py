@@ -28,9 +28,9 @@ class ObjectStorage:
         }
         self.object_demos: Dict[int, np.ndarray] = {}
 
-    def generate_objects(self):
+    def generate_random_objects(self):
         """
-        Generate the objects with their latent representations and waypoints
+        Generate the objects with random latent representations
         """
         objects = []
         for i in range(self.c.OBJ_NUM):

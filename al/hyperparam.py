@@ -104,7 +104,7 @@ def find_ts_hyperparameters(config):
         print(f"Mean: {mean} +/- {std}, Time: {time}")
 
 
-def find_swarms_hyperparameters(config):
+def find_swarms_hyperparameters():
     wandb.login(key="8d9dd70311672d46669adf913d75468f2ba2095b")
 
     sweep_config = {
@@ -127,6 +127,7 @@ def find_swarms_hyperparameters(config):
         with wandb.init(config=config):
             config = wandb.config
             c = Config()
+            c.TASK_TYPES = ["sample task"]
             c.PSO_PARTICLES = config["PSO_PARTICLES"]
             c.PSO_C1 = config["PSO_C1"]
             c.PSO_C2 = config["PSO_C2"]
@@ -155,4 +156,4 @@ if __name__ == "__main__":
     find_sa_hyperparameters(c)
     find_ts_hyperparameters(c)
     evaluate_mealpy_optimisers(c)
-    find_swarms_hyperparameters(c)
+    find_swarms_hyperparameters()
