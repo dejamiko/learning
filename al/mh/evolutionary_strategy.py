@@ -1,9 +1,9 @@
 import numpy as np
 
 from al.mh.metaheuristic import MetaHeuristic
-from al.utils import get_object_indices, set_seed
 from config import Config
 from playground.environment import Environment
+from utils import get_object_indices, set_seed
 
 
 class EvolutionaryStrategy(MetaHeuristic):

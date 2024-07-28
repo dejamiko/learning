@@ -25,7 +25,7 @@ class MetaHeuristic(ABC):
         if self.c.USE_TRANSFER_EVALUATION:
             return self.environment.evaluate_selection_transfer_based(selected)
         else:
-            return self.environment.evaluate_selection_similarity_based(
+            return self.environment.evaluate_selection_visual_similarity_based(
                 selected, self.threshold
             )
 

@@ -4,9 +4,9 @@ import time
 import numpy as np
 
 from al.mh import get_all_heuristics
-from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
+from utils import set_seed
 
 
 class Solver:
@@ -15,7 +15,7 @@ class Solver:
         self.heuristic_class = heuristic_class
         self._times_taken_on_strategy = []
         self.objects = []
-        self.environment = None
+        self.env = None
         self.heuristic = None
 
     def solve(self, n=5):
@@ -35,9 +35,9 @@ class Solver:
 
     def evaluate(self, selected):
         if self.config.USE_TRANSFER_EVALUATION:
-            count = self.environment.evaluate_selection_transfer_based(selected)
+            count = self.env.evaluate_selection_transfer_based(selected)
         else:
-            count = self.environment.evaluate_selection_similarity_based(selected)
+            count = self.env.evaluate_selection_visual_similarity_based(selected)
         return count
 
     def get_mean_time(self):
@@ -46,9 +46,9 @@ class Solver:
     def _init_data(self, i):
         set_seed(i)
         self.config.SEED = i
-        self.environment = Environment(self.config)
-        self.objects = self.environment.get_objects()
-        self.heuristic = self.heuristic_class(self.config, self.environment, [])
+        self.env = Environment(self.config)
+        self.objects = self.env.get_objects()
+        self.heuristic = self.heuristic_class(self.config, self.env, [])
 
 
 def evaluate_heuristic(solver_class, config, heuristic, n=100):
@@ -68,7 +68,6 @@ def evaluate_all_heuristics(solver, config, n=100):
 
 if __name__ == "__main__":
     c = Config()
-    c.TASK_TYPES = ["sample task"]
 
     stopit_logger = logging.getLogger("stopit")
     stopit_logger.setLevel(logging.ERROR)

@@ -1,19 +1,34 @@
-class Config:
+from utils import SingletonMeta
+
+
+class Config(metaclass=SingletonMeta):
     """
     The configuration for the whole system
     """
 
-    OBJ_NUM = 100
-    KNOWN_OBJECT_NUM = 10
-
-    LATENT_DIM = 10
-    VISIBLE_REPRESENTATION_NOISE = 0.1
-    TASK_TYPES = ["gripping", "pushing", "inserting"]
-
-    SIMILARITY_THRESHOLD = 0.85
-
+    SEED = 0
     VERBOSITY = 1
 
+    USE_REAL_OBJECTS = True
+
+    SUCCESS_RATE_BOOLEAN = True
+    SIMILARITY_THRESHOLD = 0.85
+    PROB_THRESHOLD = 0.70
+
+    VISUALISATION_METHOD = "pca"
+
+    # Variable threshold solver
+    THRESH_ESTIMATION_STRATEGY = "density"
+    USE_REAL_THRESHOLD = False
+    USE_TRANSFER_EVALUATION = False
+
+    # Random object
+    OBJ_NUM = 100
+    KNOWN_OBJECT_NUM = 10
+    LATENT_DIM = 10
+    VISIBLE_REPRESENTATION_NOISE = 0.1
+
+    # Metaheuristic-related
     SA_T = 29.402
     SA_T_MIN = 0.1139
 
@@ -38,16 +53,8 @@ class Config:
     MH_BUDGET = 10000
     MH_TIME_BUDGET = 0.8  # in seconds
 
-    THRESH_ESTIMATION_STRATEGY = "density"
-    USE_REAL_THRESHOLD = False
-    USE_TRANSFER_EVALUATION = False
-
-    SEED = 0
-
-    VISUALISATION_METHOD = "pca"
-
     def __init__(self):
         pass
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return f"Config: {self.__dict__}"

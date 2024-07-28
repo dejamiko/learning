@@ -2,9 +2,9 @@ import numpy as np
 from pyswarms.discrete import BinaryPSO
 
 from al.mh.metaheuristic import MetaHeuristic
-from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
+from utils import set_seed
 
 
 class SwarmHeuristic(MetaHeuristic):

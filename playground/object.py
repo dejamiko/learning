@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 
+import numpy as np
+
+from playground.task_types import Task
+
 
 class Object(ABC):
     """
@@ -7,13 +11,20 @@ class Object(ABC):
     and a task type.
     """
 
-    def __init__(self, c, task):
+    def __init__(self, index, c, task):
         """
         Initialise the object
+        :param index: The index of the object
         :param c: The configuration object
         :param task: The task this object is prepared for
         """
+        self.index = index
         self.c = c
+
+        assert task in [
+            t.value for t in Task
+        ], f"The task provided {task} is not a valid Task {Task}"
+
         self.task = task
 
     @abstractmethod
@@ -23,7 +34,7 @@ class Object(ABC):
         :param other: The other object
         :return: The similarity between the visible representations.
         """
-        pass
+        pass  # pragma: no cover
 
     def __repr__(self):
         """
@@ -33,4 +44,8 @@ class Object(ABC):
 
     @abstractmethod
     def __str__(self):
-        pass
+        pass  # pragma: no cover
+
+    @staticmethod
+    def _get_cos_sim(a, b, eps=1e-8):
+        return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + eps)

@@ -5,8 +5,8 @@ import numpy as np
 
 from al.mh import get_all_heuristics
 from al.solver import Solver, evaluate_all_heuristics
-from al.utils import get_object_indices
 from config import Config
+from utils import get_object_indices
 
 
 class VariableThresholdSolver(Solver):
@@ -32,7 +32,7 @@ class VariableThresholdSolver(Solver):
         while len(selected) < self.config.KNOWN_OBJECT_NUM:
             self.heuristic = self.heuristic_class(
                 self.config,
-                self.environment,
+                self.env,
                 selected,
                 (self.threshold_lower_bound + self.threshold_upper_bound) / 2,
             )
@@ -80,9 +80,9 @@ class VariableThresholdSolver(Solver):
             for o in self.objects:
                 if (
                     self.threshold_lower_bound
-                    < self.environment.get_visual_similarity(self.objects[s], o)
+                    < self.env.get_visual_similarity(s, o.index)
                     < self.threshold_upper_bound
-                ) and self.objects[s].task_type == o.task_type:
+                ) and self.objects[s].task == o.task:
                     score += 1
             if score > best_score:
                 best_score = score
@@ -98,11 +98,11 @@ class VariableThresholdSolver(Solver):
             for o in self.objects:
                 if (
                     self.threshold_lower_bound
-                    < self.environment.get_visual_similarity(self.objects[s], o)
+                    < self.env.get_visual_similarity(s, o.index)
                     < self.threshold_upper_bound
-                ) and self.objects[s].task_type == o.task_type:
+                ) and self.objects[s].task == o.task:
                     sim_objects_between_bounds.append(
-                        self.environment.get_visual_similarity(self.objects[s], o)
+                        self.env.get_visual_similarity(s, o.index)
                     )
             sim_objects_between_bounds.sort()
             for i in range(len(sim_objects_between_bounds) - 1):
@@ -123,7 +123,7 @@ class VariableThresholdSolver(Solver):
             score = 0
             for o in self.objects:
                 if (
-                    self.environment.get_visual_similarity(self.objects[s], o)
+                    self.env.get_visual_similarity(s, o.index)
                     < (self.threshold_lower_bound + self.threshold_upper_bound) / 2
                 ):
                     score += 1
@@ -134,26 +134,26 @@ class VariableThresholdSolver(Solver):
 
     def _update_bounds(self, obj_ind):
         # TODO Work on this taking into account the noisy bound problem
-        successes = []
-        failures = []
-        obj = self.objects[obj_ind]
+        success_indices = []
+        failure_indices = []
         for o in self.objects:
-            if self.environment.try_transfer(obj, o):
-                successes.append(o)
-            else:
-                failures.append(o)
-        for s in successes:
-            sim = self.environment.get_visual_similarity(obj, s)
-            self.threshold_upper_bound = min(self.threshold_upper_bound, sim)
-        for f in failures:
-            if f.task_type != obj.task_type:
+            if o.task != self.objects[obj_ind].task:
                 continue
-            sim = self.environment.get_visual_similarity(obj, f)
+            if self.env.get_transfer_success(obj_ind, o.index):
+                success_indices.append(o.index)
+            else:
+                failure_indices.append(o.index)
+        for s_i in success_indices:
+            sim = self.env.get_visual_similarity(obj_ind, s_i)
+            self.threshold_upper_bound = min(self.threshold_upper_bound, sim)
+        for f_i in failure_indices:
+            sim = self.env.get_visual_similarity(obj_ind, f_i)
             self.threshold_lower_bound = max(self.threshold_lower_bound, sim)
         if self.config.VERBOSITY > 0:
             print(
                 f"Lower bound: {self.threshold_lower_bound}, upper bound: {self.threshold_upper_bound}, "
-                f"estimate {(self.threshold_lower_bound + self.threshold_upper_bound) / 2}, real threshold: {self.config.SIMILARITY_THRESHOLD}"
+                f"estimate {(self.threshold_lower_bound + self.threshold_upper_bound) / 2}, "
+                f"real threshold: {self.config.SIMILARITY_THRESHOLD}"
             )
 
 
@@ -171,13 +171,13 @@ if __name__ == "__main__":
         config = Config()
         config.MH_TIME_BUDGET = 0.1
         config.THRESH_ESTIMATION_STRATEGY = method
-        config.TASK_TYPES = ["sample task"]
         config.VERBOSITY = 0
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
+        config.USE_REAL_THRESHOLD = False
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=1)
         for name, mean, std, time_taken in single_results:
             results[(name, method)] = (mean, std, time_taken)
         config.USE_REAL_THRESHOLD = True
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=100)
+        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=1)
         for name, mean, std, time_taken in single_results:
             results_threshold_known[(name, method)] = (mean, std, time_taken)
 

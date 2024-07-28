@@ -7,9 +7,9 @@ import numpy as np
 from simanneal import Annealer
 
 from al.mh.simulated_annealing import SimulatedAnnealing
-from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
+from utils import set_seed
 
 
 class SA(Annealer):

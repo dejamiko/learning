@@ -5,9 +5,9 @@ import numpy as np
 from mealpy import Problem
 
 from al.mh.metaheuristic import MetaHeuristic
-from al.utils import set_seed
 from config import Config
 from playground.environment import Environment
+from utils import set_seed
 
 
 class ObjectProblem(Problem):

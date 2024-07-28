@@ -3,21 +3,21 @@ import numpy as np
 from .object import Object
 
 
-class RandomObject(Object):
+class BasicObject(Object):
     """
     The basic class for objects in the environment. Each object has a latent representation, a visible representation,
     and a task type.
     """
 
-    def __init__(self, index, latent_representation, task_type, c):
+    def __init__(self, index, c, task, latent_representation):
         """
         Initialise the object
         :param index: The index of the object
-        :param latent_representation: The latent representation of the object
-        :param task_type: The task type of the object
         :param c: The configuration object
+        :param task: The task type of the object
+        :param latent_representation: The latent representation of the object
         """
-        super().__init__(c, task_type)
+        super().__init__(index, c, task)
         assert isinstance(
             latent_representation, np.ndarray
         ), f"Expected np.ndarray, got {type(latent_representation)}"
@@ -29,10 +29,8 @@ class RandomObject(Object):
         ), f"Expected array of length {c.LATENT_DIM}, got {latent_representation.shape[0]}"
 
         self.name = f"Object {index}"
-        self.index = index
         self.latent_repr = latent_representation
         self.visible_repr = self._create_visible_representation()
-        self.task_type = task_type
 
     def get_visual_similarity(self, other):
         """
@@ -40,9 +38,7 @@ class RandomObject(Object):
         :param other: The other object
         :return: The similarity between the visible representations. Implemented as the cosine similarity
         """
-        return np.dot(self.visible_repr, other.visible_repr) / (
-            np.linalg.norm(self.visible_repr) * np.linalg.norm(other.visible_repr)
-        )
+        return self._get_cos_sim(self.visible_repr, other.visible_repr)
 
     def get_latent_similarity(self, other):
         """
@@ -50,9 +46,7 @@ class RandomObject(Object):
         :param other: The other object
         :return: The similarity between the latent representations. Implemented as the cosine similarity
         """
-        return np.dot(self.latent_repr, other.latent_repr) / (
-            np.linalg.norm(self.latent_repr) * np.linalg.norm(other.latent_repr)
-        )
+        return self._get_cos_sim(self.latent_repr, other.latent_repr)
 
     def _create_visible_representation(self):
         """
@@ -63,10 +57,5 @@ class RandomObject(Object):
             0, self.c.VISIBLE_REPRESENTATION_NOISE, self.latent_repr.shape
         )
 
-    def __repr__(self):
-        return self.__str__()
-
     def __str__(self):
-        return (
-            f"{self.name} ({self.latent_repr}), {self.visible_repr}, {self.task_type}"
-        )
+        return f"{self.name} ({self.latent_repr}), {self.visible_repr}, {self.task}"

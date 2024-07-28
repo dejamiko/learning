@@ -10,3 +10,6 @@ plotly
 pandas
 umap-learn
 stopit
+torch
+opencv-python
+pytest-cov

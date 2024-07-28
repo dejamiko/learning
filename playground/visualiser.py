@@ -6,9 +6,9 @@ from sklearn.manifold import TSNE
 from umap import UMAP
 
 from al.mh import EvolutionaryStrategy
-from al.utils import get_object_indices
 from config import Config
 from playground.environment import Environment
+from utils import get_object_indices
 
 
 class Visualiser:

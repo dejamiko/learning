@@ -2,9 +2,9 @@ import time
 from itertools import combinations
 
 from al.mh.metaheuristic import MetaHeuristic
-from al.utils import set_seed, get_bin_representation
 from config import Config
 from playground.environment import Environment
+from utils import get_bin_representation, set_seed
 
 
 class ExhaustiveSearch(MetaHeuristic):

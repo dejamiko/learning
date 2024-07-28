@@ -17,17 +17,3 @@ class NeighbourGenerator:
                         new_selected[i] = 0
                         new_selected[j] = 1
                         yield new_selected
-
-
-def get_object_indices(selected):
-    return np.where(selected == 1)[0]
-
-
-def get_bin_representation(selected, max_len):
-    selected_z = np.zeros(max_len)
-    selected_z[selected] = 1
-    return selected_z
-
-
-def set_seed(seed):
-    np.random.seed(seed)

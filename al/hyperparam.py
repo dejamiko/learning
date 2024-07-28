@@ -127,7 +127,6 @@ def find_swarms_hyperparameters():
         with wandb.init(config=config):
             config = wandb.config
             c = Config()
-            c.TASK_TYPES = ["sample task"]
             c.PSO_PARTICLES = config["PSO_PARTICLES"]
             c.PSO_C1 = config["PSO_C1"]
             c.PSO_C2 = config["PSO_C2"]
@@ -150,7 +149,6 @@ def find_swarms_hyperparameters():
 
 if __name__ == "__main__":
     c = Config()
-    c.TASK_TYPES = ["sample task"]
     find_es_hyperparameters(c)
     find_mealpy_optimiser(c)
     find_sa_hyperparameters(c)

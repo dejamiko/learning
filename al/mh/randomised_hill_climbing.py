@@ -1,7 +1,8 @@
 from al.mh.metaheuristic import MetaHeuristic
-from al.utils import NeighbourGenerator, set_seed
+from al.utils import NeighbourGenerator
 from config import Config
 from playground.environment import Environment
+from utils import set_seed
 
 
 class RandomisedHillClimbing(MetaHeuristic):
