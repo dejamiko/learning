@@ -6,7 +6,7 @@ import numpy as np
 from al.mh import get_all_heuristics
 from al.solver import Solver, evaluate_all_heuristics
 from config import Config
-from utils import get_object_indices
+from utils import get_object_indices, get_bin_representation
 
 
 class VariableThresholdSolver(Solver):
@@ -29,7 +29,7 @@ class VariableThresholdSolver(Solver):
 
     def solve_one(self):
         selected = []
-        while len(selected) < self.config.KNOWN_OBJECT_NUM:
+        while len(selected) < self.config.DEMONSTRATION_BUDGET:
             self.heuristic = self.heuristic_class(
                 self.config,
                 self.env,
@@ -42,7 +42,9 @@ class VariableThresholdSolver(Solver):
             selected.append(obj_to_try)
             # update the lower and upper bounds based on the interactions of the selected object
             self._update_bounds(obj_to_try)
-        count = self.evaluate(selected)
+        count = self.env.evaluate_selection_transfer_based(
+            get_bin_representation(selected, self.config.OBJ_NUM)
+        )
         return count
 
     def _reset_bounds(self):

@@ -25,20 +25,13 @@ class Solver:
             start = time.time()
             selected = self.heuristic.solve()
             end = time.time()
-            count = self.evaluate(selected)
+            count = self.env.evaluate_selection_transfer_based(selected)
             # early stopping for when the score is lower than the number of known objects
-            if count < self.config.KNOWN_OBJECT_NUM:
+            if count < self.config.DEMONSTRATION_BUDGET:
                 return -1, -1
             counts.append(count)
             self._times_taken_on_strategy.append(end - start)
         return np.mean(counts), np.std(counts)
-
-    def evaluate(self, selected):
-        if self.config.USE_TRANSFER_EVALUATION:
-            count = self.env.evaluate_selection_transfer_based(selected)
-        else:
-            count = self.env.evaluate_selection_visual_similarity_based(selected)
-        return count
 
     def get_mean_time(self):
         return np.mean(self._times_taken_on_strategy)
@@ -72,11 +65,6 @@ if __name__ == "__main__":
     stopit_logger = logging.getLogger("stopit")
     stopit_logger.setLevel(logging.ERROR)
 
-    results = evaluate_all_heuristics(Solver, c, n=100)
-    for name, mean, std, total_time in results:
-        print(f"{name}: {mean} +/- {std}, time: {total_time}")
-
-    c.USE_TRANSFER_EVALUATION = True
-    results = evaluate_all_heuristics(Solver, c, n=100)
+    results = evaluate_all_heuristics(Solver, c, n=1)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean} +/- {std}, time: {total_time}")

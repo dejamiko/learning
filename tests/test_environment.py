@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import numpy as np
 from pytest import fixture
 
@@ -14,6 +16,7 @@ def test_environment_init_works():
 def env_fixture():
     config = Config()
     config.USE_REAL_OBJECTS = False
+    config.SIMILARITY_THRESHOLD = 0.85
     env = Environment(config)
     return env, config
 
@@ -35,16 +38,35 @@ def test_get_reachable_object_indices_works(env_fixture):
         0: {(0, np.float64(0.9999999999935263))},
         1: {(1, np.float64(0.9999999999802108))},
         3: {(3, np.float64(0.9999999999674792))},
+        5: {(1, np.float64(0.776313538644145))},
         6: {(1, np.float64(0.855309749838852))},
-        8: {(0, np.float64(0.930177692922736))},
+        8: {(0, np.float64(0.930177692922736)), (3, np.float64(0.7282439166900824))},
+        9: {(1, np.float64(0.7503605171583682))},
         10: {(0, np.float64(0.8775077733175265))},
+        12: {(1, np.float64(0.7649813794676803))},
+        14: {(1, np.float64(0.8527170277972236))},
         19: {(0, np.float64(0.9329451269068241))},
-        38: {(0, np.float64(0.8569988338843554))},
+        20: {(1, np.float64(0.7596890367351331))},
+        21: {(1, np.float64(0.8293254215424158))},
+        22: {(0, np.float64(0.7785829242873963))},
+        24: {(0, np.float64(0.751171782184369))},
+        26: {(3, np.float64(0.7714644619957162)), (0, np.float64(0.8165180548000925))},
+        29: {(0, np.float64(0.7781793350760904))},
+        32: {(1, np.float64(0.8331469325332468))},
+        33: {(0, np.float64(0.8344154280741761))},
+        36: {(0, np.float64(0.7540723173712294))},
+        38: {(3, np.float64(0.7237675144692239)), (0, np.float64(0.8569988338843554))},
+        41: {(0, np.float64(0.8245022400092635))},
         42: {(0, np.float64(0.8580727057109294)), (3, np.float64(0.8823795549140315))},
+        43: {(1, np.float64(0.7838084815049353))},
+        47: {(1, np.float64(0.8342623704464908))},
+        48: {(0, np.float64(0.7322019784439039))},
+        49: {(0, np.float64(0.7740250570647553))},
+        50: {(0, np.float64(0.7354198210170313))},
     }
 
     actual = env.get_reachable_object_indices(selected)
-    print(actual)
+    pprint(actual)
     assert len(expected) == len(actual)
     assert expected.keys() == actual.keys()
     for k in expected.keys():

@@ -12,10 +12,12 @@ class Config(metaclass=SingletonMeta):
     USE_REAL_OBJECTS = True
 
     SUCCESS_RATE_BOOLEAN = True
-    SIMILARITY_THRESHOLD = 0.85
+    SIMILARITY_THRESHOLD = 0.90
     PROB_THRESHOLD = 0.70
 
     VISUALISATION_METHOD = "pca"
+
+    DEMONSTRATION_BUDGET = 5
 
     # Variable threshold solver
     THRESH_ESTIMATION_STRATEGY = "density"
@@ -24,7 +26,6 @@ class Config(metaclass=SingletonMeta):
 
     # Random object
     OBJ_NUM = 100
-    KNOWN_OBJECT_NUM = 10
     LATENT_DIM = 10
     VISIBLE_REPRESENTATION_NOISE = 0.1
 
@@ -50,7 +51,7 @@ class Config(metaclass=SingletonMeta):
 
     MP_OPTIMISER_NAME = "OriginalWarSO"
 
-    MH_BUDGET = 10000
+    MH_BUDGET = 45000
     MH_TIME_BUDGET = 0.8  # in seconds
 
     def __init__(self):

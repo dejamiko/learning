@@ -33,7 +33,7 @@ class TabuSearch(MetaHeuristic):
         self.best_selection = None
 
     def strategy(self):
-        selected = self.get_random_initial_selection()
+        selected = self.get_random_selection()
         g_best = self.evaluate_selection(selected)
         self.best_selection = selected
         g_s = g_best

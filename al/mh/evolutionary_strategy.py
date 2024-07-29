@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import numpy as np
 
 from al.mh.metaheuristic import MetaHeuristic
@@ -31,7 +33,7 @@ class EvolutionaryStrategy(MetaHeuristic):
     def _get_initial_population(self):
         population = []
         for _ in range(self.c.ES_POP_SIZE):
-            s = self.get_random_initial_selection()
+            s = self.get_random_selection()
             population.append((s, self.evaluate_selection(s)))
         return population
 
@@ -99,7 +101,7 @@ class EvolutionaryStrategy(MetaHeuristic):
         best_score = 0
         for selection, score in population:
             assert (
-                np.sum(selection) == self.c.KNOWN_OBJECT_NUM
+                np.sum(selection) == self.c.DEMONSTRATION_BUDGET
             ), f"Selection does not have the correct number of objects: {selection}, {np.sum(selection)}"
             if score > best_score:
                 best_score = score

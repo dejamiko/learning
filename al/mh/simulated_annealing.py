@@ -24,7 +24,7 @@ class SimulatedAnnealing(MetaHeuristic):
         return new_selected
 
     def strategy(self):
-        selection = self.get_random_initial_selection()
+        selection = self.get_random_selection()
         score = self.evaluate_selection(selection)
         self.best_selection = selection.copy()
         best_score = score

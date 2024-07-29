@@ -16,7 +16,7 @@ class MetaHeuristic(ABC):
 
     def evaluate_selection_with_constraint_penalty(self, selected):
         constraint_penalty = 0
-        if np.sum(selected) > self.c.KNOWN_OBJECT_NUM:
+        if np.sum(selected) > self.c.DEMONSTRATION_BUDGET:
             constraint_penalty = -np.sum(selected) * 100
         return self.evaluate_selection(selected) + constraint_penalty
 
@@ -29,7 +29,7 @@ class MetaHeuristic(ABC):
                 selected, self.threshold
             )
 
-    def get_random_initial_selection(self):
+    def get_random_selection(self):
         object_indices_not_locked = np.array(
             list(set(np.arange(self.c.OBJ_NUM)) - set(self.locked_subsolution))
         )
@@ -38,7 +38,7 @@ class MetaHeuristic(ABC):
         selected[
             np.random.choice(
                 object_indices_not_locked,
-                self.c.KNOWN_OBJECT_NUM - len(self.locked_subsolution),
+                self.c.DEMONSTRATION_BUDGET - len(self.locked_subsolution),
                 replace=False,
             )
         ] = 1

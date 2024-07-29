@@ -1,6 +1,8 @@
 from al.mh.evolutionary_strategy import EvolutionaryStrategy
 from al.mh.exhaustive_search import ExhaustiveSearch
+from al.mh.greedy_local import GreedyLocalSearch
 from al.mh.mealpy_lib import MealpyHeuristic
+from al.mh.random_search import RandomSearchIter, RandomSearch
 from al.mh.randomised_hill_climbing import RandomisedHillClimbing
 from al.mh.simulated_annealing import SimulatedAnnealing
 from al.mh.swarm_lib import SwarmHeuristic
@@ -16,4 +18,7 @@ def get_all_heuristics():
         SwarmHeuristic,
         MealpyHeuristic,
         ExhaustiveSearch,
+        RandomSearchIter,
+        RandomSearch,
+        GreedyLocalSearch,
     ]

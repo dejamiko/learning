@@ -40,8 +40,8 @@ class SwarmHeuristic(MetaHeuristic):
             iters=int(self.c.MH_BUDGET / self.c.PSO_PARTICLES),
             verbose=False,
         )
-        if np.sum(pos) != self.c.KNOWN_OBJECT_NUM:
-            self.best_selection = self.get_random_initial_selection()
+        if np.sum(pos) != self.c.DEMONSTRATION_BUDGET:
+            self.best_selection = self.get_random_selection()
         else:
             self.best_selection = pos
         return self.best_selection
@@ -52,8 +52,8 @@ class SwarmHeuristic(MetaHeuristic):
         final_best_pos = self.optimiser.swarm.pbest_pos[
             self.optimiser.swarm.pbest_cost.argmin()
         ].copy()
-        if np.sum(final_best_pos) != self.c.KNOWN_OBJECT_NUM:
-            return self.get_random_initial_selection()
+        if np.sum(final_best_pos) != self.c.DEMONSTRATION_BUDGET:
+            return self.get_random_selection()
         return final_best_pos
 
 

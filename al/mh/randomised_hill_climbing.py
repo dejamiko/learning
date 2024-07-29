@@ -13,7 +13,7 @@ class RandomisedHillClimbing(MetaHeuristic):
     def strategy(self):
         best_score = 0
         while self.count < self.c.MH_BUDGET:
-            selected = self.get_random_initial_selection()
+            selected = self.get_random_selection()
             curr_score = self.evaluate_selection(selected)
             while self.count < self.c.MH_BUDGET:
                 next_selection = None

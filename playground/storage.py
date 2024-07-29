@@ -59,7 +59,7 @@ class ObjectStorage(metaclass=SingletonMeta):
         :return: The real success probability value between 0.0 and 1.0
         """
         if self.c.SUCCESS_RATE_BOOLEAN:
-            if self._latent_similarities[i, j] > sim_threshold:
+            if self._latent_similarities[i, j] >= sim_threshold:
                 return 1.0
             return 0.0
 

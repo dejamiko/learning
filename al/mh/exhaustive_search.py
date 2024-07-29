@@ -13,12 +13,10 @@ class ExhaustiveSearch(MetaHeuristic):
         self.best_selection = None
 
     def strategy(self):
-        # if comb(self.c.OBJ_NUM, self.c.KNOWN_OBJECT_NUM) > self.c.MH_BUDGET:
-        #     raise ValueError(f"Too many combinations to evaluate, "
-        #                      f"{comb(self.c.OBJ_NUM, self.c.KNOWN_OBJECT_NUM)} > {self.c.MH_BUDGET}")
-
         best_score = 0
-        for selected in combinations(range(self.c.OBJ_NUM), self.c.KNOWN_OBJECT_NUM):
+        for selected in combinations(
+            range(self.c.OBJ_NUM), self.c.DEMONSTRATION_BUDGET
+        ):
             selected = get_bin_representation(list(selected), self.c.OBJ_NUM)
             score = self.evaluate_selection(selected)
             if score > best_score:
@@ -33,7 +31,7 @@ class ExhaustiveSearch(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    config.KNOWN_OBJECT_NUM = 10
+    config.DEMONSTRATION_BUDGET = 10
     config.OBJ_NUM = 20
     config.MH_BUDGET = 2000000
     set_seed(config.SEED)

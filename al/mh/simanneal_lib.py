@@ -45,7 +45,7 @@ if __name__ == "__main__":
         set_seed(c.SEED)
         env = Environment(c)
         heuristic = SimulatedAnnealing(c, env, [])
-        sel = heuristic.get_random_initial_selection()
+        sel = heuristic.get_random_selection()
         sa = SA(sel, heuristic, s)
         auto_schedule = sa.auto(minutes=1 / 120)
         for key in auto_schedule.keys():

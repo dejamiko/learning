@@ -42,8 +42,8 @@ class MealpyHeuristic(MetaHeuristic):
         final = self.optimizer.problem.decode_solution(self.optimizer.g_best.solution)[
             "object_selection"
         ]
-        if np.sum(final) != self.c.KNOWN_OBJECT_NUM:
-            self.best_selection = self.get_random_initial_selection()
+        if np.sum(final) != self.c.DEMONSTRATION_BUDGET:
+            self.best_selection = self.get_random_selection()
         else:
             self.best_selection = final
         return self.best_selection
@@ -54,8 +54,8 @@ class MealpyHeuristic(MetaHeuristic):
         final = self.optimizer.problem.decode_solution(self.optimizer.g_best.solution)[
             "object_selection"
         ]
-        if np.sum(final) != self.c.KNOWN_OBJECT_NUM:
-            self.best_selection = self.get_random_initial_selection()
+        if np.sum(final) != self.c.DEMONSTRATION_BUDGET:
+            self.best_selection = self.get_random_selection()
         else:
             self.best_selection = final
         return self.best_selection

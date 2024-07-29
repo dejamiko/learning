@@ -144,6 +144,4 @@ class Environment:
         :param j: The second object index
         :return: The real transfer probability for two objects.
         """
-        return self.storage.get_true_success_probability(
-            i, j, self.c.SIMILARITY_THRESHOLD
-        )
+        return self.storage.get_true_success_probability(i, j, self.c.PROB_THRESHOLD)
