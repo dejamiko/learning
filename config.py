@@ -1,4 +1,9 @@
-from utils import SingletonMeta
+from utils import (
+    SingletonMeta,
+    VisualisationMethod,
+    ThresholdEstimationStrategy,
+    SimilarityMeasure,
+)
 
 
 class Config(metaclass=SingletonMeta):
@@ -12,15 +17,17 @@ class Config(metaclass=SingletonMeta):
     USE_REAL_OBJECTS = True
 
     SUCCESS_RATE_BOOLEAN = True
-    SIMILARITY_THRESHOLD = 0.90
-    PROB_THRESHOLD = 0.70
+    SIMILARITY_THRESHOLD = 0.55
+    PROB_THRESHOLD = 0.70  # this should be treated as a constant
 
-    VISUALISATION_METHOD = "pca"
+    VISUALISATION_METHOD = VisualisationMethod.PCA.value
 
     DEMONSTRATION_BUDGET = 5
 
+    SIMILARITY_MEASURE = SimilarityMeasure.DINO_LAYER_9_COSINE.value
+
     # Variable threshold solver
-    THRESH_ESTIMATION_STRATEGY = "density"
+    THRESH_ESTIMATION_STRATEGY = ThresholdEstimationStrategy.DENSITY.value
     USE_REAL_THRESHOLD = False
     USE_TRANSFER_EVALUATION = False
 

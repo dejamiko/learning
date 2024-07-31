@@ -1,8 +1,8 @@
 import numpy as np
 from pyswarms.discrete import BinaryPSO
 
-from al.mh.metaheuristic import MetaHeuristic
 from config import Config
+from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
 from utils import set_seed
 

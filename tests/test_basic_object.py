@@ -3,7 +3,7 @@ from pytest import fixture, raises
 
 from config import Config
 from playground.basic_object import BasicObject
-from playground.task_types import Task
+from utils import Task
 
 
 def test_object_init_works():

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from playground.task_types import Task
+from utils import Task
 
 
 class Object(ABC):

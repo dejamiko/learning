@@ -3,10 +3,14 @@ import time
 
 import numpy as np
 
-from al.mh import get_all_heuristics
-from al.solver import Solver, evaluate_all_heuristics
 from config import Config
-from utils import get_object_indices, get_bin_representation
+from optim.mh import get_all_heuristics
+from optim.solver import Solver, evaluate_all_heuristics
+from utils import (
+    get_object_indices,
+    get_bin_representation,
+    ThresholdEstimationStrategy as TES,
+)
 
 
 class VariableThresholdSolver(Solver):
@@ -58,14 +62,14 @@ class VariableThresholdSolver(Solver):
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
         # go through the objects and select the one that maximizes the expected information gain
-        if self.config.THRESH_ESTIMATION_STRATEGY == "density":
+        if self.config.THRESH_ESTIMATION_STRATEGY == TES.DENSITY.value:
             return self._density_selection(selected)
-        elif self.config.THRESH_ESTIMATION_STRATEGY == "random":
+        elif self.config.THRESH_ESTIMATION_STRATEGY == TES.RANDOM.value:
             to_choose = set(selected) - set(self.heuristic.locked_subsolution)
             return np.random.choice(list(to_choose))
-        elif self.config.THRESH_ESTIMATION_STRATEGY == "intervals":
+        elif self.config.THRESH_ESTIMATION_STRATEGY == TES.INTERVALS.value:
             return self._interval_selection(selected)
-        elif self.config.THRESH_ESTIMATION_STRATEGY == "greedy":
+        elif self.config.THRESH_ESTIMATION_STRATEGY == TES.GREEDY.value:
             return self._greedy_selection(selected)
         else:
             raise ValueError(

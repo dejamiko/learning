@@ -6,7 +6,7 @@ from pytest import fixture
 
 from config import Config
 from playground.sim_object import SimObject
-from playground.task_types import Task
+from utils import Task
 
 
 def test_object_init_works():

@@ -2,12 +2,12 @@ import mealpy
 import numpy as np
 import wandb
 
-from al.mh import EvolutionaryStrategy, TabuSearch
-from al.mh.mealpy_lib import MealpyHeuristic
-from al.mh.simulated_annealing import SimulatedAnnealing
-from al.mh.swarm_lib import SwarmHeuristic
-from al.solver import evaluate_heuristic, Solver
 from config import Config
+from optim.mh import EvolutionaryStrategy, TabuSearch
+from optim.mh.mealpy_lib import MealpyHeuristic
+from optim.mh.simulated_annealing import SimulatedAnnealing
+from optim.mh.swarm_lib import SwarmHeuristic
+from optim.solver import evaluate_heuristic, Solver
 
 
 def find_es_hyperparameters(config):

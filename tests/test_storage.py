@@ -3,7 +3,7 @@ from pytest import fixture
 
 from config import Config
 from playground.storage import ObjectStorage
-from playground.task_types import Task
+from utils import Task
 
 
 def test_init_storage_works():

@@ -3,8 +3,8 @@ import time
 
 import numpy as np
 
-from al.mh import get_all_heuristics
 from config import Config
+from optim.mh import get_all_heuristics
 from playground.environment import Environment
 from utils import set_seed
 

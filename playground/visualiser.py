@@ -5,10 +5,10 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from umap import UMAP
 
-from al.mh import EvolutionaryStrategy
 from config import Config
+from optim.mh import EvolutionaryStrategy
 from playground.environment import Environment
-from utils import get_object_indices
+from utils import get_object_indices, VisualisationMethod as VM
 
 
 class Visualiser:
@@ -106,13 +106,13 @@ class Visualiser:
     def _prepare_data(self, all_objects):
         all_objects = [o.latent_repr for o in all_objects]
         all_objects = np.array(all_objects)
-        if self.config.VISUALISATION_METHOD == "pca":
+        if self.config.VISUALISATION_METHOD == VM.PCA.value:
             pca = PCA(n_components=2)
             pca.fit(all_objects)
             all_objects_lower_dim = pca.transform(all_objects)
-        elif self.config.VISUALISATION_METHOD == "tsne":
+        elif self.config.VISUALISATION_METHOD == VM.TSNE.value:
             all_objects_lower_dim = TSNE(n_components=2).fit_transform(all_objects)
-        elif self.config.VISUALISATION_METHOD == "umap":
+        elif self.config.VISUALISATION_METHOD == VM.UMAP.value:
             umap = UMAP(n_components=2)
             umap.fit(all_objects)
             all_objects_lower_dim = umap.transform(all_objects)

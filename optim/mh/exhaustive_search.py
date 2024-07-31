@@ -1,8 +1,8 @@
 import time
 from itertools import combinations
 
-from al.mh.metaheuristic import MetaHeuristic
 from config import Config
+from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
 from utils import get_bin_representation, set_seed
 

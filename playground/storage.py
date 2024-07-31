@@ -6,8 +6,7 @@ from sklearn.cluster import KMeans
 
 from playground.basic_object import BasicObject
 from playground.sim_object import SimObject
-from playground.task_types import Task
-from utils import SingletonMeta, set_seed
+from utils import SingletonMeta, set_seed, Task
 
 
 class ObjectStorage(metaclass=SingletonMeta):
@@ -79,7 +78,6 @@ class ObjectStorage(metaclass=SingletonMeta):
                 return 1.0
             return 0.0
 
-        # TODO how to best map visual sim to prob of success? Beta distribution? Something that matches the data?
         return self._visual_similarities_by_task[self._objects[i].task][i, j]
 
     def get_objects(self):

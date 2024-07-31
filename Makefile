@@ -7,8 +7,12 @@ test_cov:
 
 
 solver:
-	@python3 -m al.solver
+	@python3 -m optim.solver
 
 
 vt_solver:
-	@python3 -m al.variable_threshold_solver
+	@python3 -m optim.variable_threshold_solver
+
+
+sim:
+	@python3 -m optim.sim_measure_eval

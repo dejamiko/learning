@@ -1,6 +1,6 @@
-from al.mh.metaheuristic import MetaHeuristic
-from al.utils import NeighbourGenerator
 from config import Config
+from optim.mh.metaheuristic import MetaHeuristic
+from optim.utils import NeighbourGenerator
 from playground.environment import Environment
 from utils import set_seed
 
