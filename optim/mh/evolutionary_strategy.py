@@ -84,7 +84,10 @@ class EvolutionaryStrategy(MetaHeuristic):
 
     def _select_roulette(self, population, num_elites):
         scores = np.array([score for _, score in population])
-        probabilities = scores / np.sum(scores)
+        if sum(scores) != 0:
+            probabilities = scores / np.sum(scores)
+        else:
+            probabilities = np.ones_like(scores) / len(scores)
         indices = np.arange(len(population))
         indices = self._rng.choice(
             indices,

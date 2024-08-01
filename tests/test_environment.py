@@ -30,6 +30,15 @@ def test_get_objects_works(env_fixture):
 def test_get_visual_similarity_works(env_fixture):
     env, config = env_fixture
     assert env.get_visual_similarity(0, 1) == env.storage.get_visual_similarity(0, 1)
+    assert env.get_visual_similarity(0, 1) == 0.0
+    assert env.get_visual_similarity(0, 2) == 0.6297178434321439
+    assert env.get_visual_similarity(0, 4) == 0.7615928478640059
+    assert env.get_visual_similarity(0, 1, (2, 0)) == 0.0
+    assert env.get_visual_similarity(0, 2, (2, 0)) == 1.0
+    assert env.get_visual_similarity(0, 4, (2, 0)) == 1.0
+    assert env.get_visual_similarity(0, 1, (1, -0.1)) == 0.0
+    assert np.allclose(env.get_visual_similarity(0, 2, (1, -0.1)), 0.5297178434321439)
+    assert np.allclose(env.get_visual_similarity(0, 4, (1, -0.1)), 0.6615928478640059)
 
 
 def test_get_reachable_object_indices_works(env_fixture):
@@ -135,6 +144,19 @@ def test_evaluate_selection_similarity_based_works(env_fixture):
     assert env.evaluate_selection_visual_similarity_based(selected) == 12
 
 
+def test_evaluate_selection_similarity_based_real_value_works(env_fixture):
+    env, config = env_fixture
+    config.SUCCESS_RATE_BOOLEAN = False
+    selected = np.zeros(config.OBJ_NUM)
+    selected[0] = 1
+    selected[1] = 1
+    selected[3] = 1
+
+    assert np.allclose(
+        env.evaluate_selection_visual_similarity_based(selected), 33.63231293713767
+    )
+
+
 def test_evaluate_selection_similarity_based_other_threshold_works(env_fixture):
     env, config = env_fixture
     selected = np.zeros(config.OBJ_NUM)
@@ -152,3 +174,22 @@ def test_update_visual_sim_threshold(env_fixture):
     assert env.visual_sim_threshold == 0.85
     env.update_visual_sim_threshold(0.123)
     assert env.visual_sim_threshold == 0.123
+
+
+def test_update_visual_similarities(env_fixture):
+    env, config = env_fixture
+    assert env.similarity_matrix[0, 1] == 0.0
+    assert env.similarity_matrix[0, 2] == 0.6297178434321439
+    assert env.similarity_matrix[0, 4] == 0.7615928478640059
+
+    env.update_visual_similarities((2, 0))
+
+    assert env.similarity_matrix[0, 1] == 0.0
+    assert env.similarity_matrix[0, 2] == 1.0
+    assert env.similarity_matrix[0, 4] == 1.0
+
+    env.update_visual_similarities((1, -0.1))
+
+    assert env.similarity_matrix[0, 1] == 0.0
+    assert np.allclose(env.similarity_matrix[0, 2], 0.5297178434321439)
+    assert np.allclose(env.similarity_matrix[0, 4], 0.6615928478640059)

@@ -39,7 +39,7 @@ class ObjectStorage:
         :param j: the second object
         :return: The visual similarity value between 0.0 and 1.0
         """
-        return self._visual_similarities_by_task[self._objects[i].task][i, j]
+        return self._visual_similarities[i, j]
 
     def get_true_success_probability(self, i, j, sim_threshold):
         """
@@ -56,26 +56,6 @@ class ObjectStorage:
             return 0.0
 
         return self._latent_similarities[i, j]
-
-    def get_estimated_success_probability(self, i, j, sim_threshold):
-        """
-        Get an estimated probability of success of transfer for two objects by their indices. Depending on the config,
-        return a boolean value for success or a float probability.
-        :param i: the first object
-        :param j: the second object
-        :param sim_threshold: The similarity threshold used to determine success
-        :return: The estimated success probability value between 0.0 and 1.0
-        """
-        if self.c.SUCCESS_RATE_BOOLEAN:
-            if self.get_visual_similarity(i, j) > sim_threshold:
-                return 1.0
-            return 0.0
-
-        assert self._visual_similarities_by_task[self._objects[i].task][
-            i, j
-        ] == self.get_visual_similarity(i, j)
-
-        return self.get_visual_similarity(i, j)
 
     def get_objects(self):
         """
@@ -175,18 +155,12 @@ class ObjectStorage:
         # apply min-max normalization to the visual similarities
         min_ = visual_similarities.min()
         max_ = visual_similarities.max()
-        visual_similarities = (visual_similarities - min_) / (max_ - min_)
-
-        self._visual_similarities_by_task = {
-            t: np.zeros((len(self._objects), len(self._objects))) for t in Task
-        }
+        self._visual_similarities = (visual_similarities - min_) / (max_ - min_)
 
         for i in range(len(self._objects)):
             for j in range(len(self._objects)):
-                if self._objects[i].task == self._objects[j].task:
-                    self._visual_similarities_by_task[self._objects[i].task][i, j] = (
-                        visual_similarities[i, j]
-                    )
+                if self._objects[i].task != self._objects[j].task:
+                    self._visual_similarities[i, j] = 0.0
 
     def _set_fields(self, c):
         """
@@ -196,5 +170,5 @@ class ObjectStorage:
         self.c = c
         self._rng = get_rng(c.SEED)
         self._objects = None
-        self._visual_similarities_by_task = None
+        self._visual_similarities = None
         self._latent_similarities = None

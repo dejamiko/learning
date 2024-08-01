@@ -14,5 +14,9 @@ t_solver:
 	@python3 -m optim.threshold_approx_solver
 
 
+a_solver:
+	@python3 -m optim.affine_approx_solver
+
+
 sim:
 	@python3 -m optim.similarity_measure_eval

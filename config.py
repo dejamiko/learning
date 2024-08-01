@@ -1,6 +1,6 @@
 from utils import (
     VisualisationMethod,
-    ThresholdEstimationStrategy,
+    ObjectSelectionStrategy,
     SimilarityMeasure,
 )
 
@@ -25,10 +25,13 @@ class Config:
 
     SIMILARITY_MEASURE = SimilarityMeasure.DINO_LAYER_9_COSINE
 
-    # Variable threshold solver
-    THRESH_ESTIMATION_STRATEGY = ThresholdEstimationStrategy.DENSITY
+    # Threshold approximation solver
+    OBJECT_SELECTION_STRATEGY = ObjectSelectionStrategy.DENSITY
     USE_REAL_THRESHOLD = False
     USE_TRANSFER_EVALUATION = False
+
+    # Affine approximation solver
+    MERGING_FACTOR = 0.5
 
     # Random object
     OBJ_NUM = 40

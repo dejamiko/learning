@@ -1,5 +1,4 @@
 from enum import Enum, auto
-from threading import Lock
 
 import numpy as np
 
@@ -36,7 +35,7 @@ class VisualisationMethod(AutoName):
     UMAP = auto()
 
 
-class ThresholdEstimationStrategy(AutoName):
+class ObjectSelectionStrategy(AutoName):
     DENSITY = auto()
     RANDOM = auto()
     INTERVALS = auto()

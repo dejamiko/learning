@@ -7,7 +7,7 @@ from optim.approx_solver import ApproximationSolver
 from optim.mh import get_all_heuristics
 from optim.solver import evaluate_all_heuristics
 from utils import (
-    ThresholdEstimationStrategy as EstStg,
+    ObjectSelectionStrategy as EstStg,
     get_object_indices,
 )
 
@@ -23,22 +23,22 @@ class ThresholdApproximationSolver(ApproximationSolver):
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
         # go through the objects and select the one that maximizes the expected information gain
-        if self.config.THRESH_ESTIMATION_STRATEGY == EstStg.DENSITY:
+        if self.config.OBJECT_SELECTION_STRATEGY == EstStg.DENSITY:
             return self._density_selection(selected)
-        elif self.config.THRESH_ESTIMATION_STRATEGY == EstStg.RANDOM:
+        elif self.config.OBJECT_SELECTION_STRATEGY == EstStg.RANDOM:
             to_choose = set(selected) - set(self.heuristic.locked_subsolution)
             return self._rng.choice(list(to_choose))
-        elif self.config.THRESH_ESTIMATION_STRATEGY == EstStg.INTERVALS:
+        elif self.config.OBJECT_SELECTION_STRATEGY == EstStg.INTERVALS:
             return self._interval_selection(selected)
-        elif self.config.THRESH_ESTIMATION_STRATEGY == EstStg.GREEDY:
+        elif self.config.OBJECT_SELECTION_STRATEGY == EstStg.GREEDY:
             return self._greedy_selection(selected)
         else:
             raise ValueError(
-                f"Unknown threshold estimation strategy: {self.config.THRESH_ESTIMATION_STRATEGY}"
+                f"Unknown threshold estimation strategy: {self.config.OBJECT_SELECTION_STRATEGY}"
             )
 
-    def _update_state(self, obj_to_try):
-        self._update_bounds(obj_to_try)
+    def _update_state(self, obj_selected):
+        self._update_bounds(obj_selected)
         self.env.update_visual_sim_threshold(
             (self.threshold_lower_bound + self.threshold_upper_bound) / 2
         )
@@ -160,7 +160,7 @@ if __name__ == "__main__":
         config = Config()
         # config.MH_TIME_BUDGET = 0.1
         config.MH_BUDGET = 5000
-        config.THRESH_ESTIMATION_STRATEGY = method
+        config.OBJECT_SELECTION_STRATEGY = method
         config.VERBOSITY = 0
         config.USE_REAL_THRESHOLD = False
         single_results = evaluate_all_heuristics(
