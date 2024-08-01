@@ -2,12 +2,11 @@ from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from optim.utils import NeighbourGenerator
 from playground.environment import Environment
-from utils import set_seed
 
 
 class RandomisedHillClimbing(MetaHeuristic):
-    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
-        super().__init__(c, similarity_dict, locked_subsolution, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution):
+        super().__init__(c, similarity_dict, locked_subsolution)
         self.best_selection = None
 
     def strategy(self):
@@ -18,7 +17,9 @@ class RandomisedHillClimbing(MetaHeuristic):
             while self.count < self.c.MH_BUDGET:
                 next_selection = None
                 next_score = 0
-                for neighbour in NeighbourGenerator(selected, self.locked_subsolution):
+                for neighbour in NeighbourGenerator(
+                    selected, self.locked_subsolution, self._rng
+                ):
                     if self.count >= self.c.MH_BUDGET:
                         break
                     score = self.evaluate_selection(neighbour)
@@ -40,7 +41,6 @@ class RandomisedHillClimbing(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    set_seed(config.SEED)
     env = Environment(config)
     rhc = RandomisedHillClimbing(config, env, [])
 

@@ -4,14 +4,14 @@ from pyswarms.discrete import BinaryPSO
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import set_seed
 
 
 class SwarmHeuristic(MetaHeuristic):
-    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
-        super().__init__(c, similarity_dict, locked_subsolution, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution):
+        super().__init__(c, similarity_dict, locked_subsolution)
         self.best_selection = None
         self.optimiser = None
+        np.random.seed(c.SEED)
 
     def get_cost_for_selection(self, selection):
         selection[self.locked_subsolution] = 1
@@ -59,7 +59,6 @@ class SwarmHeuristic(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    set_seed(config.SEED)
     env = Environment(config)
     swarm = SwarmHeuristic(config, env, [])
 

@@ -4,7 +4,6 @@ from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from optim.utils import NeighbourGenerator
 from playground.environment import Environment
-from utils import set_seed
 
 
 class TabuList:
@@ -27,8 +26,8 @@ class TabuList:
 
 
 class TabuSearch(MetaHeuristic):
-    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
-        super().__init__(c, similarity_dict, locked_subsolution, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution):
+        super().__init__(c, similarity_dict, locked_subsolution)
         self.tabu_list = TabuList(self.c)
         self.best_selection = None
 
@@ -39,7 +38,9 @@ class TabuSearch(MetaHeuristic):
         g_s = g_best
 
         while self.count < self.c.MH_BUDGET:
-            neighbour_gen = NeighbourGenerator(selected, self.locked_subsolution)
+            neighbour_gen = NeighbourGenerator(
+                selected, self.locked_subsolution, self._rng
+            )
             current = None
             g_n = 0
             for neighbour in neighbour_gen:
@@ -65,7 +66,6 @@ class TabuSearch(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    set_seed(config.SEED)
     env = Environment(config)
     ts = TabuSearch(config, env, [])
 

@@ -6,13 +6,13 @@ test_cov:
 	@PYTHONPATH=. pytest --cov --cov-report term-missing tests/
 
 
-solver:
-	@python3 -m optim.solver
+basic_solver:
+	@python3 -m optim.basic_solver
 
 
-vt_solver:
-	@python3 -m optim.variable_threshold_solver
+t_solver:
+	@python3 -m optim.threshold_approx_solver
 
 
 sim:
-	@python3 -m optim.sim_measure_eval
+	@python3 -m optim.similarity_measure_eval

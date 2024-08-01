@@ -21,11 +21,7 @@ class Object(ABC):
         self.index = index
         self.c = c
 
-        assert task in [
-            t.value for t in Task
-        ], f"The task provided {task} is not a valid Task {Task}"
-
-        self.task = task
+        self.task = Task(task)
 
     @abstractmethod
     def get_visual_similarity(self, other):

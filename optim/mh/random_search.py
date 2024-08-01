@@ -3,19 +3,19 @@ from pprint import pprint
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import set_seed, get_object_indices
+from utils import get_object_indices
 
 
 class RandomSearchIter(MetaHeuristic):
-    def __init__(self, c, environment, locked_subsolution, threshold=None):
-        super().__init__(c, environment, locked_subsolution, threshold)
+    def __init__(self, c, environment, locked_subsolution):
+        super().__init__(c, environment, locked_subsolution)
         self.best_selection = None
 
     def strategy(self):
         self.best_selection = self.get_random_selection()
         best_score = self.evaluate_selection(self.best_selection)
 
-        while True:
+        while self.count < self.c.MH_BUDGET:
             selected = self.get_random_selection()
             current_score = self.evaluate_selection(selected)
             if current_score > best_score:
@@ -27,8 +27,8 @@ class RandomSearchIter(MetaHeuristic):
 
 
 class RandomSearch(MetaHeuristic):
-    def __init__(self, c, environment, locked_subsolution, threshold=None):
-        super().__init__(c, environment, locked_subsolution, threshold)
+    def __init__(self, c, environment, locked_subsolution):
+        super().__init__(c, environment, locked_subsolution)
         self.best_selection = None
 
     def strategy(self):
@@ -40,7 +40,6 @@ class RandomSearch(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    set_seed(config.SEED)
     env = Environment(config)
     rs = RandomSearchIter(config, env, [])
 

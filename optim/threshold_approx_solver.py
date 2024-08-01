@@ -1,55 +1,55 @@
 import logging
-import time
 
 import numpy as np
 
 from config import Config
+from optim.approx_solver import ApproximationSolver
 from optim.mh import get_all_heuristics
-from optim.solver import Solver, evaluate_all_heuristics
+from optim.solver import evaluate_all_heuristics
 from utils import (
+    ThresholdEstimationStrategy as EstStg,
     get_object_indices,
-    get_bin_representation,
-    ThresholdEstimationStrategy as TES,
 )
 
 
-class VariableThresholdSolver(Solver):
+class ThresholdApproximationSolver(ApproximationSolver):
     def __init__(self, config, heuristic_class):
         super().__init__(config, heuristic_class)
+        # it only makes sense to use the boolean version here
+        config.SUCCESS_RATE_BOOLEAN = True
         self.threshold_lower_bound = 0.0
         self.threshold_upper_bound = 1.0
 
-    def solve(self, n=5):
-        counts = []
-        for i in range(n):
-            self._init_data(i)
-            self._reset_bounds()
-            self.config.SIMILARITY_THRESHOLD = np.random.uniform(0.5, 0.9)
-            start = time.time()
-            count = self.solve_one()
-            counts.append(count)
-            self._times_taken_on_strategy.append(time.time() - start)
-        return np.mean(counts), np.std(counts)
-
-    def solve_one(self):
-        selected = []
-        while len(selected) < self.config.DEMONSTRATION_BUDGET:
-            self.heuristic = self.heuristic_class(
-                self.config,
-                self.env,
-                selected,
-                (self.threshold_lower_bound + self.threshold_upper_bound) / 2,
+    def _select_object_to_try(self, selected):
+        selected = get_object_indices(selected)
+        # go through the objects and select the one that maximizes the expected information gain
+        if self.config.THRESH_ESTIMATION_STRATEGY == EstStg.DENSITY:
+            return self._density_selection(selected)
+        elif self.config.THRESH_ESTIMATION_STRATEGY == EstStg.RANDOM:
+            to_choose = set(selected) - set(self.heuristic.locked_subsolution)
+            return self._rng.choice(list(to_choose))
+        elif self.config.THRESH_ESTIMATION_STRATEGY == EstStg.INTERVALS:
+            return self._interval_selection(selected)
+        elif self.config.THRESH_ESTIMATION_STRATEGY == EstStg.GREEDY:
+            return self._greedy_selection(selected)
+        else:
+            raise ValueError(
+                f"Unknown threshold estimation strategy: {self.config.THRESH_ESTIMATION_STRATEGY}"
             )
-            heuristic_selected = self.heuristic.solve()
-            obj_to_try = self._select_object_to_try(heuristic_selected)
-            assert heuristic_selected[obj_to_try] == 1
-            selected.append(obj_to_try)
-            # update the lower and upper bounds based on the interactions of the selected object
-            self._update_bounds(obj_to_try)
-        count = self.env.evaluate_selection_transfer_based(
-            get_bin_representation(selected, self.config.OBJ_NUM)
+
+    def _update_state(self, obj_to_try):
+        self._update_bounds(obj_to_try)
+        self.env.update_visual_sim_threshold(
+            (self.threshold_lower_bound + self.threshold_upper_bound) / 2
         )
-        return count
+
+    def _init_data(self, i):
+        super()._init_data(i)
+        self._reset_bounds()
+        self.config.SIMILARITY_THRESHOLD = self._rng.uniform(0.3, 0.9)
+        self.env.update_visual_sim_threshold(
+            (self.threshold_lower_bound + self.threshold_upper_bound) / 2
+        )
 
     def _reset_bounds(self):
         if self.config.USE_REAL_THRESHOLD:
@@ -59,27 +59,10 @@ class VariableThresholdSolver(Solver):
             self.threshold_lower_bound = 0.0
             self.threshold_upper_bound = 1.0
 
-    def _select_object_to_try(self, selected):
-        selected = get_object_indices(selected)
-        # go through the objects and select the one that maximizes the expected information gain
-        if self.config.THRESH_ESTIMATION_STRATEGY == TES.DENSITY.value:
-            return self._density_selection(selected)
-        elif self.config.THRESH_ESTIMATION_STRATEGY == TES.RANDOM.value:
-            to_choose = set(selected) - set(self.heuristic.locked_subsolution)
-            return np.random.choice(list(to_choose))
-        elif self.config.THRESH_ESTIMATION_STRATEGY == TES.INTERVALS.value:
-            return self._interval_selection(selected)
-        elif self.config.THRESH_ESTIMATION_STRATEGY == TES.GREEDY.value:
-            return self._greedy_selection(selected)
-        else:
-            raise ValueError(
-                f"Unknown threshold estimation strategy: {self.config.THRESH_ESTIMATION_STRATEGY}"
-            )
-
     def _density_selection(self, selected):
         # this can be estimated by selecting one that has the most objects that have a similarity between the bounds
         to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
-        best_object_index = np.random.choice(to_search)
+        best_object_index = self._rng.choice(to_search)
         best_score = 0
         for s in to_search:
             score = 0
@@ -97,7 +80,7 @@ class VariableThresholdSolver(Solver):
 
     def _interval_selection(self, selected):
         to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
-        best_object_index = np.random.choice(to_search)
+        best_object_index = self._rng.choice(to_search)
         best_score = np.inf
         for s in to_search:
             sim_objects_between_bounds = []
@@ -123,7 +106,7 @@ class VariableThresholdSolver(Solver):
     def _greedy_selection(self, selected):
         # find the selected object that has the most objects that are below the estimated threshold
         to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
-        best_object_index = np.random.choice(to_search)
+        best_object_index = self._rng.choice(to_search)
         best_score = -np.inf
         for s in to_search:
             score = 0
@@ -167,7 +150,7 @@ if __name__ == "__main__":
     results = {}
     results_threshold_known = {}
 
-    methods = ["density", "random", "intervals", "greedy"]
+    methods = [m for m in EstStg]
     heuristics = get_all_heuristics()
 
     stopit_logger = logging.getLogger("stopit")
@@ -175,15 +158,20 @@ if __name__ == "__main__":
 
     for method in methods:
         config = Config()
-        config.MH_TIME_BUDGET = 0.1
+        # config.MH_TIME_BUDGET = 0.1
+        config.MH_BUDGET = 5000
         config.THRESH_ESTIMATION_STRATEGY = method
         config.VERBOSITY = 0
         config.USE_REAL_THRESHOLD = False
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=1)
+        single_results = evaluate_all_heuristics(
+            ThresholdApproximationSolver, config, n=1
+        )
         for name, mean, std, time_taken in single_results:
             results[(name, method)] = (mean, std, time_taken)
         config.USE_REAL_THRESHOLD = True
-        single_results = evaluate_all_heuristics(VariableThresholdSolver, config, n=1)
+        single_results = evaluate_all_heuristics(
+            ThresholdApproximationSolver, config, n=1
+        )
         for name, mean, std, time_taken in single_results:
             results_threshold_known[(name, method)] = (mean, std, time_taken)
 
@@ -209,4 +197,4 @@ if __name__ == "__main__":
                 for heuristic in heuristics
             ]
         )
-        print(f"{method}: {avg}, {avg_known}")
+        print(f"{method.value}: {avg}, {avg_known}")

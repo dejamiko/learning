@@ -1,7 +1,7 @@
 import numpy as np
 
 from playground.storage import ObjectStorage
-from utils import get_object_indices, set_seed
+from utils import get_object_indices, get_rng
 
 
 class Environment:
@@ -16,8 +16,9 @@ class Environment:
         :param c: The configuration
         """
         self.c = c
-        set_seed(c.SEED)
         self.storage = ObjectStorage(c)
+        self.visual_sim_threshold = self.c.SIMILARITY_THRESHOLD
+        self._rng = get_rng(c.SEED)
         self._generate_objects()
 
     def get_objects(self):
@@ -63,7 +64,7 @@ class Environment:
         :param j: The second object index
         :return: True if the transfer was successful, False otherwise
         """
-        return np.random.random() < self._get_real_transfer_probability(i, j)
+        return self._rng.random() < self._get_real_transfer_probability(i, j)
 
     def evaluate_selection_transfer_based(self, selected_bin):
         """
@@ -76,24 +77,20 @@ class Environment:
         selected_obj = self.get_objects()[selected]
         for o in self.get_objects():
             for s in selected_obj:
-                if np.random.random() < self._get_real_transfer_probability(
+                if self._rng.random() < self._get_real_transfer_probability(
                     o.index, s.index
                 ):
                     count += 1
                     break
         return count
 
-    def evaluate_selection_visual_similarity_based(self, selected_bin, threshold=None):
+    def evaluate_selection_visual_similarity_based(self, selected_bin):
         """
         Evaluate the given selection based a more efficient sorted similarity representation.
         Note this evaluation is not "real" and is instead an estimate.
         :param selected_bin: The selection of objects given in the binary form
-        :param threshold: An optional threshold parameter to be used for determining the success. If not provided, the
-            config value is used instead
         :return: The number of learned objects.
         """
-        if threshold is None:
-            threshold = self.c.SIMILARITY_THRESHOLD
         objects = set()
         for i, s in enumerate(selected_bin):
             if s == 0:
@@ -104,9 +101,16 @@ class Environment:
             objs, sim = self.similarity_dict[i]
             # sim is a sorted list of similarities, use bin search to find the first object with similarity
             # below threshold
-            ind = np.searchsorted(sim, threshold)
+            ind = np.searchsorted(sim, self.visual_sim_threshold)
             objects.update(objs[ind:])
         return len(objects)
+
+    def update_visual_sim_threshold(self, threshold):
+        """
+        Update the visual similarity threshold with a value provided
+        :param threshold: The threshold to be used
+        """
+        self.visual_sim_threshold = threshold
 
     def _generate_objects(self):
         """

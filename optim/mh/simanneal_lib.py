@@ -9,7 +9,7 @@ from simanneal import Annealer
 from config import Config
 from optim.mh.simulated_annealing import SimulatedAnnealing
 from playground.environment import Environment
-from utils import set_seed
+from utils import get_rng
 
 
 class SA(Annealer):
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     for s in range(1):
         c = Config()
         c.SEED = s
-        set_seed(c.SEED)
+        get_rng(c.SEED)
         env = Environment(c)
         heuristic = SimulatedAnnealing(c, env, [])
         sel = heuristic.get_random_selection()

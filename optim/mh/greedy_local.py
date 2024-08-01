@@ -3,12 +3,11 @@ import numpy as np
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import set_seed
 
 
 class GreedyLocalSearch(MetaHeuristic):
-    def __init__(self, c, environment, locked_subsolution, threshold=None):
-        super().__init__(c, environment, locked_subsolution, threshold)
+    def __init__(self, c, environment, locked_subsolution):
+        super().__init__(c, environment, locked_subsolution)
         self.best_selection = None
 
     def strategy(self):
@@ -36,7 +35,6 @@ class GreedyLocalSearch(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    set_seed(config.SEED)
     env = Environment(config)
     gls = GreedyLocalSearch(config, env, [])
 

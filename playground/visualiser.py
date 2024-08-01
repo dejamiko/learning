@@ -106,13 +106,13 @@ class Visualiser:
     def _prepare_data(self, all_objects):
         all_objects = [o.latent_repr for o in all_objects]
         all_objects = np.array(all_objects)
-        if self.config.VISUALISATION_METHOD == VM.PCA.value:
+        if self.config.VISUALISATION_METHOD == VM.PCA:
             pca = PCA(n_components=2)
             pca.fit(all_objects)
             all_objects_lower_dim = pca.transform(all_objects)
-        elif self.config.VISUALISATION_METHOD == VM.TSNE.value:
+        elif self.config.VISUALISATION_METHOD == VM.TSNE:
             all_objects_lower_dim = TSNE(n_components=2).fit_transform(all_objects)
-        elif self.config.VISUALISATION_METHOD == VM.UMAP.value:
+        elif self.config.VISUALISATION_METHOD == VM.UMAP:
             umap = UMAP(n_components=2)
             umap.fit(all_objects)
             all_objects_lower_dim = umap.transform(all_objects)
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         selected_indices
     )
 
-    methods = ["pca", "tsne", "umap"]
+    methods = [v for v in VM]
     for m in methods:
         config.VISUALISATION_METHOD = m
         visualiser = Visualiser(config)

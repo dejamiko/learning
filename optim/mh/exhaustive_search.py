@@ -4,12 +4,12 @@ from itertools import combinations
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import get_bin_representation, set_seed
+from utils import get_bin_representation
 
 
 class ExhaustiveSearch(MetaHeuristic):
-    def __init__(self, c, environment, locked_subsolution, threshold=None):
-        super().__init__(c, environment, locked_subsolution, threshold)
+    def __init__(self, c, environment, locked_subsolution):
+        super().__init__(c, environment, locked_subsolution)
         self.best_selection = None
 
     def strategy(self):
@@ -17,6 +17,8 @@ class ExhaustiveSearch(MetaHeuristic):
         for selected in combinations(
             range(self.c.OBJ_NUM), self.c.DEMONSTRATION_BUDGET
         ):
+            if self.count >= self.c.MH_BUDGET:
+                break
             selected = get_bin_representation(list(selected), self.c.OBJ_NUM)
             score = self.evaluate_selection(selected)
             if score > best_score:
@@ -34,7 +36,6 @@ if __name__ == "__main__":
     config.DEMONSTRATION_BUDGET = 10
     config.OBJ_NUM = 20
     config.MH_BUDGET = 2000000
-    set_seed(config.SEED)
     env = Environment(config)
     es = ExhaustiveSearch(config, env, [])
 

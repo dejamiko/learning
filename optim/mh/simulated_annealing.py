@@ -3,21 +3,20 @@ import numpy as np
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import set_seed
 
 
 class SimulatedAnnealing(MetaHeuristic):
-    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
-        super().__init__(c, similarity_dict, locked_subsolution, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution):
+        super().__init__(c, similarity_dict, locked_subsolution)
         self.best_selection = None
 
     def _get_random_neighbour(self, selected):
         # find a random index where selected is 1 and another where it is 0
         while True:
-            i = np.random.choice(np.where(selected == 1)[0])
+            i = self._rng.choice(np.where(selected == 1)[0])
             if i not in self.locked_subsolution:
                 break
-        j = np.random.choice(np.where(selected == 0)[0])
+        j = self._rng.choice(np.where(selected == 0)[0])
         new_selected = selected.copy()
         new_selected[i] = 0
         new_selected[j] = 1
@@ -37,7 +36,7 @@ class SimulatedAnnealing(MetaHeuristic):
             selection = self._get_random_neighbour(selection)
             score = self.evaluate_selection(selection)
             diff = score - prev_score
-            if diff < 0.0 and np.exp(diff / T) < np.random.rand():
+            if diff < 0.0 and np.exp(diff / T) < self._rng.random():
                 # Restore previous state
                 selection = prev_state.copy()
             else:
@@ -55,7 +54,6 @@ class SimulatedAnnealing(MetaHeuristic):
 
 if __name__ == "__main__":
     c = Config()
-    set_seed(c.SEED)
     env = Environment(c)
     sa = SimulatedAnnealing(c, env, [])
 

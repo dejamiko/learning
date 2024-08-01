@@ -2,13 +2,14 @@ import numpy as np
 
 
 class NeighbourGenerator:
-    def __init__(self, selected, locked_subsolution):
+    def __init__(self, selected, locked_subsolution, rng):
         self.selected = selected
         self.locked_subsolution = locked_subsolution
+        self._rng = rng
 
     def __iter__(self):
-        indices = np.random.permutation(np.arange(len(self.selected)))
-        indices2 = np.random.permutation(np.arange(len(self.selected)))
+        indices = self._rng.permutation(np.arange(len(self.selected)))
+        indices2 = self._rng.permutation(np.arange(len(self.selected)))
         for i in indices:
             if self.selected[i] == 1 and i not in self.locked_subsolution:
                 for j in indices2:

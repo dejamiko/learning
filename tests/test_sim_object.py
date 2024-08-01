@@ -14,7 +14,7 @@ def test_object_init_works():
     _ = SimObject(
         0,
         config,
-        Task.HAMMERING.value,
+        Task.HAMMERING,
         "object_0",
         "tests/_test_assets",
         [np.zeros((1, 4))],
@@ -28,7 +28,7 @@ def object_fixture():
     obj_0 = SimObject(
         0,
         config,
-        Task.HAMMERING.value,
+        Task.HAMMERING,
         "object_0",
         "tests/_test_assets",
         [np.zeros(sp), np.zeros(sp), np.zeros(sp)],
@@ -36,7 +36,7 @@ def object_fixture():
     obj_1 = SimObject(
         1,
         config,
-        Task.HAMMERING.value,
+        Task.HAMMERING,
         "object_1",
         "tests/_test_assets",
         [np.ones(sp), np.ones(sp), np.ones(sp)],
@@ -63,8 +63,8 @@ def test_object_fields_work(object_fixture, images_fixture):
     assert obj_1.index == 1
     assert obj_0.name == "object_0"
     assert obj_1.name == "object_1"
-    assert obj_0.task == Task.HAMMERING.value
-    assert obj_1.task == Task.HAMMERING.value
+    assert obj_0.task == Task.HAMMERING
+    assert obj_1.task == Task.HAMMERING
     assert obj_0.c == c
     assert obj_1.c == c
     assert np.allclose(

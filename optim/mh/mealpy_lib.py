@@ -7,7 +7,6 @@ from mealpy import Problem
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import set_seed
 
 
 class ObjectProblem(Problem):
@@ -23,8 +22,8 @@ class ObjectProblem(Problem):
 
 
 class MealpyHeuristic(MetaHeuristic):
-    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
-        super().__init__(c, similarity_dict, locked_subsolution, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution):
+        super().__init__(c, similarity_dict, locked_subsolution)
         self.best_selection = None
 
     def strategy(self):
@@ -36,10 +35,10 @@ class MealpyHeuristic(MetaHeuristic):
         problem = ObjectProblem(
             bounds=bounds, heuristic=self, minmax="max", log_to=None, seed=self.c.SEED
         )
-        self.optimizer = mealpy.get_optimizer_by_name(self.c.MP_OPTIMISER_NAME)()
+        self.optimiser = mealpy.get_optimizer_by_name(self.c.MP_OPTIMISER_NAME)()
         termination = mealpy.Termination(max_fe=self.c.MH_BUDGET)
-        self.optimizer.solve(problem, termination=termination)
-        final = self.optimizer.problem.decode_solution(self.optimizer.g_best.solution)[
+        self.optimiser.solve(problem, termination=termination, seed=self.c.SEED)
+        final = self.optimiser.problem.decode_solution(self.optimiser.g_best.solution)[
             "object_selection"
         ]
         if np.sum(final) != self.c.DEMONSTRATION_BUDGET:
@@ -51,7 +50,7 @@ class MealpyHeuristic(MetaHeuristic):
     def get_best_solution(self):
         if self.best_selection is not None:
             return self.best_selection
-        final = self.optimizer.problem.decode_solution(self.optimizer.g_best.solution)[
+        final = self.optimiser.problem.decode_solution(self.optimiser.g_best.solution)[
             "object_selection"
         ]
         if np.sum(final) != self.c.DEMONSTRATION_BUDGET:
@@ -63,7 +62,6 @@ class MealpyHeuristic(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    set_seed(config.SEED)
     env = Environment(config)
     mealpyh = MealpyHeuristic(config, env, [])
 

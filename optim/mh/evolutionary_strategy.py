@@ -3,12 +3,12 @@ import numpy as np
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import get_object_indices, set_seed
+from utils import get_object_indices
 
 
 class EvolutionaryStrategy(MetaHeuristic):
-    def __init__(self, c, similarity_dict, locked_subsolution, threshold=None):
-        super().__init__(c, similarity_dict, locked_subsolution, threshold)
+    def __init__(self, c, similarity_dict, locked_subsolution):
+        super().__init__(c, similarity_dict, locked_subsolution)
         self.best_selection = None
 
     def strategy(self):
@@ -36,24 +36,24 @@ class EvolutionaryStrategy(MetaHeuristic):
         return population
 
     def _mutate(self, population):
-        to_mutate_indices = np.random.choice(
+        to_mutate_indices = self._rng.choice(
             np.arange(len(population)),
             size=int(self.c.ES_MUTATION_RATE * len(population)),
             replace=False,
         )
         for i in to_mutate_indices:
             while True:
-                one = np.random.choice(np.where(population[i][0] == 1)[0])
+                one = self._rng.choice(np.where(population[i][0] == 1)[0])
                 if one not in self.locked_subsolution:
                     break
-            zero = np.random.choice(np.where(population[i][0] == 0)[0])
+            zero = self._rng.choice(np.where(population[i][0] == 0)[0])
             population[i][0][one] = 0
             population[i][0][zero] = 1
         return population
 
     def _crossover(self, population, num_elites):
         population = self._select_roulette(population, num_elites)
-        np.random.shuffle(population)
+        self._rng.shuffle(population)
         new_population = []
         for i in range(0, len(population), 2):
             parent1, _ = population[i]
@@ -69,7 +69,7 @@ class EvolutionaryStrategy(MetaHeuristic):
                 child2[obj] = 1
             different_objects = (parent1 - common_objects) | (parent2 - common_objects)
             # randomly select half of the objects that are different
-            first_half = np.random.choice(
+            first_half = self._rng.choice(
                 list(different_objects), size=len(different_objects) // 2, replace=False
             )
             second_half = different_objects - set(first_half)
@@ -82,12 +82,11 @@ class EvolutionaryStrategy(MetaHeuristic):
         new_population = new_population[: len(population)]
         return new_population
 
-    @staticmethod
-    def _select_roulette(population, num_elites):
+    def _select_roulette(self, population, num_elites):
         scores = np.array([score for _, score in population])
         probabilities = scores / np.sum(scores)
         indices = np.arange(len(population))
-        indices = np.random.choice(
+        indices = self._rng.choice(
             indices,
             size=int(np.ceil((len(population) - num_elites) / 2) * 2),
             p=probabilities,
@@ -109,7 +108,6 @@ class EvolutionaryStrategy(MetaHeuristic):
 
 if __name__ == "__main__":
     config = Config()
-    set_seed(config.SEED)
     env = Environment(config)
     es = EvolutionaryStrategy(config, env, [])
 

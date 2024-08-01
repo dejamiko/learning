@@ -1,12 +1,11 @@
 from utils import (
-    SingletonMeta,
     VisualisationMethod,
     ThresholdEstimationStrategy,
     SimilarityMeasure,
 )
 
 
-class Config(metaclass=SingletonMeta):
+class Config:
     """
     The configuration for the whole system
     """
@@ -20,19 +19,19 @@ class Config(metaclass=SingletonMeta):
     SIMILARITY_THRESHOLD = 0.55
     PROB_THRESHOLD = 0.70  # this should be treated as a constant
 
-    VISUALISATION_METHOD = VisualisationMethod.PCA.value
+    VISUALISATION_METHOD = VisualisationMethod.PCA
 
     DEMONSTRATION_BUDGET = 5
 
-    SIMILARITY_MEASURE = SimilarityMeasure.DINO_LAYER_9_COSINE.value
+    SIMILARITY_MEASURE = SimilarityMeasure.DINO_LAYER_9_COSINE
 
     # Variable threshold solver
-    THRESH_ESTIMATION_STRATEGY = ThresholdEstimationStrategy.DENSITY.value
+    THRESH_ESTIMATION_STRATEGY = ThresholdEstimationStrategy.DENSITY
     USE_REAL_THRESHOLD = False
     USE_TRANSFER_EVALUATION = False
 
     # Random object
-    OBJ_NUM = 100
+    OBJ_NUM = 40
     LATENT_DIM = 10
     VISIBLE_REPRESENTATION_NOISE = 0.1
 
@@ -59,7 +58,7 @@ class Config(metaclass=SingletonMeta):
     MP_OPTIMISER_NAME = "OriginalWarSO"
 
     MH_BUDGET = 45000
-    MH_TIME_BUDGET = 0.8  # in seconds
+    MH_TIME_BUDGET = 8  # in seconds
 
     def __init__(self):
         pass

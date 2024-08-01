@@ -6,10 +6,10 @@ from sklearn.cluster import KMeans
 
 from playground.basic_object import BasicObject
 from playground.sim_object import SimObject
-from utils import SingletonMeta, set_seed, Task
+from utils import get_rng, Task
 
 
-class ObjectStorage(metaclass=SingletonMeta):
+class ObjectStorage:
     """
     A singleton class to store objects, either randomly generated or loaded from the DINOBot data.
     """
@@ -17,13 +17,6 @@ class ObjectStorage(metaclass=SingletonMeta):
     def __init__(self, c):
         """
         Initialize the object storage
-        :param c: the configuration object
-        """
-        self._set_fields(c)
-
-    def reset(self, c):
-        """
-        Reset the storage
         :param c: the configuration object
         """
         self._set_fields(c)
@@ -78,7 +71,11 @@ class ObjectStorage(metaclass=SingletonMeta):
                 return 1.0
             return 0.0
 
-        return self._visual_similarities_by_task[self._objects[i].task][i, j]
+        assert self._visual_similarities_by_task[self._objects[i].task][
+            i, j
+        ] == self.get_visual_similarity(i, j)
+
+        return self.get_visual_similarity(i, j)
 
     def get_objects(self):
         """
@@ -112,14 +109,14 @@ class ObjectStorage(metaclass=SingletonMeta):
         # important to update the config object
         self.c.OBJ_NUM = len(self._objects)
 
-        latent_similarities = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
-        for i in range(self.c.OBJ_NUM):
-            for j in range(self.c.OBJ_NUM):
+        latent_similarities = np.zeros((len(self._objects), len(self._objects)))
+        for i in range(len(self._objects)):
+            for j in range(len(self._objects)):
                 if objects[i].task != objects[j].task:
                     continue
                 # the data is already within 0 and 1
                 latent_similarities[i, j] = transfer_data[
-                    f"{objects[i].name}-{objects[j].name}-{objects[i].task}"
+                    f"{objects[i].name}-{objects[j].name}-{objects[i].task.value}"
                 ]
         self._latent_similarities = latent_similarities
 
@@ -133,14 +130,17 @@ class ObjectStorage(metaclass=SingletonMeta):
                 BasicObject(
                     i,
                     self.c,
-                    Task.HAMMERING.value,
-                    np.random.uniform(0, 10, self.c.LATENT_DIM),
+                    Task.HAMMERING,
+                    self._rng.uniform(0, 10, self.c.LATENT_DIM),
+                    get_rng(self.c.SEED + i),
                 )
                 # the task is a placeholder here
             )
         # cluster the objects into different task types based on the latent representation
-        k = KMeans(n_clusters=len(Task)).fit(np.array([o.latent_repr for o in objects]))
-        task_labels = list(t.value for t in Task)
+        k = KMeans(n_clusters=len(Task), random_state=self.c.SEED).fit(
+            np.array([o.latent_repr for o in objects])
+        )
+        task_labels = list(t for t in Task)
         for i, o in enumerate(objects):
             o.task = task_labels[k.labels_[i]]
 
@@ -165,9 +165,9 @@ class ObjectStorage(metaclass=SingletonMeta):
         """
         Generate the visual similarity data
         """
-        visual_similarities = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
-        for i in range(self.c.OBJ_NUM):
-            for j in range(self.c.OBJ_NUM):
+        visual_similarities = np.zeros((len(self._objects), len(self._objects)))
+        for i in range(len(self._objects)):
+            for j in range(len(self._objects)):
                 visual_similarities[i, j] = self._objects[i].get_visual_similarity(
                     self._objects[j]
                 )
@@ -178,11 +178,11 @@ class ObjectStorage(metaclass=SingletonMeta):
         visual_similarities = (visual_similarities - min_) / (max_ - min_)
 
         self._visual_similarities_by_task = {
-            t.value: np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM)) for t in Task
+            t: np.zeros((len(self._objects), len(self._objects))) for t in Task
         }
 
-        for i in range(self.c.OBJ_NUM):
-            for j in range(self.c.OBJ_NUM):
+        for i in range(len(self._objects)):
+            for j in range(len(self._objects)):
                 if self._objects[i].task == self._objects[j].task:
                     self._visual_similarities_by_task[self._objects[i].task][i, j] = (
                         visual_similarities[i, j]
@@ -194,7 +194,7 @@ class ObjectStorage(metaclass=SingletonMeta):
         :param c: the configuration object
         """
         self.c = c
-        set_seed(c.SEED)
+        self._rng = get_rng(c.SEED)
         self._objects = None
         self._visual_similarities_by_task = None
         self._latent_similarities = None

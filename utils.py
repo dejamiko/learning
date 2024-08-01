@@ -4,25 +4,8 @@ from threading import Lock
 import numpy as np
 
 
-class SingletonMeta(type):
-    """
-    A thread-safe singleton implementation taken from https://refactoring.guru/design-patterns/singleton/python
-    """
-
-    _instances = {}
-
-    _lock: Lock = Lock()
-
-    def __call__(cls, *args, **kwargs):
-        with cls._lock:
-            if cls not in cls._instances:
-                instance = super().__call__(*args, **kwargs)
-                cls._instances[cls] = instance
-        return cls._instances[cls]
-
-
-def set_seed(seed):  # pragma: no cover
-    np.random.seed(seed)
+def get_rng(seed):  # pragma: no cover
+    return np.random.default_rng(seed)
 
 
 def get_object_indices(selected):

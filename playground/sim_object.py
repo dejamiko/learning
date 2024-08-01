@@ -21,7 +21,7 @@ class SimObject(Object):
         return self._get_cos_sim(self.visible_repr, other.visible_repr)
 
     def __str__(self):
-        return f"{self.name}, {self.visible_repr}, {self.task}"
+        return f"{self.name}, {self.visible_repr}, {self.task.value}"
 
     @staticmethod
     def _load_images(img_path):

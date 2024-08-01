@@ -9,7 +9,7 @@ class BasicObject(Object):
     and a task type.
     """
 
-    def __init__(self, index, c, task, latent_representation):
+    def __init__(self, index, c, task, latent_representation, rng):
         """
         Initialise the object
         :param index: The index of the object
@@ -30,7 +30,7 @@ class BasicObject(Object):
 
         self.name = f"Object {index}"
         self.latent_repr = latent_representation
-        self.visible_repr = self._create_visible_representation()
+        self.visible_repr = self._create_visible_representation(rng)
 
     def get_visual_similarity(self, other):
         """
@@ -48,14 +48,16 @@ class BasicObject(Object):
         """
         return self._get_cos_sim(self.latent_repr, other.latent_repr)
 
-    def _create_visible_representation(self):
+    def _create_visible_representation(self, rng):
         """
         Create a visible representation of the object. This is done by adding some noise to the latent representation
         :return: The visible representation of the object
         """
-        return self.latent_repr + np.random.normal(
+        return self.latent_repr + rng.normal(
             0, self.c.VISIBLE_REPRESENTATION_NOISE, self.latent_repr.shape
         )
 
     def __str__(self):
-        return f"{self.name} ({self.latent_repr}), {self.visible_repr}, {self.task}"
+        return (
+            f"{self.name} ({self.latent_repr}), {self.visible_repr}, {self.task.value}"
+        )

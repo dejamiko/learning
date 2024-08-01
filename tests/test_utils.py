@@ -1,23 +1,6 @@
-import concurrent.futures
-
 import numpy as np
 
-from utils import SingletonMeta, get_object_indices, get_bin_representation
-
-
-def test_singleton_metaclass_works():
-    class A(metaclass=SingletonMeta):
-        def __init__(self, a):
-            self.a = a
-
-    def singleton(a):
-        singleton = A(a)
-        return singleton.a
-
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = [executor.submit(singleton, p) for p in ["a", "b", "c"]]
-        return_value = [f.result() for f in futures]
-        assert return_value == ["a", "a", "a"]
+from utils import get_object_indices, get_bin_representation
 
 
 def test_get_object_indices_works():

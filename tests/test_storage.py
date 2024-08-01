@@ -14,8 +14,8 @@ def test_init_storage_works():
 @fixture
 def empty_storage_fixture():
     config = Config()
+    config.OBJ_NUM = 100
     storage = ObjectStorage(config)
-    storage.reset(config)
     return storage, config
 
 
@@ -37,7 +37,7 @@ def test_generate_random_objects_works(empty_storage_fixture):
     assert storage._objects.shape == (c.OBJ_NUM,)
     assert storage._visual_similarities_by_task is not None
     assert len(storage._visual_similarities_by_task) == 3
-    assert storage._visual_similarities_by_task[Task.GRASPING.value].shape == (
+    assert storage._visual_similarities_by_task[Task.GRASPING].shape == (
         c.OBJ_NUM,
         c.OBJ_NUM,
     )
@@ -48,50 +48,51 @@ def test_generate_random_objects_works(empty_storage_fixture):
 @fixture
 def storage_fixture_random():
     config = Config()
-    config.SEED = 1
+    config.OBJ_NUM = 100
     config.USE_REAL_OBJECTS = False
     storage = ObjectStorage(config)
-    storage.reset(config)
     storage.generate_objects()
     return storage, config
 
 
 def test_get_visual_similarity_works(storage_fixture_random):
     storage, c = storage_fixture_random
+    print(storage.get_objects())
     assert np.allclose(storage.get_visual_similarity(0, 1), 0)
-    assert np.allclose(storage.get_visual_similarity(0, 2), 0.5041701285557193)
+    assert np.allclose(storage.get_visual_similarity(0, 2), 0.6297178434321439)
 
 
 def test_get_true_success_probability_boolean_works(storage_fixture_random):
     storage, c = storage_fixture_random
     c.SUCCESS_RATE_BOOLEAN = True
     assert storage.get_true_success_probability(0, 1, 0.4) == 0.0
-    assert storage.get_true_success_probability(0, 2, 0.45) == 1.0
-    assert storage.get_true_success_probability(0, 2, 0.5) == 0.0
+    assert storage.get_true_success_probability(0, 2, 0.6) == 1.0
+    assert storage.get_true_success_probability(0, 2, 0.65) == 0.0
 
 
 def test_get_true_success_probability_real_works(storage_fixture_random):
     storage, c = storage_fixture_random
     c.SUCCESS_RATE_BOOLEAN = False
     assert storage.get_true_success_probability(0, 1, 0.4) == 0.0
-    assert storage.get_true_success_probability(0, 2, 0.4) == 0.48498082292769984
-    assert storage.get_true_success_probability(0, 2, 0.7) == 0.48498082292769984
+    assert storage.get_true_success_probability(0, 2, 0.4) == 0.6162264663089067
+    assert storage.get_true_success_probability(0, 2, 0.7) == 0.6162264663089067
 
 
 def test_estimated_success_probability_boolean_works(storage_fixture_random):
     storage, c = storage_fixture_random
     c.SUCCESS_RATE_BOOLEAN = True
     assert storage.get_estimated_success_probability(0, 1, 0.4) == 0.0
-    assert storage.get_estimated_success_probability(0, 2, 0.5) == 1.0
-    assert storage.get_estimated_success_probability(0, 2, 0.55) == 0.0
+    assert storage.get_estimated_success_probability(0, 2, 0.6) == 1.0
+    assert storage.get_estimated_success_probability(0, 2, 0.65) == 0.0
 
 
 def test_estimated_success_probability_real_works(storage_fixture_random):
     storage, c = storage_fixture_random
     c.SUCCESS_RATE_BOOLEAN = False
-    assert storage.get_estimated_success_probability(0, 16, 0.4) == 0.0
-    assert storage.get_estimated_success_probability(0, 2, 0.15) == 0.5041701285557193
-    assert storage.get_estimated_success_probability(0, 2, 0.7) == 0.5041701285557193
+    print(storage.get_objects())
+    assert storage.get_estimated_success_probability(0, 1, 0.4) == 0.0
+    assert storage.get_estimated_success_probability(0, 2, 0.15) == 0.6297178434321439
+    assert storage.get_estimated_success_probability(0, 2, 0.7) == 0.6297178434321439
 
 
 def test_get_objects_works(storage_fixture_random):
@@ -107,15 +108,18 @@ def test_ingest_real_objects_works(empty_storage_fixture):
     storage.generate_objects()
 
     assert storage._objects is not None
-    assert storage._objects.shape == (c.OBJ_NUM,)
+    assert storage._objects.shape == (51,)
     assert storage._visual_similarities_by_task is not None
     assert len(storage._visual_similarities_by_task) == 3
-    assert storage._visual_similarities_by_task[Task.GRASPING.value].shape == (
-        c.OBJ_NUM,
-        c.OBJ_NUM,
+    assert storage._visual_similarities_by_task[Task.GRASPING].shape == (
+        len(storage._objects),
+        len(storage._objects),
     )
     assert storage._latent_similarities is not None
-    assert storage._latent_similarities.shape == (c.OBJ_NUM, c.OBJ_NUM)
+    assert storage._latent_similarities.shape == (
+        len(storage._objects),
+        len(storage._objects),
+    )
 
 
 @fixture
@@ -124,7 +128,6 @@ def storage_fixture_real():
     config.SEED = 1
     config.USE_REAL_OBJECTS = True
     storage = ObjectStorage(config)
-    storage.reset(config)
     storage.generate_objects()
     return storage, config
 
@@ -170,5 +173,5 @@ def test_estimated_success_probability_real_real_obj_works(storage_fixture_real)
 def test_get_objects_real_obj_works(storage_fixture_real):
     storage, c = storage_fixture_real
     assert storage.get_objects() is not None
-    assert len(storage.get_objects()) == c.OBJ_NUM
+    assert len(storage.get_objects()) == 51  # there are 51 objects exactly
     assert all(storage.get_objects() == storage._objects)
