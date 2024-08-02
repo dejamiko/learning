@@ -78,13 +78,20 @@ class ObjectStorage:
         with open(os.path.join("_data", "transfers.json")) as f:
             transfer_data = json.load(f)
         objects = []
-        for o in object_data.keys():
+
+        # if obj_num is smaller than the num of real objects, we choose a random subset
+        if self.c.OBJ_NUM < len(object_data):
+            object_keys = self._rng.choice(
+                list(object_data.keys()), self.c.OBJ_NUM, replace=False
+            )
+        else:
+            object_keys = object_data.keys()
+
+        for i, o in enumerate(object_keys):
             img_path = object_data[o]["image_path"]
             embeddings = object_data[o]["image_embeddings"]
             name, task = o.split("-")
-            objects.append(
-                SimObject(len(objects), self.c, task, name, img_path, embeddings)
-            )
+            objects.append(SimObject(i, self.c, task, name, img_path, embeddings))
         self._objects = np.array(objects, dtype=SimObject)
         # important to update the config object
         self.c.OBJ_NUM = len(self._objects)
