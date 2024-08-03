@@ -43,4 +43,20 @@ class ObjectSelectionStrategy(AutoName):
 
 
 class SimilarityMeasure(AutoName):
-    DINO_LAYER_9_COSINE = auto()
+    COSINE = auto()
+    EUCLIDEAN_INV = auto()
+    EUCLIDEAN_EXP = auto()
+    MANHATTAN_INV = auto()
+    MANHATTAN_EXP = auto()
+    PEARSON = auto()
+
+
+class ImageEmbeddings(AutoName):
+    DINO_LAYER_9 = auto()
+    DINO_LAYER_11 = auto()
+    DINO_FULL = auto()
+    DINO_2_FULL = auto()
+    MAMBA_VISION = auto()
+    VIT = auto()
+    CONVNET = auto()
+    SWIN = auto()

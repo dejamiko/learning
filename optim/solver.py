@@ -5,7 +5,7 @@ import numpy as np
 
 from optim.mh import get_all_heuristics
 from playground.environment import Environment
-from utils import get_rng
+from tm_utils import get_rng
 
 
 class Solver(ABC):

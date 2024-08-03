@@ -4,7 +4,7 @@ from itertools import combinations
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import get_bin_representation
+from tm_utils import get_bin_representation
 
 
 class ExhaustiveSearch(MetaHeuristic):

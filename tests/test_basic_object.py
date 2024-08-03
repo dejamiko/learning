@@ -3,7 +3,7 @@ from pytest import fixture, raises
 
 from config import Config
 from playground.basic_object import BasicObject
-from utils import Task, get_rng
+from tm_utils import Task, get_rng, SimilarityMeasure
 
 
 def test_object_init_works():
@@ -160,4 +160,59 @@ def test_repr_works(object_fixture):
         repr(obj_1) == "Object 1 ([1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]), "
         "[1.01257302 0.98678951 1.06404227 1.01049001 0.94643306 1.03615951\n "
         "1.1304     1.0947081  0.92962648 0.87345785], hammering"
+    )
+
+
+def test_get_visual_similarity_euclidean_inv_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN_INV
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.2402530733520421)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_euclidean_exp_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN_EXP
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.20574066108381442)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_manhattan_inv_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN_INV
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.09090909090909091)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_manhattan_exp_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN_EXP
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.006737946999085467)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_pearson_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.PEARSON
+    obj_0.visible_repr = np.zeros_like(obj_0.visible_repr)
+    obj_0.visible_repr[-1] = 1
+    obj_0.visible_repr[-2] = 1
+    obj_1.visible_repr = np.zeros_like(obj_1.visible_repr)
+    obj_1.visible_repr[-1] = 1
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6666666666666666)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_other_fails(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = "other_method"
+    with raises(ValueError) as e:
+        obj_0.get_visual_similarity(obj_1)
+    assert (
+        str(e.value) == f"Unknown similarity measure provided `{c.SIMILARITY_MEASURE}`."
     )

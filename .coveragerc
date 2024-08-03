@@ -1,0 +1,5 @@
+[run]
+omit =
+    */.cache/*
+    dino_vit_features/*
+    tests/*

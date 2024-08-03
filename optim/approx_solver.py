@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from optim.solver import Solver
-from utils import get_bin_representation
+from tm_utils import get_bin_representation
 
 
 class ApproximationSolver(Solver, ABC):

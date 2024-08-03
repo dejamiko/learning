@@ -1,7 +1,7 @@
 import numpy as np
 
 from playground.storage import ObjectStorage
-from utils import get_object_indices, get_rng
+from tm_utils import get_object_indices, get_rng
 
 
 def apply_affine_fun(param, f):
@@ -72,7 +72,7 @@ class Environment:
         :param j: The second object index
         :return: True if the transfer was successful, False otherwise
         """
-        return self._rng.random() < self._get_real_transfer_probability(i, j)
+        return self._rng.random() < self.get_real_transfer_probability(i, j)
 
     def evaluate_selection_transfer_based(self, selected_bin):
         """
@@ -168,7 +168,7 @@ class Environment:
                 visual_similarity[i, j] = self.get_visual_similarity(i, j, f)
         return visual_similarity
 
-    def _get_real_transfer_probability(self, i, j):
+    def get_real_transfer_probability(self, i, j):
         """
         Get the real transfer probability for two objects based on the underlying storage implementation.
         :param i: The first object index

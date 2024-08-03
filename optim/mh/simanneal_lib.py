@@ -9,7 +9,7 @@ from simanneal import Annealer
 from config import Config
 from optim.mh.simulated_annealing import SimulatedAnnealing
 from playground.environment import Environment
-from utils import get_rng
+from tm_utils import get_rng
 
 
 class SA(Annealer):

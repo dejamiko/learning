@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from utils import Task
+from tm_utils import Task, SimilarityMeasure
 
 
 class Object(ABC):
@@ -22,15 +22,33 @@ class Object(ABC):
         self.c = c
 
         self.task = Task(task)
+        self.visible_repr = None
 
-    @abstractmethod
     def get_visual_similarity(self, other):
-        """
-        Get the similarity between the visible representations of this object and another object
-        :param other: The other object
-        :return: The similarity between the visible representations.
-        """
-        pass  # pragma: no cover
+        match self.c.SIMILARITY_MEASURE:
+            case SimilarityMeasure.COSINE:
+                return self._get_cos_sim(self.visible_repr, other.visible_repr)
+            case SimilarityMeasure.EUCLIDEAN_INV:
+                return self._get_euclidean_inverse(
+                    self.visible_repr, other.visible_repr
+                )
+            case SimilarityMeasure.EUCLIDEAN_EXP:
+                return self._get_euclidean_exponential(
+                    self.visible_repr, other.visible_repr, self.c.SIM_MEASURE_SIGMA
+                )
+            case SimilarityMeasure.MANHATTAN_INV:
+                return self._get_manhattan_inverse(
+                    self.visible_repr, other.visible_repr
+                )
+            case SimilarityMeasure.MANHATTAN_EXP:
+                return self._get_manhattan_exponential(
+                    self.visible_repr, other.visible_repr, self.c.SIM_MEASURE_SIGMA
+                )
+            case SimilarityMeasure.PEARSON:
+                return self._get_pearson(self.visible_repr, other.visible_repr)
+        raise ValueError(
+            f"Unknown similarity measure provided `{self.c.SIMILARITY_MEASURE}`."
+        )
 
     def __repr__(self):
         """
@@ -45,3 +63,23 @@ class Object(ABC):
     @staticmethod
     def _get_cos_sim(a, b, eps=1e-8):
         return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + eps)
+
+    @staticmethod
+    def _get_euclidean_inverse(a, b):
+        return 1 / (1 + np.linalg.norm(a - b))
+
+    @staticmethod
+    def _get_euclidean_exponential(a, b, sigma):
+        return np.exp(-np.linalg.norm(a - b) / (2 * sigma**2))
+
+    @staticmethod
+    def _get_manhattan_inverse(a, b):
+        return 1 / (1 + np.sum(np.abs(a - b)))
+
+    @staticmethod
+    def _get_manhattan_exponential(a, b, sigma):
+        return np.exp(-np.sum(np.abs(a - b)) / (2 * sigma**2))
+
+    @staticmethod
+    def _get_pearson(a, b):
+        return np.corrcoef(a, b)[0, 1]

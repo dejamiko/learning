@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils import get_object_indices, get_bin_representation
+from tm_utils import get_object_indices, get_bin_representation
 
 
 def test_get_object_indices_works():

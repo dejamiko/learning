@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from stopit import threading_timeoutable
 
-from utils import get_rng
+from tm_utils import get_rng
 
 
 class MetaHeuristic(ABC):

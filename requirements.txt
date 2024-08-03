@@ -13,3 +13,8 @@ stopit
 torch
 opencv-python
 pytest-cov
+torchvision
+tqdm
+timm
+pillow
+transformers

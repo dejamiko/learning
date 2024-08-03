@@ -6,7 +6,7 @@ from config import Config
 from optim.approx_solver import ApproximationSolver
 from optim.mh import get_all_heuristics
 from optim.solver import evaluate_all_heuristics
-from utils import (
+from tm_utils import (
     ObjectSelectionStrategy as EstStg,
     get_object_indices,
 )

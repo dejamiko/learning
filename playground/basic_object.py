@@ -32,14 +32,6 @@ class BasicObject(Object):
         self.latent_repr = latent_representation
         self.visible_repr = self._create_visible_representation(rng)
 
-    def get_visual_similarity(self, other):
-        """
-        Get the similarity between the visible representations of this object and another object
-        :param other: The other object
-        :return: The similarity between the visible representations. Implemented as the cosine similarity
-        """
-        return self._get_cos_sim(self.visible_repr, other.visible_repr)
-
     def get_latent_similarity(self, other):
         """
         Get the similarity between the latent representations of this object and another object

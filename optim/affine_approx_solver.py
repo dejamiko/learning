@@ -3,7 +3,7 @@ from scipy.stats import linregress
 from config import Config
 from optim.approx_solver import ApproximationSolver
 from optim.solver import evaluate_all_heuristics
-from utils import (
+from tm_utils import (
     ObjectSelectionStrategy as EstStg,
     get_object_indices,
 )
@@ -29,11 +29,11 @@ class AffineApproximationSolver(ApproximationSolver):
 
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
-        print("selected", selected)
         # go through the objects and select the one that maximizes the expected information gain
         if self.config.OBJECT_SELECTION_STRATEGY == EstStg.RANDOM:
             to_choose = set(selected) - set(self.heuristic.locked_subsolution)
             return self._rng.choice(list(to_choose))
+        # TODO add better selection strategies
         else:
             raise ValueError(
                 f"Unknown threshold estimation strategy: {self.config.OBJECT_SELECTION_STRATEGY}"
@@ -47,19 +47,23 @@ class AffineApproximationSolver(ApproximationSolver):
                 continue
             # does this make sense? It basically mimics trying the transfer 10 times so it should be sound
             transfer_rates.append(
-                self.env._get_real_transfer_probability(obj_ind, o.index)
+                self.env.get_real_transfer_probability(obj_ind, o.index)
             )
             visual_sims.append(self.env.get_visual_similarity(obj_ind, o.index))
 
         # find the best fit function for this data
         slope, intercept, r, p, std_err = linregress(visual_sims, transfer_rates)
         self.affine_function = (
-            self.config.MERGING_FACTOR * slope
-            + (1 - self.config.MERGING_FACTOR) * self.affine_function[0],
-            self.config.MERGING_FACTOR * intercept
-            + (1 - self.config.MERGING_FACTOR) * self.affine_function[1],
+            float(
+                self.config.MERGING_FACTOR * slope
+                + (1 - self.config.MERGING_FACTOR) * self.affine_function[0]
+            ),
+            float(
+                self.config.MERGING_FACTOR * intercept
+                + (1 - self.config.MERGING_FACTOR) * self.affine_function[1]
+            ),
         )
-        print(self.affine_function, r, p, std_err)
+        print(f"With function {self.affine_function}, r={r}, p={p}")
 
 
 if __name__ == "__main__":

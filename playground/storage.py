@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 
 from playground.basic_object import BasicObject
 from playground.sim_object import SimObject
-from utils import get_rng, Task
+from tm_utils import get_rng, Task
 
 
 class ObjectStorage:
@@ -88,10 +88,9 @@ class ObjectStorage:
             object_keys = object_data.keys()
 
         for i, o in enumerate(object_keys):
-            img_path = object_data[o]["image_path"]
-            embeddings = object_data[o]["image_embeddings"]
+            img_path = object_data[o]
             name, task = o.split("-")
-            objects.append(SimObject(i, self.c, task, name, img_path, embeddings))
+            objects.append(SimObject(i, self.c, task, name, img_path))
         self._objects = np.array(objects, dtype=SimObject)
         # important to update the config object
         self.c.OBJ_NUM = len(self._objects)

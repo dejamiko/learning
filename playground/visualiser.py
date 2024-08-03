@@ -8,7 +8,7 @@ from umap import UMAP
 from config import Config
 from optim.mh import EvolutionaryStrategy
 from playground.environment import Environment
-from utils import get_object_indices, VisualisationMethod as VM
+from tm_utils import get_object_indices, VisualisationMethod as VM
 
 
 class Visualiser:

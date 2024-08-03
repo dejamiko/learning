@@ -1,7 +1,8 @@
-from utils import (
+from tm_utils import (
     VisualisationMethod,
     ObjectSelectionStrategy,
     SimilarityMeasure,
+    ImageEmbeddings,
 )
 
 
@@ -23,7 +24,16 @@ class Config:
 
     DEMONSTRATION_BUDGET = 5
 
-    SIMILARITY_MEASURE = SimilarityMeasure.DINO_LAYER_9_COSINE
+    SIMILARITY_MEASURE = SimilarityMeasure.COSINE
+    SIM_MEASURE_SIGMA = 1.0
+    IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_2_FULL
+
+    DEVICE = "cpu"
+    MODEL_TYPE = "dino_vits8"
+    STRIDE = 8
+    LOAD_SIZE = 256
+    FACET = "key"
+    BIN = True
 
     # Threshold approximation solver
     OBJECT_SELECTION_STRATEGY = ObjectSelectionStrategy.DENSITY

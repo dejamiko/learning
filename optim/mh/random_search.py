@@ -3,7 +3,7 @@ from pprint import pprint
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
-from utils import get_object_indices
+from tm_utils import get_object_indices
 
 
 class RandomSearchIter(MetaHeuristic):
