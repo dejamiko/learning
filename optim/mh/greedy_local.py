@@ -3,6 +3,7 @@ import numpy as np
 from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from playground.environment import Environment
+from tm_utils import Task
 
 
 class GreedyLocalSearch(MetaHeuristic):
@@ -21,7 +22,9 @@ class GreedyLocalSearch(MetaHeuristic):
                 if selected[o.index] == 1:
                     continue
                 _, sim = self.environment.similarity_dict[o.index]
-                ind = np.searchsorted(sim, self.c.SIMILARITY_THRESHOLD)
+                ind = np.searchsorted(
+                    sim, self.c.SIMILARITY_THRESHOLDS[Task.get_ind(o.task)]
+                )
                 if ind > max_reachable_count:
                     max_reachable_count = ind
                     best_object_index = o.index

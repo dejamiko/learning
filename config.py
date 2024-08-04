@@ -18,7 +18,7 @@ class Config:
     USE_REAL_OBJECTS = True
 
     SUCCESS_RATE_BOOLEAN = True
-    SIMILARITY_THRESHOLD = 0.55
+    SIMILARITY_THRESHOLDS = [0.55, 0.55, 0.55]
     PROB_THRESHOLD = 0.70  # this should be treated as a constant
 
     VISUALISATION_METHOD = VisualisationMethod.PCA

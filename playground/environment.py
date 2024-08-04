@@ -1,7 +1,7 @@
 import numpy as np
 
 from playground.storage import ObjectStorage
-from tm_utils import get_object_indices, get_rng
+from tm_utils import get_object_indices, get_rng, Task
 
 
 def apply_affine_fun(param, f):
@@ -21,7 +21,9 @@ class Environment:
         """
         self.c = c
         self.storage = ObjectStorage(c)
-        self.visual_sim_threshold = self.c.SIMILARITY_THRESHOLD
+        self.visual_sim_thresholds = {
+            t: self.c.SIMILARITY_THRESHOLDS[i] for i, t in enumerate(Task)
+        }
         self._rng = get_rng(c.SEED)
         self.similarity_dict = None
         self.similarity_matrix = None
@@ -100,20 +102,19 @@ class Environment:
         """
         if self.c.SUCCESS_RATE_BOOLEAN:
             objects = set()
-            for i, s in enumerate(selected_bin):
-                if s == 0:
-                    continue
-                # assume similarities[s] returns a sorted list of similarities to all objects
-                # where o is an object in objects and s is an object in selected
-                # use binary search to find the first object with similarity below threshold
+            for i in get_object_indices(selected_bin):
+                # assume similarities[i] returns a sorted list of similarities to all objects in the same task
                 objs, sim = self.similarity_dict[i]
-                # sim is a sorted list of similarities, use bin search to find the first object with similarity
+                # sim is a sorted list of similarities, use binary search to find the first object with similarity
                 # below threshold
-                ind = np.searchsorted(sim, self.visual_sim_threshold)
+                ind = np.searchsorted(
+                    sim, self.visual_sim_thresholds[self.get_objects()[i].task]
+                )
                 # add all objects that have a higher similarity than the threshold
                 objects.update(objs[ind:])
             return len(objects)
 
+        # If we're not interested in boolean success values and instead want real values,
         # treat the similarities as probabilities and maximise the overall probability of success
         # use selected_bin as a mask to select the matrix rows
         selected_rows = self.similarity_matrix[get_object_indices(selected_bin)]
@@ -123,12 +124,12 @@ class Environment:
         prod = selected_rows.prod(axis=0)
         return prod.sum()
 
-    def update_visual_sim_threshold(self, threshold):
+    def update_visual_sim_thresholds(self, thresholds):
         """
         Update the visual similarity threshold with a value provided
-        :param threshold: The threshold to be used
+        :param thresholds: The threshold to be used
         """
-        self.visual_sim_threshold = threshold
+        self.visual_sim_thresholds = thresholds
 
     def _generate_objects(self):
         """
@@ -138,18 +139,20 @@ class Environment:
         self.similarity_dict = self._get_obj_to_similarity_list_dict()
         self.similarity_matrix = self._get_visual_similarity_matrix()
 
-    def _get_obj_to_similarity_list_dict(self, f=(1, 0)):
+    def _get_obj_to_similarity_list_dict(self, f_dict=None):
         """
         Create an efficient data structure for evaluating selections. This Dictionary stores pairs of object index to
         visual similarities between that object and every other object of the same task in a sorted list in a decreasing
         order.
-        :param f: An optional affine function applied to the similarity
+        :param f_dict: An optional dictionary of task to affine function applied to the similarity
         :return: The above described dictionary
         """
+        if f_dict is None:
+            f_dict = {t: (1.0, 0.0) for t in Task}
         similarity_dict = {}
         for o in self.get_objects():
             s = [
-                self.get_visual_similarity(o.index, oth.index, f)
+                self.get_visual_similarity(o.index, oth.index, f_dict[o.task])
                 for oth in self.get_objects()
             ]
             ar = []
@@ -161,11 +164,15 @@ class Environment:
             similarity_dict[o.index] = ([x[0] for x in ss], [x[1] for x in ss])
         return similarity_dict
 
-    def _get_visual_similarity_matrix(self, f=(1, 0)):
+    def _get_visual_similarity_matrix(self, f_dict=None):
+        if f_dict is None:
+            f_dict = {t: (1.0, 0.0) for t in Task}
         visual_similarity = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
         for i in range(self.c.OBJ_NUM):
             for j in range(self.c.OBJ_NUM):
-                visual_similarity[i, j] = self.get_visual_similarity(i, j, f)
+                visual_similarity[i, j] = self.get_visual_similarity(
+                    i, j, f_dict[self.get_objects()[i].task]
+                )
         return visual_similarity
 
     def get_real_transfer_probability(self, i, j):
@@ -178,6 +185,6 @@ class Environment:
         """
         return self.storage.get_true_success_probability(i, j, self.c.PROB_THRESHOLD)
 
-    def update_visual_similarities(self, f):
-        self.similarity_dict = self._get_obj_to_similarity_list_dict(f)
-        self.similarity_matrix = self._get_visual_similarity_matrix(f)
+    def update_visual_similarities(self, f_dict):
+        self.similarity_dict = self._get_obj_to_similarity_list_dict(f_dict)
+        self.similarity_matrix = self._get_visual_similarity_matrix(f_dict)

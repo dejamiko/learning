@@ -8,6 +8,7 @@ from optim.solver import evaluate_all_heuristics
 from tm_utils import (
     ObjectSelectionStrategyAffine as EstStg,
     get_object_indices,
+    Task,
 )
 
 
@@ -16,18 +17,18 @@ class AffineApproximationSolver(ApproximationSolver):
         # it only makes sense to use the real-valued version here
         config.SUCCESS_RATE_BOOLEAN = False
         super().__init__(config, heuristic_class)
-        self.affine_function = (1, 0)  # 1 * x + 0
+        self.affine_functions = {t: (1.0, 0.0) for t in Task}
 
     def _update_state(self, obj_selected):
-        self._update_affine_function(obj_selected)
-        self.env.update_visual_similarities(self.affine_function)
+        self._update_affine_functions(obj_selected)
+        self.env.update_visual_similarities(self.affine_functions)
 
     def _init_data(self, i):
         super()._init_data(i)
-        self._reset_function()
+        self._reset_affine_functions()
 
-    def _reset_function(self):
-        self.affine_function = (1, 0)
+    def _reset_affine_functions(self):
+        self.affine_functions = {t: (1.0, 0.0) for t in Task}
 
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
@@ -44,20 +45,23 @@ class AffineApproximationSolver(ApproximationSolver):
             f"Unknown object selection strategy for affine solver: `{self.config.OBJECT_SELECTION_STRATEGY_A}`"
         )
 
-    def _update_affine_function(self, obj_ind):
+    def _update_affine_functions(self, obj_ind):
         slope, intercept, p, r = self._get_linregress_for_ind(obj_ind)
-        self.affine_function = (
+        obj_task = self.objects[obj_ind].task
+        prev_slope = self.affine_functions[obj_task][0]
+        prev_intercept = self.affine_functions[obj_task][1]
+        self.affine_functions[obj_task] = (
             float(
                 self.config.MERGING_FACTOR * slope
-                + (1 - self.config.MERGING_FACTOR) * self.affine_function[0]
+                + (1 - self.config.MERGING_FACTOR) * prev_slope
             ),
             float(
                 self.config.MERGING_FACTOR * intercept
-                + (1 - self.config.MERGING_FACTOR) * self.affine_function[1]
+                + (1 - self.config.MERGING_FACTOR) * prev_intercept
             ),
         )
         if self.config.VERBOSITY > 0:
-            print(f"With function {self.affine_function}, r={r}, p={p}")
+            print(f"With function {self.affine_functions}, r={r}, p={p}")
 
     def _get_linregress_for_ind(self, obj_ind):
         transfer_rates = []
@@ -108,9 +112,7 @@ if __name__ == "__main__":
         config.OBJECT_SELECTION_STRATEGY_A = method
         config.VERBOSITY = 0
         config.USE_REAL_THRESHOLD = False
-        single_results = evaluate_all_heuristics(
-            AffineApproximationSolver, config, n=1
-        )
+        single_results = evaluate_all_heuristics(AffineApproximationSolver, config, n=1)
         for name, mean, std, time_taken in single_results:
             results[(name, method)] = (mean, std, time_taken)
 

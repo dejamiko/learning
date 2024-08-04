@@ -28,6 +28,15 @@ class Task(AutoName):
     PUSHING = auto()
     HAMMERING = auto()
 
+    @classmethod
+    def get_ind(cls, task):
+        if task == cls.GRASPING:
+            return 0
+        if task == cls.PUSHING:
+            return 1
+        if task == cls.HAMMERING:
+            return 2
+
 
 class VisualisationMethod(AutoName):
     PCA = auto()

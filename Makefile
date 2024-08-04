@@ -6,7 +6,7 @@ test_cov:
 	@PYTHONPATH=. pytest --cov --cov-report term-missing tests/
 
 
-basic_solver:
+b_solver:
 	@python3 -m optim.basic_solver
 
 

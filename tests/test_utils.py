@@ -1,6 +1,6 @@
 import numpy as np
 
-from tm_utils import get_object_indices, get_bin_representation
+from tm_utils import get_object_indices, get_bin_representation, Task
 
 
 def test_get_object_indices_works():
@@ -18,3 +18,9 @@ def test_get_bin_representation():
     for s in selected:
         objects[s] = 1
     assert all(get_bin_representation(selected, max_length) == objects)
+
+
+def test_get_ind():
+    assert Task.get_ind(Task.GRASPING) == 0
+    assert Task.get_ind(Task.PUSHING) == 1
+    assert Task.get_ind(Task.HAMMERING) == 2

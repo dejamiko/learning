@@ -9,6 +9,7 @@ from optim.solver import evaluate_all_heuristics
 from tm_utils import (
     ObjectSelectionStrategyThreshold as EstStg,
     get_object_indices,
+    Task,
 )
 
 
@@ -17,8 +18,10 @@ class ThresholdApproximationSolver(ApproximationSolver):
         super().__init__(config, heuristic_class)
         # it only makes sense to use the boolean version here
         config.SUCCESS_RATE_BOOLEAN = True
-        self.threshold_lower_bound = 0.0
-        self.threshold_upper_bound = 1.0
+        # self.threshold_lower_bound = 0.0
+        # self.threshold_upper_bound = 1.0
+        self.threshold_upper_bounds = {t: 1.0 for t in Task}
+        self.threshold_lower_bounds = {t: 0.0 for t in Task}
 
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
@@ -39,38 +42,49 @@ class ThresholdApproximationSolver(ApproximationSolver):
 
     def _update_state(self, obj_selected):
         self._update_bounds(obj_selected)
-        self.env.update_visual_sim_threshold(
-            (self.threshold_lower_bound + self.threshold_upper_bound) / 2
+        self.env.update_visual_sim_thresholds(
+            {
+                t: (self.threshold_upper_bounds[t] + self.threshold_lower_bounds[t]) / 2
+                for t in Task
+            }
         )
 
     def _init_data(self, i):
         super()._init_data(i)
         self._reset_bounds()
-        self.config.SIMILARITY_THRESHOLD = self._rng.uniform(0.3, 0.9)
-        self.env.update_visual_sim_threshold(
-            (self.threshold_lower_bound + self.threshold_upper_bound) / 2
+        self.config.SIMILARITY_THRESHOLDS = self._rng.uniform(0.3, 0.9, len(Task))
+        self.env.update_visual_sim_thresholds(
+            {
+                t: (self.threshold_upper_bounds[t] + self.threshold_lower_bounds[t]) / 2
+                for t in Task
+            }
         )
 
     def _reset_bounds(self):
         if self.config.USE_REAL_THRESHOLD:
-            self.threshold_lower_bound = self.config.SIMILARITY_THRESHOLD
-            self.threshold_upper_bound = self.config.SIMILARITY_THRESHOLD
+            self.threshold_lower_bounds = {
+                t: self.config.SIMILARITY_THRESHOLDS[i] for i, t in enumerate(Task)
+            }
+            self.threshold_upper_bounds = {
+                t: self.config.SIMILARITY_THRESHOLDS[i] for i, t in enumerate(Task)
+            }
         else:
-            self.threshold_lower_bound = 0.0
-            self.threshold_upper_bound = 1.0
+            self.threshold_upper_bounds = {t: 1.0 for t in Task}
+            self.threshold_lower_bounds = {t: 0.0 for t in Task}
 
     def _density_selection(self, to_search):
         # this can be estimated by selecting one that has the most objects that have a similarity between the bounds
         best_object_index = self._rng.choice(to_search)
         best_score = 0
         for s in to_search:
+            s_task = self.objects[s].task
             score = 0
             for o in self.objects:
                 if (
-                    self.threshold_lower_bound
+                    self.threshold_lower_bounds[s_task]
                     < self.env.get_visual_similarity(s, o.index)
-                    < self.threshold_upper_bound
-                ) and self.objects[s].task == o.task:
+                    < self.threshold_upper_bounds[s_task]
+                ) and s_task == o.task:
                     score += 1
             if score > best_score:
                 best_score = score
@@ -81,13 +95,14 @@ class ThresholdApproximationSolver(ApproximationSolver):
         best_object_index = self._rng.choice(to_search)
         best_score = np.inf
         for s in to_search:
+            s_task = self.objects[s].task
             sim_objects_between_bounds = []
             for o in self.objects:
                 if (
-                    self.threshold_lower_bound
+                    self.threshold_lower_bounds[s_task]
                     < self.env.get_visual_similarity(s, o.index)
-                    < self.threshold_upper_bound
-                ) and self.objects[s].task == o.task:
+                    < self.threshold_upper_bounds[s_task]
+                ) and s_task == o.task:
                     sim_objects_between_bounds.append(
                         self.env.get_visual_similarity(s, o.index)
                     )
@@ -106,11 +121,16 @@ class ThresholdApproximationSolver(ApproximationSolver):
         best_object_index = self._rng.choice(to_search)
         best_score = -np.inf
         for s in to_search:
+            s_task = self.objects[s].task
             score = 0
             for o in self.objects:
                 if (
                     self.env.get_visual_similarity(s, o.index)
-                    < (self.threshold_lower_bound + self.threshold_upper_bound) / 2
+                    < (
+                        self.threshold_lower_bounds[s_task]
+                        + self.threshold_upper_bounds[s_task]
+                    )
+                    / 2
                 ):
                     score += 1
             if score > best_score:
@@ -121,24 +141,29 @@ class ThresholdApproximationSolver(ApproximationSolver):
     def _update_bounds(self, obj_ind):
         success_indices = []
         failure_indices = []
+        obj_task = self.objects[obj_ind].task
         for o in self.objects:
-            if o.task != self.objects[obj_ind].task:
+            if o.task != obj_task:
                 continue
-            if self.env.get_real_transfer_probability(obj_ind, o.index) >= self.config.PROB_THRESHOLD:
+            if self.env.get_transfer_success(obj_ind, o.index):
                 success_indices.append(o.index)
             else:
                 failure_indices.append(o.index)
         for s_i in success_indices:
-            sim = self.env.get_real_transfer_probability(obj_ind, s_i)
-            self.threshold_upper_bound = min(self.threshold_upper_bound, sim)
+            sim = self.env.get_visual_similarity(obj_ind, s_i)
+            self.threshold_upper_bounds[obj_task] = min(
+                self.threshold_upper_bounds[obj_task], sim
+            )
         for f_i in failure_indices:
-            sim = self.env.get_real_transfer_probability(obj_ind, f_i)
-            self.threshold_lower_bound = max(self.threshold_lower_bound, sim)
+            sim = self.env.get_visual_similarity(obj_ind, f_i)
+            self.threshold_lower_bounds[obj_task] = max(
+                self.threshold_lower_bounds[obj_task], sim
+            )
         if self.config.VERBOSITY > 0:
             print(
-                f"Lower bound: {self.threshold_lower_bound}, upper bound: {self.threshold_upper_bound}, "
-                f"estimate {(self.threshold_lower_bound + self.threshold_upper_bound) / 2}, "
-                f"real threshold: {self.config.SIMILARITY_THRESHOLD}"
+                f"Lower bounds: {self.threshold_lower_bounds}, upper bounds: {self.threshold_upper_bounds}, "
+                f"estimate {[(self.threshold_upper_bounds[t] + self.threshold_lower_bounds[t]) / 2 for t in Task]}, "
+                f"real thresholds: {self.config.SIMILARITY_THRESHOLDS}"
             )
 
 

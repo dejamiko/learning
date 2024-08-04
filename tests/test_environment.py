@@ -5,6 +5,7 @@ from pytest import fixture
 
 from config import Config
 from playground.environment import Environment
+from tm_utils import Task
 
 
 def test_environment_init_works():
@@ -17,7 +18,7 @@ def env_fixture():
     config = Config()
     config.OBJ_NUM = 100
     config.USE_REAL_OBJECTS = False
-    config.SIMILARITY_THRESHOLD = 0.85
+    config.SIMILARITY_THRESHOLDS = [0.85, 0.85, 0.85]
     env = Environment(config)
     return env, config
 
@@ -164,16 +165,16 @@ def test_evaluate_selection_similarity_based_other_threshold_works(env_fixture):
     selected[1] = 1
     selected[3] = 1
 
-    env.update_visual_sim_threshold(0.5)
+    env.update_visual_sim_thresholds({t: 0.5 for t in Task})
 
     assert env.evaluate_selection_visual_similarity_based(selected) == 83
 
 
 def test_update_visual_sim_threshold(env_fixture):
     env, config = env_fixture
-    assert env.visual_sim_threshold == 0.85
-    env.update_visual_sim_threshold(0.123)
-    assert env.visual_sim_threshold == 0.123
+    assert env.visual_sim_thresholds == {t: 0.85 for t in Task}
+    env.update_visual_sim_thresholds({t: 0.123 for t in Task})
+    assert env.visual_sim_thresholds == {t: 0.123 for t in Task}
 
 
 def test_update_visual_similarities(env_fixture):
@@ -182,13 +183,13 @@ def test_update_visual_similarities(env_fixture):
     assert env.similarity_matrix[0, 2] == 0.6297178434321439
     assert env.similarity_matrix[0, 4] == 0.7615928478640059
 
-    env.update_visual_similarities((2, 0))
+    env.update_visual_similarities({t: (2.0, 0.0) for t in Task})
 
     assert env.similarity_matrix[0, 1] == 0.0
     assert env.similarity_matrix[0, 2] == 1.0
     assert env.similarity_matrix[0, 4] == 1.0
 
-    env.update_visual_similarities((1, -0.1))
+    env.update_visual_similarities({t: (1.0, -0.1) for t in Task})
 
     assert env.similarity_matrix[0, 1] == 0.0
     assert np.allclose(env.similarity_matrix[0, 2], 0.5297178434321439)

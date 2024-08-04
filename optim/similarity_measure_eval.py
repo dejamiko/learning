@@ -57,10 +57,12 @@ def convert_to_bool(s, thresh):
     return s
 
 
-def get_boolean_df(df, config):
+def get_boolean_df(df, config, task):
     b_df = df.copy(deep=True)
     b_df["ls"] = convert_to_bool(df["ls"], config.PROB_THRESHOLD)
-    b_df["vs"] = convert_to_bool(df["vs"], config.SIMILARITY_THRESHOLD)
+    b_df["vs"] = convert_to_bool(
+        df["vs"], config.SIMILARITY_THRESHOLDS[Task.get_ind(task)]
+    )
     return b_df
 
 
@@ -227,7 +229,7 @@ def run_across_tasks(config, environment):
         real_score = run_full_suite(df)
         means.append(np.mean([df["vs"], df["ls"]], axis=0))
         diffs.append(df["vs"] - df["ls"])
-        boolean_score = run_full_suite(get_boolean_df(df, config))
+        boolean_score = run_full_suite(get_boolean_df(df, config, task))
         scores.append(real_score)
         scores_boolean.append(boolean_score)
     final_scores = {}
