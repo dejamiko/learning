@@ -35,11 +35,17 @@ class VisualisationMethod(AutoName):
     UMAP = auto()
 
 
-class ObjectSelectionStrategy(AutoName):
+class ObjectSelectionStrategyThreshold(AutoName):
     DENSITY = auto()
     RANDOM = auto()
     INTERVALS = auto()
     GREEDY = auto()
+
+
+class ObjectSelectionStrategyAffine(AutoName):
+    RANDOM = auto()
+    GREEDY_P = auto()
+    GREEDY_R = auto()
 
 
 class SimilarityMeasure(AutoName):

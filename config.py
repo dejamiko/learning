@@ -1,8 +1,9 @@
 from tm_utils import (
     VisualisationMethod,
-    ObjectSelectionStrategy,
+    ObjectSelectionStrategyThreshold,
     SimilarityMeasure,
     ImageEmbeddings,
+    ObjectSelectionStrategyAffine,
 )
 
 
@@ -36,12 +37,13 @@ class Config:
     BIN = True
 
     # Threshold approximation solver
-    OBJECT_SELECTION_STRATEGY = ObjectSelectionStrategy.DENSITY
+    OBJECT_SELECTION_STRATEGY_T = ObjectSelectionStrategyThreshold.DENSITY
     USE_REAL_THRESHOLD = False
     USE_TRANSFER_EVALUATION = False
 
     # Affine approximation solver
     MERGING_FACTOR = 0.5
+    OBJECT_SELECTION_STRATEGY_A = ObjectSelectionStrategyAffine.RANDOM
 
     # Random object
     OBJ_NUM = 40

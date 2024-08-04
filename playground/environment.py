@@ -171,6 +171,7 @@ class Environment:
     def get_real_transfer_probability(self, i, j):
         """
         Get the real transfer probability for two objects based on the underlying storage implementation.
+        Use sparingly, only when you would get the actual demo success information.
         :param i: The first object index
         :param j: The second object index
         :return: The real transfer probability for two objects.

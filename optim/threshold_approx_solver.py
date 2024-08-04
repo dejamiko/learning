@@ -7,7 +7,7 @@ from optim.approx_solver import ApproximationSolver
 from optim.mh import get_all_heuristics
 from optim.solver import evaluate_all_heuristics
 from tm_utils import (
-    ObjectSelectionStrategy as EstStg,
+    ObjectSelectionStrategyThreshold as EstStg,
     get_object_indices,
 )
 
@@ -22,20 +22,20 @@ class ThresholdApproximationSolver(ApproximationSolver):
 
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
+        to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
         # go through the objects and select the one that maximizes the expected information gain
-        if self.config.OBJECT_SELECTION_STRATEGY == EstStg.DENSITY:
-            return self._density_selection(selected)
-        elif self.config.OBJECT_SELECTION_STRATEGY == EstStg.RANDOM:
-            to_choose = set(selected) - set(self.heuristic.locked_subsolution)
-            return self._rng.choice(list(to_choose))
-        elif self.config.OBJECT_SELECTION_STRATEGY == EstStg.INTERVALS:
-            return self._interval_selection(selected)
-        elif self.config.OBJECT_SELECTION_STRATEGY == EstStg.GREEDY:
-            return self._greedy_selection(selected)
-        else:
-            raise ValueError(
-                f"Unknown threshold estimation strategy: {self.config.OBJECT_SELECTION_STRATEGY}"
-            )
+        match self.config.OBJECT_SELECTION_STRATEGY_T:
+            case EstStg.DENSITY:
+                return self._density_selection(to_search)
+            case EstStg.RANDOM:
+                return self._rng.choice(to_search)
+            case EstStg.INTERVALS:
+                return self._interval_selection(to_search)
+            case EstStg.GREEDY:
+                return self._greedy_selection(to_search)
+        raise ValueError(
+            f"Unknown object selection strategy for threshold solver: `{self.config.OBJECT_SELECTION_STRATEGY_T}`"
+        )
 
     def _update_state(self, obj_selected):
         self._update_bounds(obj_selected)
@@ -59,9 +59,8 @@ class ThresholdApproximationSolver(ApproximationSolver):
             self.threshold_lower_bound = 0.0
             self.threshold_upper_bound = 1.0
 
-    def _density_selection(self, selected):
+    def _density_selection(self, to_search):
         # this can be estimated by selecting one that has the most objects that have a similarity between the bounds
-        to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
         best_object_index = self._rng.choice(to_search)
         best_score = 0
         for s in to_search:
@@ -78,8 +77,7 @@ class ThresholdApproximationSolver(ApproximationSolver):
                 best_object_index = s
         return best_object_index
 
-    def _interval_selection(self, selected):
-        to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
+    def _interval_selection(self, to_search):
         best_object_index = self._rng.choice(to_search)
         best_score = np.inf
         for s in to_search:
@@ -103,9 +101,8 @@ class ThresholdApproximationSolver(ApproximationSolver):
                     best_object_index = s
         return best_object_index
 
-    def _greedy_selection(self, selected):
+    def _greedy_selection(self, to_search):
         # find the selected object that has the most objects that are below the estimated threshold
-        to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
         best_object_index = self._rng.choice(to_search)
         best_score = -np.inf
         for s in to_search:
@@ -122,21 +119,20 @@ class ThresholdApproximationSolver(ApproximationSolver):
         return best_object_index
 
     def _update_bounds(self, obj_ind):
-        # TODO Work on this taking into account the noisy bound problem
         success_indices = []
         failure_indices = []
         for o in self.objects:
             if o.task != self.objects[obj_ind].task:
                 continue
-            if self.env.get_transfer_success(obj_ind, o.index):
+            if self.env.get_real_transfer_probability(obj_ind, o.index) >= self.config.PROB_THRESHOLD:
                 success_indices.append(o.index)
             else:
                 failure_indices.append(o.index)
         for s_i in success_indices:
-            sim = self.env.get_visual_similarity(obj_ind, s_i)
+            sim = self.env.get_real_transfer_probability(obj_ind, s_i)
             self.threshold_upper_bound = min(self.threshold_upper_bound, sim)
         for f_i in failure_indices:
-            sim = self.env.get_visual_similarity(obj_ind, f_i)
+            sim = self.env.get_real_transfer_probability(obj_ind, f_i)
             self.threshold_lower_bound = max(self.threshold_lower_bound, sim)
         if self.config.VERBOSITY > 0:
             print(
@@ -153,14 +149,11 @@ if __name__ == "__main__":
     methods = [m for m in EstStg]
     heuristics = get_all_heuristics()
 
-    stopit_logger = logging.getLogger("stopit")
-    stopit_logger.setLevel(logging.ERROR)
-
     for method in methods:
         config = Config()
         # config.MH_TIME_BUDGET = 0.1
         config.MH_BUDGET = 5000
-        config.OBJECT_SELECTION_STRATEGY = method
+        config.OBJECT_SELECTION_STRATEGY_T = method
         config.VERBOSITY = 0
         config.USE_REAL_THRESHOLD = False
         single_results = evaluate_all_heuristics(

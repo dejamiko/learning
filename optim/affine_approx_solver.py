@@ -1,10 +1,12 @@
+import numpy as np
 from scipy.stats import linregress
 
 from config import Config
 from optim.approx_solver import ApproximationSolver
+from optim.mh import get_all_heuristics
 from optim.solver import evaluate_all_heuristics
 from tm_utils import (
-    ObjectSelectionStrategy as EstStg,
+    ObjectSelectionStrategyAffine as EstStg,
     get_object_indices,
 )
 
@@ -29,30 +31,21 @@ class AffineApproximationSolver(ApproximationSolver):
 
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
+        to_search = list(set(selected) - set(self.heuristic.locked_subsolution))
         # go through the objects and select the one that maximizes the expected information gain
-        if self.config.OBJECT_SELECTION_STRATEGY == EstStg.RANDOM:
-            to_choose = set(selected) - set(self.heuristic.locked_subsolution)
-            return self._rng.choice(list(to_choose))
-        # TODO add better selection strategies
-        else:
-            raise ValueError(
-                f"Unknown threshold estimation strategy: {self.config.OBJECT_SELECTION_STRATEGY}"
-            )
+        match self.config.OBJECT_SELECTION_STRATEGY_A:
+            case EstStg.RANDOM:
+                return self._rng.choice(to_search)
+            case EstStg.GREEDY_P:
+                return self._select_greedy_p(to_search)
+            case EstStg.GREEDY_R:
+                return self._select_greedy_r(to_search)
+        raise ValueError(
+            f"Unknown object selection strategy for affine solver: `{self.config.OBJECT_SELECTION_STRATEGY_A}`"
+        )
 
     def _update_affine_function(self, obj_ind):
-        transfer_rates = []
-        visual_sims = []
-        for o in self.objects:
-            if o.task != self.objects[obj_ind].task:
-                continue
-            # does this make sense? It basically mimics trying the transfer 10 times so it should be sound
-            transfer_rates.append(
-                self.env.get_real_transfer_probability(obj_ind, o.index)
-            )
-            visual_sims.append(self.env.get_visual_similarity(obj_ind, o.index))
-
-        # find the best fit function for this data
-        slope, intercept, r, p, std_err = linregress(visual_sims, transfer_rates)
+        slope, intercept, p, r = self._get_linregress_for_ind(obj_ind)
         self.affine_function = (
             float(
                 self.config.MERGING_FACTOR * slope
@@ -63,13 +56,72 @@ class AffineApproximationSolver(ApproximationSolver):
                 + (1 - self.config.MERGING_FACTOR) * self.affine_function[1]
             ),
         )
-        print(f"With function {self.affine_function}, r={r}, p={p}")
+        if self.config.VERBOSITY > 0:
+            print(f"With function {self.affine_function}, r={r}, p={p}")
+
+    def _get_linregress_for_ind(self, obj_ind):
+        transfer_rates = []
+        visual_sims = []
+        for o in self.objects:
+            if o.task != self.objects[obj_ind].task:
+                continue
+            # does this make sense? It basically mimics trying the transfer 10 times so it should be sound
+            transfer_rates.append(
+                self.env.get_real_transfer_probability(obj_ind, o.index)
+            )
+            visual_sims.append(self.env.get_visual_similarity(obj_ind, o.index))
+        # find the best fit function for this data
+        slope, intercept, r, p, std_err = linregress(visual_sims, transfer_rates)
+        return slope, intercept, p, r
+
+    def _select_greedy_p(self, to_search):
+        best_ind = None
+        best_p = None
+        for ind in to_search:
+            _, _, p, _ = self._get_linregress_for_ind(ind)
+            if best_p is None or p < best_p:
+                best_p = p
+                best_ind = ind
+        return best_ind
+
+    def _select_greedy_r(self, to_search):
+        best_ind = None
+        best_r = None
+        for ind in to_search:
+            _, _, _, r = self._get_linregress_for_ind(ind)
+            if best_r is None or r < best_r:
+                best_r = r
+                best_ind = ind
+        return best_ind
 
 
 if __name__ == "__main__":
-    c = Config()
-    c.OBJECT_SELECTION_STRATEGY = EstStg.RANDOM
+    results = {}
 
-    results = evaluate_all_heuristics(AffineApproximationSolver, c, n=1)
-    for name, mean, std, total_time in results:
-        print(f"{name}: {mean} +/- {std}, time: {total_time}")
+    methods = [m for m in EstStg]
+    heuristics = get_all_heuristics()
+
+    for method in methods:
+        config = Config()
+        # config.MH_TIME_BUDGET = 0.1
+        config.MH_BUDGET = 5000
+        config.OBJECT_SELECTION_STRATEGY_A = method
+        config.VERBOSITY = 0
+        config.USE_REAL_THRESHOLD = False
+        single_results = evaluate_all_heuristics(
+            AffineApproximationSolver, config, n=1
+        )
+        for name, mean, std, time_taken in single_results:
+            results[(name, method)] = (mean, std, time_taken)
+
+    # report the average per heuristic
+    for heuristic in heuristics:
+        avg = np.mean([results[(heuristic.__name__, method)][0] for method in methods])
+        print(f"{heuristic.__name__}: {avg}")
+
+    # report the average per method
+    for method in methods:
+        avg = np.mean(
+            [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
+        )
+        print(f"{method.value}: {avg}")
