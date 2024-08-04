@@ -85,7 +85,8 @@ class ObjectStorage:
                 list(object_data.keys()), self.c.OBJ_NUM, replace=False
             )
         else:
-            object_keys = object_data.keys()
+            self._rng.shuffle(list(object_data.keys()))
+            object_keys = object_data
 
         for i, o in enumerate(object_keys):
             img_path = object_data[o]

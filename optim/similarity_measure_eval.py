@@ -18,24 +18,31 @@ from sklearn.svm import SVR
 
 from config import Config
 from playground.environment import Environment
+from tm_utils import Task
 
 
 def extract_features(environment, config):
     ls = environment.storage._latent_similarities
     vs = np.zeros((config.OBJ_NUM, config.OBJ_NUM))
+    g_indices = []
+    p_indices = []
+    h_indices = []
     for i in range(config.OBJ_NUM):
         for j in range(config.OBJ_NUM):
             vs[i, j] = environment.storage.get_visual_similarity(i, j)
+        if environment.get_objects()[i].task == Task.GRASPING:
+            g_indices.append(i)
+        elif environment.get_objects()[i].task == Task.PUSHING:
+            p_indices.append(i)
+        else:
+            h_indices.append(i)
 
-    start_g, stop_g = 0, 16
-    start_p, stop_p = 17, 34
-    start_h, stop_h = 35, 51
-    g_ls = ls[start_g:stop_g, start_g:stop_g]
-    g_vs = vs[start_g:stop_g, start_g:stop_g]
-    p_ls = ls[start_p:stop_p, start_p:stop_p]
-    p_vs = vs[start_p:stop_p, start_p:stop_p]
-    h_ls = ls[start_h:stop_h, start_h:stop_h]
-    h_vs = vs[start_h:stop_h, start_h:stop_h]
+    g_ls = ls[g_indices][:, g_indices]
+    g_vs = vs[g_indices][:, g_indices]
+    p_ls = ls[p_indices][:, p_indices]
+    p_vs = vs[p_indices][:, p_indices]
+    h_ls = ls[h_indices][:, h_indices]
+    h_vs = vs[h_indices][:, h_indices]
 
     return (
         (g_ls, p_ls, h_ls),
@@ -58,11 +65,17 @@ def get_boolean_df(df, config):
 
 
 def get_pearsons_correlation_coefficient(df):
-    return float(pearsonr(df["vs"], df["ls"])[0])
+    c = pearsonr(df["vs"], df["ls"])[0]
+    if np.isnan(c):  # handle the nan case
+        c = 0.0
+    return float(c)
 
 
 def get_spearmans_correlation_coefficient(df):
-    return float(spearmanr(df["vs"], df["ls"])[0])
+    c = spearmanr(df["vs"], df["ls"])[0]
+    if np.isnan(c):  # handle the nan case
+        c = 0.0
+    return float(c)
 
 
 def get_f1_score(df):
@@ -107,7 +120,10 @@ def get_smape(df):
 
 
 def get_kendalls_tau(df):
-    return float(kendalltau(df["ls"], df["vs"])[0])
+    c = kendalltau(df["ls"], df["vs"])[0]
+    if np.isnan(c):  # handle the nan case
+        c = 0.0
+    return float(c)
 
 
 def get_dinobot_nn_metric(df):
@@ -232,18 +248,33 @@ def run_across_tasks(config, environment):
     for k in final_scores_boolean.keys():
         final_scores_boolean[k] /= len(scores_boolean)
 
-    get_bland_altman_plots(means, diffs)
+    # get_bland_altman_plots(means, diffs)
 
     return final_scores, final_scores_boolean
 
 
 if __name__ == "__main__":
     config = Config()
-    config.OBJ_NUM = 51
-    environment = Environment(config)
-    scores, scores_b = run_across_tasks(config, environment)
-    pprint(scores)
-    pprint(scores_b)
+    seed_num = 10
+    scores_all = {}
+    scores_b_all = {}
+    for seed in range(seed_num):
+        config.SEED = seed
+        environment = Environment(config)
+        scores, scores_b = run_across_tasks(config, environment)
+        for k in scores.keys():
+            if k not in scores_all:
+                scores_all[k] = scores[k]
+                scores_b_all[k] = scores_b[k]
+            else:
+                scores_all[k] += scores[k]
+                scores_b_all[k] += scores_b[k]
+    for k in scores_all.keys():
+        scores_all[k] /= seed_num
+        scores_b_all[k] /= seed_num
+
+    pprint(scores_all)
+    pprint(scores_b_all)
 
     # {'Concordance correlation coefficient': 0.3776022389862841,
     #  'DINOBot NN score': 0.26348039215686275,
