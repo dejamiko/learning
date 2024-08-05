@@ -104,7 +104,7 @@ class Visualiser:
         fig.write_html(f"visualisation_{self.config.VISUALISATION_METHOD}.html")
 
     def _prepare_data(self, all_objects):
-        all_objects = [o.latent_repr for o in all_objects]
+        all_objects = [o.visible_repr for o in all_objects]
         all_objects = np.array(all_objects)
         if self.config.VISUALISATION_METHOD == VM.PCA:
             pca = PCA(n_components=2)

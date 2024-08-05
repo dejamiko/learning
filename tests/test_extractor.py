@@ -235,6 +235,60 @@ def test_extractor_no_embeddings_swin_works(empty_dir_and_config):
     assert np.allclose(embeddings[0][2:10], expected)
 
 
+def test_extractor_no_embeddings_vit_msn_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_EMBEDDINGS = ImageEmbeddings.VIT_MSN
+    embeddings = Extractor()(emb_dir, config)
+    expected = [
+        -0.01929749,
+        0.82064128,
+        0.3429876,
+        -0.02154515,
+        -0.06944458,
+        0.08527613,
+        0.95244491,
+        -0.24541642,
+    ]
+    assert embeddings.shape == (5, 384)
+    assert np.allclose(embeddings[0][2:10], expected)
+
+
+def test_extractor_no_embeddings_dobbe_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
+    embeddings = Extractor()(emb_dir, config)
+    expected = [
+        0.00000000e00,
+        9.76836532e-02,
+        0.00000000e00,
+        9.16914069e-05,
+        5.58353439e-02,
+        9.66009051e-02,
+        1.58980978e-03,
+        1.07888551e-02,
+    ]
+    assert embeddings.shape == (5, 512)
+    assert np.allclose(embeddings[0][2:10], expected)
+
+
+def test_extractor_no_embeddings_vc_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_EMBEDDINGS = ImageEmbeddings.VC
+    embeddings = Extractor()(emb_dir, config)
+    expected = [
+        -0.08057675,
+        0.05576405,
+        0.04301557,
+        -0.15548532,
+        -0.05920196,
+        -0.09089668,
+        -0.04518005,
+        -0.13219847,
+    ]
+    assert embeddings.shape == (5, 768)
+    assert np.allclose(embeddings[0][2:10], expected)
+
+
 def test_extractor_wrong_method_fails(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     config.IMAGE_EMBEDDINGS = "different metric"

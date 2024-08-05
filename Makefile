@@ -20,3 +20,7 @@ a_solver:
 
 sim:
 	@python3 -m optim.similarity_measure_eval
+
+
+vis:
+	@python3 -m playground.visualiser

@@ -323,3 +323,6 @@ pyrightconfig.json
 
 wandb/
 .idea/
+
+eai_vc/
+dino_vit_features/

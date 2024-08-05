@@ -15,7 +15,10 @@ from transformers import (
     ViTImageProcessor,
     ViTModel,
     SwinModel,
+    ViTMSNModel,
 )
+
+from vc_models.models.vit import model_utils
 
 from tm_utils import ImageEmbeddings
 
@@ -74,6 +77,13 @@ class Extractor:
                 return self._extract_convnet(image)
             case ImageEmbeddings.SWIN:
                 return self._extract_swin(image)
+            case ImageEmbeddings.VIT_MSN:
+                return self._extract_vit_msn(image)
+            # robotics specific models
+            case ImageEmbeddings.DOBBE:
+                return self._extract_dobbe(image)
+            case ImageEmbeddings.VC:
+                return self._extract_vc(image)
         raise ValueError(f"The method provided {config.IMAGE_EMBEDDINGS} is unknown.")
 
     @staticmethod
@@ -155,7 +165,9 @@ class Extractor:
         model = AutoModel.from_pretrained("facebook/dinov2-base")
 
         inputs = processor(images=image, return_tensors="pt")
-        outputs = model(**inputs)
+        with torch.no_grad():
+            outputs = model(**inputs)
+
         cls_token = outputs.pooler_output
         return cls_token.flatten().tolist()
 
@@ -191,7 +203,9 @@ class Extractor:
         model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
         inputs = processor(images=image, return_tensors="pt")
 
-        outputs = model(**inputs)
+        with torch.no_grad():
+            outputs = model(**inputs)
+
         last_hidden_states = outputs.last_hidden_state.squeeze().mean(axis=0)
         return last_hidden_states.detach().numpy().tolist()
 
@@ -232,3 +246,42 @@ class Extractor:
 
         last_hidden_states = outputs.last_hidden_state
         return last_hidden_states.detach().squeeze().numpy().mean(axis=0).tolist()
+
+    @staticmethod
+    def _extract_vit_msn(image):
+        image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
+        model = ViTMSNModel.from_pretrained("facebook/vit-msn-small")
+
+        inputs = image_processor(images=image, return_tensors="pt")
+
+        with torch.no_grad():
+            outputs = model(**inputs)
+
+        return outputs.last_hidden_state.detach().numpy().squeeze().mean(0).tolist()
+
+    @staticmethod
+    def _extract_dobbe(image):
+        model = timm.create_model("hf_hub:notmahi/dobb-e", pretrained=True)
+
+        model.eval()
+
+        data_config = timm.data.resolve_model_data_config(model)
+        transforms = timm.data.create_transform(**data_config, is_training=False)
+
+        image = Image.fromarray(image)
+
+        outputs = model(transforms(image).unsqueeze(0))
+
+        outputs = outputs.detach().numpy().squeeze()
+        return outputs.tolist()
+
+    @staticmethod
+    def _extract_vc(image):
+        model, embd_size, model_transforms, model_info = model_utils.load_model(
+            model_utils.VC1_BASE_NAME
+        )
+
+        image = Image.fromarray(image)
+
+        transformed_img = model_transforms(image)
+        return model(transformed_img.unsqueeze(0)).detach().squeeze().numpy().tolist()

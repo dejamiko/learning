@@ -75,3 +75,6 @@ class ImageEmbeddings(AutoName):
     VIT = auto()
     CONVNET = auto()
     SWIN = auto()
+    VIT_MSN = auto()
+    DOBBE = auto()
+    VC = auto()
