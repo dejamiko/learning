@@ -19,8 +19,12 @@ a_solver:
 
 
 sim:
-	@python3 -m optim.similarity_measure_eval
+	@python3 -m analysis.similarity_measure_eval
 
 
 vis:
-	@python3 -m playground.visualiser
+	@python3 -m analysis.visualiser
+
+
+run_server:
+	@python3 -m analysis.http_server

@@ -7,6 +7,9 @@ import timm
 import torch
 import torchvision.transforms as T
 from PIL import Image
+from detectron2.config import get_cfg
+from detectron2.engine import DefaultPredictor
+from detectron2.model_zoo import model_zoo
 from dino_vit_features.extractor import ViTExtractor
 from timm.data.transforms_factory import create_transform
 from transformers import (
@@ -20,7 +23,7 @@ from transformers import (
 
 from vc_models.models.vit import model_utils
 
-from tm_utils import ImageEmbeddings
+from tm_utils import ImageEmbeddings, ContourImageEmbeddings
 
 
 class Extractor:
@@ -84,6 +87,15 @@ class Extractor:
                 return self._extract_dobbe(image)
             case ImageEmbeddings.VC:
                 return self._extract_vc(image)
+            # contour models
+            case ContourImageEmbeddings.MASK_RCNN:
+                return self._extract_mask_rcnn(image, config.MASK_RCNN_THRESHOLD)
+            case ContourImageEmbeddings.PANOPTIC_FPN:
+                return self._extract_panoptic_fpn(image, config.PANOPTIC_FPN_THRESHOLD)
+            case ContourImageEmbeddings.CASCADE_MASK_RCNN:
+                return self._extract_cascade_mask_rcnn(
+                    image, config.CASCADE_MASK_RCNN_THRESHOLD
+                )
         raise ValueError(f"The method provided {config.IMAGE_EMBEDDINGS} is unknown.")
 
     @staticmethod
@@ -285,3 +297,58 @@ class Extractor:
 
         transformed_img = model_transforms(image)
         return model(transformed_img.unsqueeze(0)).detach().squeeze().numpy().tolist()
+
+    def _extract_mask_rcnn(self, image, threshold):  # pragma: no cover
+        return self._extract_detectron(
+            image, "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml", threshold
+        )
+
+    def _extract_panoptic_fpn(self, image, threshold):  # pragma: no cover
+        return self._extract_detectron(
+            image, "COCO-PanopticSegmentation/panoptic_fpn_R_50_3x.yaml", threshold
+        )
+
+    def _extract_cascade_mask_rcnn(self, image, threshold):  # pragma: no cover
+        return self._extract_detectron(
+            image, "Misc/cascade_mask_rcnn_R_50_FPN_3x.yaml", threshold
+        )
+
+    @staticmethod
+    def _extract_detectron(image, model, threshold):  # pragma: no cover
+        # This only runs on gpu
+        cfg = get_cfg()
+        cfg.merge_from_file(model_zoo.get_config_file(model))
+        cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = threshold
+        cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(model)
+        predictor = DefaultPredictor(cfg)
+
+        # Perform inference
+        outputs = predictor(image)
+        # Get the predicted masks
+        pred_masks = outputs["instances"].pred_masks.to("cpu").numpy()
+
+        # Create a blank mask with the same dimensions as the input image
+        contour_image = np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8)
+
+        # Get the contours from the binary masks and draw them on the blank mask
+        for mask in pred_masks:
+            # Convert the mask to uint8 type
+            mask = (mask * 255).astype(np.uint8)
+            # Find contours
+            contours_info, _ = cv2.findContours(
+                mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
+            )
+            for contour in contours_info:
+                # Draw the contours on the blank mask
+                cv2.drawContours(
+                    contour_image, [contour], -1, (255), 2
+                )  # Draw in white
+
+        _, binary = cv2.threshold(contour_image, 127, 255, cv2.THRESH_BINARY)
+
+        # Find contours
+        contours, _ = cv2.findContours(
+            contour_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+        )
+
+        return np.vstack(contours).squeeze().tolist()

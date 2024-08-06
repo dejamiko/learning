@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 
 import numpy as np
+from scipy.spatial.distance import directed_hausdorff, cdist
 
-from tm_utils import Task, SimilarityMeasure
+from tm_utils import Task, SimilarityMeasure, ContourSimilarityMeasure
 
 
 class Object(ABC):
@@ -28,24 +29,16 @@ class Object(ABC):
         match self.c.SIMILARITY_MEASURE:
             case SimilarityMeasure.COSINE:
                 return self._get_cos_sim(self.visible_repr, other.visible_repr)
-            case SimilarityMeasure.EUCLIDEAN_INV:
-                return self._get_euclidean_inverse(
-                    self.visible_repr, other.visible_repr
-                )
-            case SimilarityMeasure.EUCLIDEAN_EXP:
-                return self._get_euclidean_exponential(
-                    self.visible_repr, other.visible_repr, self.c.SIM_MEASURE_SIGMA
-                )
-            case SimilarityMeasure.MANHATTAN_INV:
-                return self._get_manhattan_inverse(
-                    self.visible_repr, other.visible_repr
-                )
-            case SimilarityMeasure.MANHATTAN_EXP:
-                return self._get_manhattan_exponential(
-                    self.visible_repr, other.visible_repr, self.c.SIM_MEASURE_SIGMA
-                )
+            case SimilarityMeasure.EUCLIDEAN:
+                return self._get_euclidean(self.visible_repr, other.visible_repr)
+            case SimilarityMeasure.MANHATTAN:
+                return self._get_manhattan(self.visible_repr, other.visible_repr)
             case SimilarityMeasure.PEARSON:
                 return self._get_pearson(self.visible_repr, other.visible_repr)
+            case ContourSimilarityMeasure.HAUSDORFF:
+                return self._get_hausdorff(self.visible_repr, other.visible_repr)
+            case ContourSimilarityMeasure.ASD:
+                return self._get_asd(self.visible_repr, other.visible_repr)
         raise ValueError(
             f"Unknown similarity measure provided `{self.c.SIMILARITY_MEASURE}`."
         )
@@ -65,21 +58,34 @@ class Object(ABC):
         return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + eps)
 
     @staticmethod
-    def _get_euclidean_inverse(a, b):
+    def _get_euclidean(a, b):
         return 1 / (1 + np.linalg.norm(a - b))
 
     @staticmethod
-    def _get_euclidean_exponential(a, b, sigma):
-        return np.exp(-np.linalg.norm(a - b) / (2 * sigma**2))
-
-    @staticmethod
-    def _get_manhattan_inverse(a, b):
+    def _get_manhattan(a, b):
         return 1 / (1 + np.sum(np.abs(a - b)))
-
-    @staticmethod
-    def _get_manhattan_exponential(a, b, sigma):
-        return np.exp(-np.sum(np.abs(a - b)) / (2 * sigma**2))
 
     @staticmethod
     def _get_pearson(a, b):
         return np.corrcoef(a, b)[0, 1]
+
+    @staticmethod
+    def _get_hausdorff(a, b):
+        hausdorff_dist = max(directed_hausdorff(a, b)[0], directed_hausdorff(b, a)[0])
+        return 1 / (1 + hausdorff_dist)
+
+    @staticmethod
+    def _get_asd(a, b):
+        dist_matrix = cdist(a, b)
+
+        # Calculate the average minimum distance from points1 to points2
+        min_distances_1_to_2 = np.min(dist_matrix, axis=1)
+        avg_dist_1_to_2 = np.mean(min_distances_1_to_2)
+
+        # Calculate the average minimum distance from points2 to points1
+        min_distances_2_to_1 = np.min(dist_matrix, axis=0)
+        avg_dist_2_to_1 = np.mean(min_distances_2_to_1)
+
+        # The average surface distance is the mean of these two values
+        asd = (avg_dist_1_to_2 + avg_dist_2_to_1) / 2.0
+        return 1 / (1 + asd)

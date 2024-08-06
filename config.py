@@ -36,6 +36,10 @@ class Config:
     FACET = "key"
     BIN = True
 
+    MASK_RCNN_THRESHOLD = 0.003
+    PANOPTIC_FPN_THRESHOLD = 0.004
+    CASCADE_MASK_RCNN_THRESHOLD = 0.003
+
     # Threshold approximation solver
     OBJECT_SELECTION_STRATEGY_T = ObjectSelectionStrategyThreshold.DENSITY
     USE_REAL_THRESHOLD = False

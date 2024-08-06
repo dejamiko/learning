@@ -59,11 +59,14 @@ class ObjectSelectionStrategyAffine(AutoName):
 
 class SimilarityMeasure(AutoName):
     COSINE = auto()
-    EUCLIDEAN_INV = auto()
-    EUCLIDEAN_EXP = auto()
-    MANHATTAN_INV = auto()
-    MANHATTAN_EXP = auto()
+    EUCLIDEAN = auto()
+    MANHATTAN = auto()
     PEARSON = auto()
+
+
+class ContourSimilarityMeasure(AutoName):
+    HAUSDORFF = auto()
+    ASD = auto()
 
 
 class ImageEmbeddings(AutoName):
@@ -78,3 +81,9 @@ class ImageEmbeddings(AutoName):
     VIT_MSN = auto()
     DOBBE = auto()
     VC = auto()
+
+
+class ContourImageEmbeddings(AutoName):
+    MASK_RCNN = auto()
+    PANOPTIC_FPN = auto()
+    CASCADE_MASK_RCNN = auto()

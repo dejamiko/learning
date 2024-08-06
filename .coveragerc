@@ -3,3 +3,4 @@ omit =
     */.cache/*
     dino_vit_features/*
     tests/*
+    eai_vc/*

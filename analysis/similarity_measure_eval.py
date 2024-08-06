@@ -47,7 +47,7 @@ def extract_features(environment, config):
     return (
         (g_ls, p_ls, h_ls),
         (g_vs, p_vs, h_vs),
-        ("grasping", "pushing", "hammering"),
+        (Task.GRASPING, Task.PUSHING, Task.HAMMERING),
     )
 
 

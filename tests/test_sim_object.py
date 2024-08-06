@@ -65,6 +65,8 @@ def test_object_fields_work(object_fixture, images_fixture):
     assert obj_1.c == c
     assert np.allclose(obj_0.visible_repr, [0.1, 0.2, 0.3])
     assert np.allclose(obj_1.visible_repr, [1.1, 1.2, 1.3])
+    assert obj_0.image_path == "tests/_test_assets"
+    assert obj_1.image_path == "tests/_test_assets"
 
 
 def test_get_visual_similarity_works(object_fixture):

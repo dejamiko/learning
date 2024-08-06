@@ -1,4 +1,4 @@
-# THIS IS PRETTY USELESS, CAN KEEP AND MENTION IN THE REPORT THAT I HAVE TOO LITTLE DATA TO TRAIN SOMETHING GOOD
+# WRITE IN THE REPORT THAT I HAVE TOO LITTLE DATA TO TRAIN SOMETHING GOOD
 import os
 import pandas as pd
 import torch
@@ -118,7 +118,7 @@ def prepare_data():
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
     )
-    base_dir = "/Users/mikolajdeja/Coding/learning"
+    base_dir = "/"
     df = pd.read_csv(os.path.join(base_dir, "_data/similarity_df.csv"))
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
     train_dataset = ImagePairDataset(

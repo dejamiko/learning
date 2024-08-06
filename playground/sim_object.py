@@ -7,6 +7,7 @@ class SimObject(Object):
         super().__init__(index, c, task)
         self.name = name
         self.visible_repr = Extractor()(img_path, c)[0]
+        self.image_path = img_path
 
     def __str__(self):
         return f"{self.name}, {self.visible_repr}, {self.task.value}"

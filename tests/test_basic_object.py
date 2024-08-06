@@ -3,7 +3,7 @@ from pytest import fixture, raises
 
 from config import Config
 from playground.basic_object import BasicObject
-from tm_utils import Task, get_rng, SimilarityMeasure
+from tm_utils import Task, get_rng, SimilarityMeasure, ContourSimilarityMeasure
 
 
 def test_object_init_works():
@@ -165,32 +165,16 @@ def test_repr_works(object_fixture):
 
 def test_get_visual_similarity_euclidean_inv_works(object_fixture):
     obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN_INV
+    c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN
     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.2402530733520421)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
-
-
-def test_get_visual_similarity_euclidean_exp_works(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN_EXP
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.20574066108381442)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_get_visual_similarity_manhattan_inv_works(object_fixture):
     obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN_INV
+    c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN
     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.09090909090909091)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
-
-
-def test_get_visual_similarity_manhattan_exp_works(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN_EXP
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.006737946999085467)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
@@ -204,6 +188,34 @@ def test_get_visual_similarity_pearson_works(object_fixture):
     obj_1.visible_repr = np.zeros_like(obj_1.visible_repr)
     obj_1.visible_repr[-1] = 1
     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6666666666666666)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_hausdorff_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = ContourSimilarityMeasure.HAUSDORFF
+    obj_0.visible_repr = np.array(
+        [[152, 85], [151, 86], [139, 86], [137, 88], [137, 118], [138, 119], [138, 120]]
+    )
+    obj_1.visible_repr = np.array(
+        [[52, 85], [51, 86], [39, 86], [37, 88], [37, 118], [38, 119], [38, 120]]
+    )
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.009900990099009901)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_asd_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = ContourSimilarityMeasure.ASD
+    obj_0.visible_repr = np.array(
+        [[152, 85], [151, 86], [139, 86], [137, 88], [137, 118], [138, 119], [138, 120]]
+    )
+    obj_1.visible_repr = np.array(
+        [[52, 85], [51, 86], [39, 86], [37, 88], [37, 118], [38, 119], [38, 120]]
+    )
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.010536669781422939)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
