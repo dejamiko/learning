@@ -162,25 +162,6 @@ def test_extractor_no_embeddings_dino_2_full_works(empty_dir_and_config):
     assert np.allclose(embeddings[0][2:10], expected)
 
 
-@mark.skip(reason="The library cannot be installed without CUDA")
-def test_extractor_no_embeddings_mamba_vision_works(empty_dir_and_config):
-    emb_dir, config = empty_dir_and_config
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.MAMBA_VISION
-    embeddings = Extractor()(emb_dir, config)
-    expected = [
-        2.19594669,
-        2.36873817,
-        1.9113816,
-        0.00589865,
-        -0.49594384,
-        1.22531855,
-        -0.76101184,
-        1.61280763,
-    ]
-    assert embeddings.shape == (5, 640)
-    assert np.allclose(embeddings[0][2:10], expected)
-
-
 def test_extractor_no_embeddings_vit_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.VIT

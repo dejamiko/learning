@@ -72,8 +72,6 @@ class Extractor:
                 return self._extract_dino_full(image, config)
             case ImageEmbeddings.DINO_2_FULL:
                 return self._extract_dino_2_full(image)
-            case ImageEmbeddings.MAMBA_VISION:
-                return self._extract_mamba_vision(image, config)
             case ImageEmbeddings.VIT:
                 return self._extract_vit(image)
             case ImageEmbeddings.CONVNET:
@@ -182,30 +180,6 @@ class Extractor:
 
         cls_token = outputs.pooler_output
         return cls_token.flatten().tolist()
-
-    @staticmethod
-    def _extract_mamba_vision(image, config):  # pragma: no cover
-        # THIS ONLY WORKS ON CUDA FOR SOME REASON, CAN'T EVEN INSTALL THE LIBRARY
-        model = AutoModel.from_pretrained(
-            "nvidia/MambaVision-T-1K", trust_remote_code=True
-        )
-
-        model.eval()
-
-        input_resolution = (3, config.LOAD_SIZE, config.LOAD_SIZE)
-
-        transform = create_transform(
-            input_size=input_resolution,
-            is_training=False,
-            mean=model.config.mean,
-            std=model.config.std,
-            crop_mode=model.config.crop_mode,
-            crop_pct=model.config.crop_pct,
-        )
-
-        inputs = transform(image).unsqueeze(0)
-        out_avg_pool, features = model(inputs)
-        return out_avg_pool.squeeze().detach().numpy().tolist()
 
     @staticmethod
     def _extract_vit(image):
