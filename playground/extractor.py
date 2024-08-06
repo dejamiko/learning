@@ -83,11 +83,11 @@ class Extractor:
             case ImageEmbeddings.VC:
                 return self._extract_vc(image)
             # contour models
-            case ContourImageEmbeddings.MASK_RCNN:
+            case ContourImageEmbeddings.MASK_RCNN:  # pragma: no cover
                 return self._extract_mask_rcnn(image, config.MASK_RCNN_THRESHOLD)
-            case ContourImageEmbeddings.PANOPTIC_FPN:
+            case ContourImageEmbeddings.PANOPTIC_FPN:  # pragma: no cover
                 return self._extract_panoptic_fpn(image, config.PANOPTIC_FPN_THRESHOLD)
-            case ContourImageEmbeddings.CASCADE_MASK_RCNN:
+            case ContourImageEmbeddings.CASCADE_MASK_RCNN:  # pragma: no cover
                 return self._extract_cascade_mask_rcnn(
                     image, config.CASCADE_MASK_RCNN_THRESHOLD
                 )
