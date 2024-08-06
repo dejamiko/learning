@@ -146,12 +146,11 @@
 #             objects, selected_indices, reachable_indices_to_selection
 #         )
 import os
-import webbrowser
 
 import dash
+import flask
 import pandas as pd
 import plotly.express as px
-from PIL import Image
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
@@ -170,21 +169,11 @@ def prepare_data():
             vis_sims.append(env.storage.get_visual_similarity(i, j))
             latent_sims.append(env.storage._latent_similarities[i, j])
             image_pairs.append(
-                (env.get_objects()[i].image_path, env.get_objects()[j].image_path)
+                (
+                    os.path.join(env.get_objects()[i].image_path, "image_0.png"),
+                    os.path.join(env.get_objects()[j].image_path, "image_1.png")
+                )
             )
-
-    for i in range(len(image_pairs)):
-        image_1_path, image_2_path = image_pairs[i]
-        image_1_path = os.path.join(image_1_path, "image_0.png")
-        image_2_path = os.path.join(image_2_path, "image_0.png")
-        image_1 = Image.open(image_1_path)
-        image_2 = Image.open(image_2_path)
-        pair_image = Image.new("RGB", (image_1.width + image_2.width, image_1.height))
-        pair_image.paste(image_1, (0, 0))
-        pair_image.paste(image_2, (image_1.width, 0))
-        pair_image_path = os.path.join("_data/precomputed_image_pairs", f"Image{i}.png")
-        pair_image.save(pair_image_path)
-        image_pairs[i] = pair_image_path
 
     data = {
         "visual_similarity": vis_sims,
@@ -194,14 +183,25 @@ def prepare_data():
     return pd.DataFrame(data)
 
 
+def prepare_data_test():
+    # Example DataFrame creation
+    data = {
+        'visual_similarity': [0.1, 0.2, 0.3],
+        'transfer_success_rate': [0.5, 0.6, 0.7],
+        'image_pair_path': ['image_0.png',
+                            'image_1.png',
+                            'image_2.png']
+    }
+    image_folder = "/Users/mikolajdeja/Coding/learning/tests/_test_assets/"
+    return pd.DataFrame(data), image_folder
+
+
 if __name__ == "__main__":
-    df = prepare_data()
+    df, image_folder = prepare_data_test()
 
-    # Base URL for the local server
-    base_url = "http://127.0.0.1:8000/"
-
-    # Initialize the Dash app
+    # Initialize the Dash app with a Flask server
     app = dash.Dash(__name__)
+    server = app.server
 
     # Scatter plot
     fig = px.scatter(
@@ -214,20 +214,35 @@ if __name__ == "__main__":
 
     # Layout
     app.layout = html.Div(
-        [dcc.Graph(id="scatter-plot", figure=fig), html.Div(id="click-data")]
+        [
+            dcc.Graph(id="scatter-plot", figure=fig),
+            html.Div(id="click-data"),
+            html.Div(
+                html.Img(id="displayed-image", style={"display": "none"}),
+                style={"textAlign": "center"}  # Center the image
+            )
+        ]
     )
 
-    # Callback to open the image when a point is clicked
-    @app.callback(Output("click-data", "children"), Input("scatter-plot", "clickData"))
+    # Flask route to serve images
+    @server.route("/images/<path:image_path>")
+    def serve_image(image_path):
+        return flask.send_from_directory(image_folder, image_path)
+
+
+    # Callback to display the image when a point is clicked
+    @app.callback(
+        Output("displayed-image", "src"),
+        Output("displayed-image", "style"),
+        Input("scatter-plot", "clickData")
+    )
     def display_image(click_data):
         if click_data:
             point_index = click_data["points"][0]["pointIndex"]
             image_pair_path = df.iloc[point_index]["image_pair_path"]
-            image_pair_url = base_url + image_pair_path
-            print(f"Opening image: {image_pair_url}")
-            webbrowser.open(image_pair_url)
-        return None
+            image_pair_url = f"/images/{image_pair_path}"
+            return image_pair_url, {"display": "block", "width": "20%", "margin": "auto"}
+        return "", {"display": "none"}
+
 
     app.run_server(debug=True)
-
-    # TODO think if it's possible to compute the image pairs on the fly
