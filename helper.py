@@ -13,8 +13,8 @@ if __name__ == "__main__":
         env = Environment(config)
         print(f"Method {m.value} done in {time.time() - start_time} s")
 
-    for m in ContourImageEmbeddings:
-        start_time = time.time()
-        config.IMAGE_EMBEDDINGS = m
-        env = Environment(config)
-        print(f"Method {m.value} done in {time.time() - start_time} s")
+    # for m in ContourImageEmbeddings:
+    #     start_time = time.time()
+    #     config.IMAGE_EMBEDDINGS = m
+    #     env = Environment(config)
+    #     print(f"Method {m.value} done in {time.time() - start_time} s")

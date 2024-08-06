@@ -7,9 +7,6 @@ import timm
 import torch
 import torchvision.transforms as T
 from PIL import Image
-from detectron2.config import get_cfg
-from detectron2.engine import DefaultPredictor
-from detectron2.model_zoo import model_zoo
 from dino_vit_features.extractor import ViTExtractor
 from timm.data.transforms_factory import create_transform
 from transformers import (
@@ -289,6 +286,9 @@ class Extractor:
 
     @staticmethod
     def _extract_detectron(image, model, threshold):  # pragma: no cover
+        from detectron2.config import get_cfg
+        from detectron2.engine import DefaultPredictor
+        from detectron2.model_zoo import model_zoo
         # This only runs on gpu
         cfg = get_cfg()
         cfg.merge_from_file(model_zoo.get_config_file(model))
