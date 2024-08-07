@@ -1,4 +1,4 @@
-from pprint import pprint
+import json
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,7 +18,29 @@ from sklearn.svm import SVR
 
 from config import Config
 from playground.environment import Environment
-from tm_utils import Task
+from tm_utils import (
+    Task,
+    ImageEmbeddings,
+    SimilarityMeasure,
+    ContourImageEmbeddings,
+    ContourSimilarityMeasure,
+)
+
+metrics_is_larger_better = {
+    "Linear regression R^2": True,
+    "Pearson's correlation": True,
+    "Random forest regression R^2": True,
+    "Support vector regression R^2": True,
+    "MLP regression R^2": True,
+    "Spearman's correlation": True,
+    "Kendall's Tau": True,
+    "Explained variance score": True,
+    "Concordance correlation coefficient": True,
+    "Mean absolute error": False,
+    "Root mean squared error": False,
+    "Symmetric mean absolute percentage error": False,
+    "DINOBot NN score": True,
+}
 
 
 def extract_features(environment, config):
@@ -255,13 +277,10 @@ def run_across_tasks(config, environment):
     return final_scores, final_scores_boolean
 
 
-if __name__ == "__main__":
-    config = Config()
-    config.USE_ALL_IMAGES = True
-    seed_num = 10
+def run_eval_one_config(config, n=10):
     scores_all = {}
     scores_b_all = {}
-    for seed in range(seed_num):
+    for seed in range(n):
         config.SEED = seed
         environment = Environment(config)
         scores, scores_b = run_across_tasks(config, environment)
@@ -273,11 +292,73 @@ if __name__ == "__main__":
                 scores_all[k] += scores[k]
                 scores_b_all[k] += scores_b[k]
     for k in scores_all.keys():
-        scores_all[k] /= seed_num
-        scores_b_all[k] /= seed_num
+        scores_all[k] /= n
+        scores_b_all[k] /= n
+    return scores_all, scores_b_all
 
-    pprint(scores_all)
-    pprint(scores_b_all)
+
+def compare_real(scores_1, scores_2):
+    sc_1, _, _ = scores_1
+    sc_2, _, _ = scores_2
+
+    score_1, score_2 = 0, 0
+    for metric in metrics_is_larger_better.keys():
+        if sc_1[metric] > sc_2[metric]:
+            if metrics_is_larger_better[metric]:
+                score_1 += 1
+            else:
+                score_2 += 1
+        elif sc_1[metric] < sc_2[metric]:
+            if not metrics_is_larger_better[metric]:
+                score_1 += 1
+            else:
+                score_2 += 1
+    return score_1 - score_2
+
+
+def compare_bool(scores_1, scores_2):
+    _, sc_1, _ = scores_1
+    _, sc_2, _ = scores_2
+
+    score_1, score_2 = 0, 0
+    for metric in metrics_is_larger_better.keys():
+        if sc_1[metric] > sc_2[metric]:
+            if metrics_is_larger_better[metric]:
+                score_1 += 1
+            else:
+                score_2 += 1
+        elif sc_1[metric] < sc_2[metric]:
+            if not metrics_is_larger_better[metric]:
+                score_1 += 1
+            else:
+                score_2 += 1
+    return score_1 - score_2
+
+
+def run_and_save(config, filename, n=10):
+    all_scores = {}
+    for emb in ImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in SimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    for emb in ContourImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in ContourSimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    with open(filename, "w") as f:
+        json.dump(all_scores, f)
+
+
+if __name__ == "__main__":
+    config = Config()
+    run_and_save(config, "analysis/results_one_image.json", 100)
+    config = Config()
+    config.USE_ALL_IMAGES = True
+    run_and_save(config, "analysis/results_all_images.json", 100)
 
     # for one image
     # {'Concordance correlation coefficient': 0.3880452044087268,

@@ -121,11 +121,17 @@ class Object(ABC):
 
     @staticmethod
     def _get_hausdorff(a, b):
+        if len(a) == 0 or len(b) == 0:
+            return 0
+
         hausdorff_dist = max(directed_hausdorff(a, b)[0], directed_hausdorff(b, a)[0])
         return 1 / (1 + hausdorff_dist)
 
     @staticmethod
     def _get_asd(a, b):
+        if len(a) == 0 or len(b) == 0:
+            return 0
+
         dist_matrix = cdist(a, b)
 
         # Calculate the average minimum distance from points1 to points2
