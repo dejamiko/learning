@@ -2,11 +2,11 @@ import json
 import os
 
 import numpy as np
-from pytest import fixture, raises, mark
+from pytest import fixture, raises
 
 from config import Config
 from playground.extractor import Extractor
-from tm_utils import ImageEmbeddings
+from tm_utils import ImageEmbeddings, ContourImageEmbeddings
 
 
 @fixture
@@ -97,6 +97,36 @@ def test_extractor_all_embeddings_works(empty_dir_and_config):
     embeddings = Extractor()(emb_dir, config)
     assert embeddings.shape == (5, 2, 3)
     assert np.allclose(embeddings, np.array(expected))
+
+
+def test_extractor_all_embeddings_contour_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
+    # create all embeddings
+    expected = [
+        [[1, 2], [2, 4]],
+        [[1.1, 2.1], [2.1, 4.1]],
+        [[1.2, 2.2], [2.2, 4.2]],
+        [[1.3, 2.3], [2.3, 4.3]],
+        [[1.4, 2.4], [2.4, 4.4]],
+    ]
+    with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
+        json.dump(
+            [
+                {config.IMAGE_EMBEDDINGS.value: expected[0]},
+                {config.IMAGE_EMBEDDINGS.value: expected[1]},
+                {config.IMAGE_EMBEDDINGS.value: expected[2]},
+                {config.IMAGE_EMBEDDINGS.value: expected[3]},
+                {config.IMAGE_EMBEDDINGS.value: expected[4]},
+            ],
+            f,
+        )
+    embeddings = Extractor()(emb_dir, config)
+    assert isinstance(embeddings, list)
+    assert len(embeddings) == 5
+    assert len(embeddings[0]) == 2
+    assert len(embeddings[0][0]) == 2
+    assert np.allclose(embeddings, expected)
 
 
 def test_extractor_no_images_in_dir_fails(empty_dir_and_config):

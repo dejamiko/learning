@@ -18,9 +18,8 @@ from transformers import (
     ViTMSNModel,
 )
 
-from vc_models.models.vit import model_utils
-
 from tm_utils import ImageEmbeddings, ContourImageEmbeddings
+from vc_models.models.vit import model_utils
 
 
 class Extractor:

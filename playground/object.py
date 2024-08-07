@@ -145,8 +145,17 @@ class Object(ABC):
         if not isinstance(lst, list):
             return lst
 
-        if all(isinstance(i, list) and all(not isinstance(j, list) for j in i) for i in lst):
+        if all(
+            isinstance(i, list) and all(not isinstance(j, list) for j in i) for i in lst
+        ):
             return [lst]
 
-        if all(isinstance(i, list) and all(isinstance(j, list) and all(not isinstance(k, list) for k in j) for j in i) for i in lst):
+        if all(
+            isinstance(i, list)
+            and all(
+                isinstance(j, list) and all(not isinstance(k, list) for k in j)
+                for j in i
+            )
+            for i in lst
+        ):
             return lst

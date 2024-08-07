@@ -2,7 +2,7 @@ import time
 
 from config import Config
 from playground.environment import Environment
-from tm_utils import ImageEmbeddings, ContourImageEmbeddings
+from tm_utils import ContourImageEmbeddings
 
 if __name__ == "__main__":
     config = Config()
