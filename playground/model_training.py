@@ -111,15 +111,15 @@ class EarlyStopping:
 def prepare_data():
     transform = transforms.Compose(
         [
-            transforms.Resize((128, 128)),
-            # transforms.RandomHorizontalFlip(),
-            # transforms.RandomRotation(10),
-            # transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+            transforms.Resize((256, 256)),
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomRotation(10),
+            transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
     )
-    base_dir = "/"
+    base_dir = os.getcwd()
     df = pd.read_csv(os.path.join(base_dir, "_data/similarity_df.csv"))
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
     train_dataset = ImagePairDataset(
@@ -134,14 +134,14 @@ def prepare_data():
 
 
 def training_loop(train_loader, val_loader, frozen, backbone):
-    num_epochs = 20
+    num_epochs = 200
     criterion = nn.MSELoss()
     model = SiameseNetwork(backbone=backbone, frozen=frozen).to(device)
     optimizer = optim.AdamW(
-        model.head.parameters() if frozen and backbone else model.parameters(), lr=0.001
+        model.head.parameters() if frozen and backbone else model.parameters(), lr=0.01
     )
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
-    early_stopping = EarlyStopping(patience=10, delta=0.01)
+    early_stopping = EarlyStopping(patience=20, delta=0.01)
 
     for epoch in range(num_epochs):
         model.train()
@@ -179,20 +179,24 @@ def training_loop(train_loader, val_loader, frozen, backbone):
             break
 
     model.load_state_dict(torch.load("checkpoint.pt"))
+    return model
 
 
 if __name__ == "__main__":
     config = {"frozen": False, "backbone": False}
     train_loader, val_loader = prepare_data()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    training_loop(train_loader, val_loader, **config)
-    print("Finished Training")
-    model = SiameseNetwork(**config).to(device)
-    model.eval()
-    with torch.no_grad():
-        img1, img2, labels = next(iter(val_loader))
-        outputs = model(img1, img2).squeeze()
-        for o, l in zip(outputs, labels):
-            print(o, l)
+    model = training_loop(train_loader, val_loader, **config)
+    torch.save(model.state_dict(), "siamese_network_train.pth")
 
-    torch.save(model.state_dict(), "siamese_network.pth")
+    config = {"frozen": True, "backbone": True}
+    train_loader, val_loader = prepare_data()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = training_loop(train_loader, val_loader, **config)
+    torch.save(model.state_dict(), "siamese_network_linear_probing.pth")
+
+    config = {"frozen": False, "backbone": True}
+    train_loader, val_loader = prepare_data()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = training_loop(train_loader, val_loader, **config)
+    torch.save(model.state_dict(), "siamese_network_fine_tuning.pth")
