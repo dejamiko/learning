@@ -164,6 +164,8 @@ def prepare_data():
     vis_sims = []
     latent_sims = []
     image_pairs = []
+    object_names_1 = []
+    object_names_2 = []
     for i in range(config.OBJ_NUM):
         for j in range(config.OBJ_NUM):
             vis_sims.append(env.storage.get_visual_similarity(i, j))
@@ -171,31 +173,24 @@ def prepare_data():
             image_pairs.append(
                 (
                     os.path.join(env.get_objects()[i].image_path, "image_0.png"),
-                    os.path.join(env.get_objects()[j].image_path, "image_1.png"),
+                    os.path.join(env.get_objects()[j].image_path, "image_0.png"),
                 )
             )
+            object_names_1.append(env.get_objects()[i].image_path)
+            object_names_2.append(env.get_objects()[j].image_path)
 
     data = {
         "visual_similarity": vis_sims,
         "transfer_success_rate": latent_sims,
         "image_pair_path": image_pairs,
+        "object_name_1": object_names_1,
+        "object_name_2": object_names_2,
     }
-    return pd.DataFrame(data)
-
-
-def prepare_data_test():
-    # Example DataFrame creation
-    data = {
-        "visual_similarity": [0.1, 0.2, 0.3],
-        "transfer_success_rate": [0.5, 0.6, 0.7],
-        "image_pair_path": ["image_0.png", "image_1.png", "image_2.png"],
-    }
-    image_folder = "/Users/mikolajdeja/Coding/learning/tests/_test_assets/"
-    return pd.DataFrame(data), image_folder
+    return pd.DataFrame(data), os.getcwd()
 
 
 if __name__ == "__main__":
-    df, image_folder = prepare_data_test()
+    df, image_folder = prepare_data()
 
     # Initialize the Dash app with a Flask server
     app = dash.Dash(__name__)
@@ -216,9 +211,27 @@ if __name__ == "__main__":
             dcc.Graph(id="scatter-plot", figure=fig),
             html.Div(id="click-data"),
             html.Div(
-                html.Img(id="displayed-image", style={"display": "none"}),
-                style={"textAlign": "center"},  # Center the image
+                [
+                    html.Div(id="object-name-1", style={"textAlign": "center", "marginBottom": "10px", "marginRight": "15px"}),
+                    html.Div(id="object-name-2", style={"textAlign": "center", "marginBottom": "10px", "marginLeft": "15px"}),
+                ],
+                style={"display": "flex", "justifyContent": "center"}
             ),
+            html.Div(
+                [
+                    html.Img(id="displayed-image-1", style={"display": "none"}),
+                    html.Img(id="displayed-image-2", style={"display": "none"}),
+                ],
+                style={"display": "flex", "justifyContent": "center"}
+            ),
+            html.Div(
+                id="visual-similarity",
+                style={"textAlign": "center", "marginTop": "10px"}
+            ),
+            html.Div(
+                id="transfer-success-rate",
+                style={"textAlign": "center", "marginTop": "10px"}
+            )
         ]
     )
 
@@ -229,20 +242,45 @@ if __name__ == "__main__":
 
     # Callback to display the image when a point is clicked
     @app.callback(
-        Output("displayed-image", "src"),
-        Output("displayed-image", "style"),
+        [
+            Output("displayed-image-1", "src"),
+            Output("displayed-image-1", "style"),
+            Output("displayed-image-2", "src"),
+            Output("displayed-image-2", "style"),
+            Output("object-name-1", "children"),
+            Output("object-name-2", "children"),
+            Output("visual-similarity", "children"),
+            Output("transfer-success-rate", "children")
+        ],
         Input("scatter-plot", "clickData"),
     )
     def display_image(click_data):
         if click_data:
             point_index = click_data["points"][0]["pointIndex"]
             image_pair_path = df.iloc[point_index]["image_pair_path"]
-            image_pair_url = f"/images/{image_pair_path}"
-            return image_pair_url, {
-                "display": "block",
-                "width": "20%",
-                "margin": "auto",
-            }
-        return "", {"display": "none"}
+            image1_path, image2_path = image_pair_path
+            image_1_url = f"/images/{image1_path}"
+            image_2_url = f"/images/{image2_path}"
+            object_name_1 = df.iloc[point_index]["object_name_1"]
+            object_name_2 = df.iloc[point_index]["object_name_2"]
+            visual_similarity = df.iloc[point_index]["visual_similarity"]
+            transfer_success_rate = df.iloc[point_index]["transfer_success_rate"]
+            return (
+                image_1_url,
+                {
+                    "display": "inline-block",
+                    "width": "20%",
+                    "marginRight": "10px"
+                },
+                image_2_url,
+                {
+                    "display": "inline-block",
+                    "width": "20%",
+                    "marginLeft": "10px"
+                }, object_name_1, object_name_2,
+                f"Visual similarity: {visual_similarity}",
+                f"Transfer success rate: {transfer_success_rate}",
+            )
+        return "", {"display": "none"}, "", {"display": "none"}, "", "", "", ""
 
     app.run_server(debug=True)
