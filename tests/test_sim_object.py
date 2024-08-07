@@ -92,3 +92,54 @@ def test_repr_works(object_fixture):
     assert repr(obj_0) == "object_0, [0.1, 0.2, 0.3], hammering"
 
     assert repr(obj_1) == "object_1, [1.1, 1.2, 1.3], hammering"
+
+
+def test_actual_embeddings_sim_works():
+    config = Config()
+    obj_0 = SimObject(
+        0,
+        config,
+        Task.HAMMERING,
+        "object_0",
+        "tests/_test_assets/obj_1_img",
+    )
+    obj_1 = SimObject(
+        1,
+        config,
+        Task.HAMMERING,
+        "object_1",
+        "tests/_test_assets/obj_2_img",
+    )
+
+    assert obj_0.visible_repr.shape == (768,)
+    assert obj_1.visible_repr.shape == (768,)
+
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6810652587491944)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_actual_embeddings_all_images_sim_works():
+    config = Config()
+    config.USE_ALL_IMAGES = True
+    obj_0 = SimObject(
+        0,
+        config,
+        Task.HAMMERING,
+        "object_0",
+        "tests/_test_assets/obj_1_img",
+    )
+    obj_1 = SimObject(
+        1,
+        config,
+        Task.HAMMERING,
+        "object_1",
+        "tests/_test_assets/obj_2_img",
+    )
+
+    assert obj_0.visible_repr.shape == (5, 768)
+    assert obj_1.visible_repr.shape == (5, 768)
+
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6907545822535078)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)

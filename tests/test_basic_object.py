@@ -3,7 +3,14 @@ from pytest import fixture, raises
 
 from config import Config
 from playground.basic_object import BasicObject
-from tm_utils import Task, get_rng, SimilarityMeasure, ContourSimilarityMeasure
+from tm_utils import (
+    Task,
+    get_rng,
+    SimilarityMeasure,
+    ContourSimilarityMeasure,
+    ImageEmbeddings,
+    ContourImageEmbeddings,
+)
 
 
 def test_object_init_works():
@@ -21,38 +28,6 @@ def test_object_init_with_incorrect_task_fails():
             0, config, invalid_task, np.zeros(config.LATENT_DIM), get_rng(config.SEED)
         )
     assert str(e.value) == f"'{invalid_task}' is not a valid Task"
-
-
-def test_object_init_with_incorrect_latent_representation_type_fails():
-    config = Config()
-    with raises(AssertionError) as e:
-        BasicObject(
-            0, config, Task.HAMMERING, [0] * config.LATENT_DIM, get_rng(config.SEED)
-        )
-    assert str(e.value) == f"Expected np.ndarray, got {list}"
-
-
-def test_object_init_with_incorrect_latent_representation_dimensionality_fails():
-    config = Config()
-    incorrect_shape = (config.LATENT_DIM, config.LATENT_DIM)
-    with raises(AssertionError) as e:
-        BasicObject(
-            0, config, Task.HAMMERING, np.zeros(incorrect_shape), get_rng(config.SEED)
-        )
-    assert str(e.value) == f"Expected 1D array, got {len(incorrect_shape)}D"
-
-
-def test_object_init_with_incorrect_latent_representation_shape_fails():
-    config = Config()
-    incorrect_shape = config.LATENT_DIM - 1
-    with raises(AssertionError) as e:
-        BasicObject(
-            0, config, Task.HAMMERING, np.zeros(incorrect_shape), get_rng(config.SEED)
-        )
-    assert (
-        str(e.value)
-        == f"Expected array of length {config.LATENT_DIM}, got {incorrect_shape}"
-    )
 
 
 @fixture
@@ -126,13 +101,6 @@ def test_get_latent_similarity_works(object_fixture):
     assert np.allclose(obj_1.get_latent_similarity(obj_1), 1)
 
 
-def test_get_visual_similarity_works(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.18602748506878572)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
-
-
 def test_str_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     assert (
@@ -163,7 +131,15 @@ def test_repr_works(object_fixture):
     )
 
 
-def test_get_visual_similarity_euclidean_inv_works(object_fixture):
+def test_get_visual_similarity_cosine_works(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.COSINE
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.18602748506878572)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_euclidean_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN
     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.2402530733520421)
@@ -171,7 +147,7 @@ def test_get_visual_similarity_euclidean_inv_works(object_fixture):
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
-def test_get_visual_similarity_manhattan_inv_works(object_fixture):
+def test_get_visual_similarity_manhattan_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN
     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.09090909090909091)
@@ -194,37 +170,422 @@ def test_get_visual_similarity_pearson_works(object_fixture):
 
 def test_get_visual_similarity_hausdorff_works(object_fixture):
     obj_0, obj_1, c = object_fixture
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
     c.SIMILARITY_MEASURE = ContourSimilarityMeasure.HAUSDORFF
-    obj_0.visible_repr = np.array(
-        [[152, 85], [151, 86], [139, 86], [137, 88], [137, 118], [138, 119], [138, 120]]
-    )
-    obj_1.visible_repr = np.array(
-        [[52, 85], [51, 86], [39, 86], [37, 88], [37, 118], [38, 119], [38, 120]]
-    )
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.009900990099009901)
+    obj_0.visible_repr = [
+        [152, 85],
+        [151, 86],
+        [139, 86],
+        [137, 88],
+        [137, 118],
+        [138, 119],
+        [138, 120],
+    ]
+    obj_1.visible_repr = [
+        [52, 85],
+        [51, 86],
+        [39, 86],
+        [37, 88],
+        [37, 118],
+        [38, 119],
+        [38, 120],
+        [34, 119],
+        [34, 120],
+    ]
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.009613589864850152)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_get_visual_similarity_asd_works(object_fixture):
     obj_0, obj_1, c = object_fixture
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
     c.SIMILARITY_MEASURE = ContourSimilarityMeasure.ASD
-    obj_0.visible_repr = np.array(
-        [[152, 85], [151, 86], [139, 86], [137, 88], [137, 118], [138, 119], [138, 120]]
-    )
-    obj_1.visible_repr = np.array(
-        [[52, 85], [51, 86], [39, 86], [37, 88], [37, 118], [38, 119], [38, 120]]
-    )
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.010536669781422939)
+    obj_0.visible_repr = [
+        [152, 85],
+        [151, 86],
+        [139, 86],
+        [137, 88],
+        [137, 118],
+        [138, 119],
+        [138, 120],
+    ]
+    obj_1.visible_repr = [
+        [52, 85],
+        [51, 86],
+        [39, 86],
+        [37, 88],
+        [37, 118],
+        [38, 119],
+        [38, 120],
+        [34, 119],
+        [34, 120],
+    ]
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.010442424171668041)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_get_visual_similarity_other_fails(object_fixture):
     obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = "other_method"
+    c.SIMILARITY_MEASURE = ImageEmbeddings.DOBBE
     with raises(ValueError) as e:
         obj_0.get_visual_similarity(obj_1)
     assert (
         str(e.value) == f"Unknown similarity measure provided `{c.SIMILARITY_MEASURE}`."
+    )
+
+
+@fixture
+def object_fixture_multi_dim():
+    config = Config()
+    np.random.seed(config.SEED)
+    obj_0 = BasicObject(
+        0,
+        config,
+        Task.HAMMERING,
+        np.zeros((5, config.LATENT_DIM)),
+        get_rng(config.SEED),
+    )
+    np.random.seed(config.SEED)
+    obj_1 = BasicObject(
+        1, config, Task.HAMMERING, np.ones((5, config.LATENT_DIM)), get_rng(config.SEED)
+    )
+    return obj_0, obj_1, config
+
+
+def test_get_visual_similarity_multi_dim_works(object_fixture_multi_dim):
+    obj_0, obj_1, c = object_fixture_multi_dim
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.17166119793794804)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_euclidean_multi_dim_works(object_fixture_multi_dim):
+    obj_0, obj_1, c = object_fixture_multi_dim
+    c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.2402530733520421)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_manhattan_multi_dim_works(object_fixture_multi_dim):
+    obj_0, obj_1, c = object_fixture_multi_dim
+    c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.09090909090909091)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_pearson_multi_dim_works(object_fixture_multi_dim):
+    obj_0, obj_1, c = object_fixture_multi_dim
+    c.SIMILARITY_MEASURE = SimilarityMeasure.PEARSON
+    obj_0.visible_repr = np.zeros_like(obj_0.visible_repr)
+    obj_0.visible_repr[:, -1] = np.ones_like(obj_0.visible_repr[:, -1])
+    obj_0.visible_repr[:, -2] = np.ones_like(obj_0.visible_repr[:, -2])
+    obj_1.visible_repr = np.zeros_like(obj_1.visible_repr)
+    obj_1.visible_repr[:, -1] = np.ones_like(obj_1.visible_repr[:, -1])
+    obj_1.visible_repr[:, -1] = np.ones_like(obj_1.visible_repr[:, -1])
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6666666666666666)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_hausdorff_multi_dim_works(object_fixture_multi_dim):
+    obj_0, obj_1, c = object_fixture_multi_dim
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
+    c.SIMILARITY_MEASURE = ContourSimilarityMeasure.HAUSDORFF
+    obj_0.visible_repr = [
+        [
+            [152, 85],
+            [151, 86],
+            [139, 86],
+            [137, 88],
+            [137, 118],
+            [138, 119],
+            [138, 120],
+        ],
+        [
+            [151, 85],
+            [150, 86],
+            [138, 86],
+            [136, 88],
+            [136, 118],
+            [137, 119],
+            [137, 120],
+        ],
+        [
+            [150, 85],
+            [149, 86],
+            [137, 86],
+            [135, 88],
+            [135, 118],
+            [136, 119],
+            [136, 120],
+        ],
+        [
+            [149, 85],
+            [148, 86],
+            [136, 86],
+            [134, 88],
+            [134, 118],
+            [135, 119],
+            [135, 120],
+        ],
+        [
+            [148, 85],
+            [147, 86],
+            [135, 86],
+            [133, 88],
+            [133, 118],
+            [134, 119],
+            [134, 120],
+        ],
+    ]
+    obj_1.visible_repr = [
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+    ]
+
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.009803901870802875)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_asd_multi_dim_works(object_fixture_multi_dim):
+    obj_0, obj_1, c = object_fixture_multi_dim
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
+    c.SIMILARITY_MEASURE = ContourSimilarityMeasure.ASD
+    obj_0.visible_repr = [
+        [
+            [152, 85],
+            [151, 86],
+            [139, 86],
+            [137, 88],
+            [137, 118],
+            [138, 119],
+            [138, 120],
+        ],
+        [
+            [151, 85],
+            [150, 86],
+            [138, 86],
+            [136, 88],
+            [136, 118],
+            [137, 119],
+            [137, 120],
+        ],
+        [
+            [150, 85],
+            [149, 86],
+            [137, 86],
+            [135, 88],
+            [135, 118],
+            [136, 119],
+            [136, 120],
+        ],
+        [
+            [149, 85],
+            [148, 86],
+            [136, 86],
+            [134, 88],
+            [134, 118],
+            [135, 119],
+            [135, 120],
+        ],
+        [
+            [148, 85],
+            [147, 86],
+            [135, 86],
+            [133, 88],
+            [133, 118],
+            [134, 119],
+            [134, 120],
+        ],
+    ]
+    obj_1.visible_repr = [
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+        [
+            [52, 85],
+            [51, 86],
+            [39, 86],
+            [37, 88],
+            [37, 118],
+            [38, 119],
+            [38, 120],
+            [34, 119],
+            [34, 120],
+        ],
+    ]
+
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.010663930536164556)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+
+
+def test_get_visual_similarity_cosine_with_wrong_embeddings_fails(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.COSINE
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
+    with raises(AssertionError) as e:
+        obj_0.get_visual_similarity(obj_1)
+    assert str(e.value) == (
+        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` "
+        f"do not work with non-contour similarity measures."
+    )
+
+
+def test_get_visual_similarity_euclidean_with_wrong_embeddings_fails(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.EUCLIDEAN
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
+    with raises(AssertionError) as e:
+        obj_0.get_visual_similarity(obj_1)
+    assert str(e.value) == (
+        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` "
+        f"do not work with non-contour similarity measures."
+    )
+
+
+def test_get_visual_similarity_manhattan_with_wrong_embeddings_fails(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.MANHATTAN
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
+    with raises(AssertionError) as e:
+        obj_0.get_visual_similarity(obj_1)
+    assert str(e.value) == (
+        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` "
+        f"do not work with non-contour similarity measures."
+    )
+
+
+def test_get_visual_similarity_pearson_with_wrong_embeddings_fails(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = SimilarityMeasure.PEARSON
+    c.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
+    with raises(AssertionError) as e:
+        obj_0.get_visual_similarity(obj_1)
+    assert str(e.value) == (
+        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` "
+        f"do not work with non-contour similarity measures."
+    )
+
+
+def test_get_visual_similarity_hausdorff_with_wrong_embeddings_fails(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = ContourSimilarityMeasure.HAUSDORFF
+    c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
+    with raises(AssertionError) as e:
+        obj_0.get_visual_similarity(obj_1)
+    assert str(e.value) == (
+        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` "
+        f"do not work with contour similarity measures."
+    )
+
+
+def test_get_visual_similarity_asd_with_wrong_embeddings_fails(object_fixture):
+    obj_0, obj_1, c = object_fixture
+    c.SIMILARITY_MEASURE = ContourSimilarityMeasure.ASD
+    c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
+    with raises(AssertionError) as e:
+        obj_0.get_visual_similarity(obj_1)
+    assert str(e.value) == (
+        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` "
+        f"do not work with contour similarity measures."
     )

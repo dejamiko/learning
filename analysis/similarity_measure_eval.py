@@ -257,6 +257,7 @@ def run_across_tasks(config, environment):
 
 if __name__ == "__main__":
     config = Config()
+    config.USE_ALL_IMAGES = True
     seed_num = 10
     scores_all = {}
     scores_b_all = {}
@@ -278,29 +279,58 @@ if __name__ == "__main__":
     pprint(scores_all)
     pprint(scores_b_all)
 
-    # {'Concordance correlation coefficient': 0.3776022389862841,
-    #  'DINOBot NN score': 0.26348039215686275,
-    #  'Explained variance score': 0.1251009912037471,
-    #  "Kendall's Tau": 0.30979073502632226,
-    #  'Linear regression R^2': 0.16594272994625095,
-    #  'MLP regression R^2': 0.13997365313931934,
-    #  'Mean absolute error': 0.2669570360593219,
-    #  "Pearson's correlation": 0.4738449902623226,
-    #  'Random forest regression R^2': -0.08979552320542546,
-    #  'Root mean squared error': 0.32561714268361175,
-    #  "Spearman's correlation": 0.4253562628882091,
-    #  'Support vector regression R^2': 0.09565472640924788,
-    #  'Symmetric mean absolute percentage error': 79.25234737408707}
-    # {'Concordance correlation coefficient': 0.2607639917926075,
-    #  'DINOBot NN score': 0.3546666666666667,
-    #  'Explained variance score': -0.24815689583829226,
-    #  "Kendall's Tau": 0.3076446293744805,
-    #  'Linear regression R^2': 0.07009095005627693,
-    #  'MLP regression R^2': 0.04514351307184553,
-    #  'Mean absolute error': 0.3859483131487889,
-    #  "Pearson's correlation": 0.30764462937448056,
-    #  'Random forest regression R^2': 0.070019534730163,
-    #  'Root mean squared error': 0.6022111401425928,
-    #  "Spearman's correlation": 0.30764462937448056,
-    #  'Support vector regression R^2': -0.1380371580562025,
-    #  'Symmetric mean absolute percentage error': 134.74684504356}
+    # for one image
+    # {'Concordance correlation coefficient': 0.3880452044087268,
+    #  'DINOBot NN score': 0.2585270747770748,
+    #  'Explained variance score': 0.13578266768025454,
+    #  "Kendall's Tau": 0.3052502476381539,
+    #  'Linear regression R^2': 0.10434625590757132,
+    #  'MLP regression R^2': 0.007788162591002859,
+    #  'Mean absolute error': 0.263051495045864,
+    #  "Pearson's correlation": 0.48912095198698397,
+    #  'Random forest regression R^2': -0.09514402318179714,
+    #  'Root mean squared error': 0.32285327261019564,
+    #  "Spearman's correlation": 0.41804103443072993,
+    #  'Support vector regression R^2': 0.06551740961912488,
+    #  'Symmetric mean absolute percentage error': 78.04026528324077}
+    # {'Concordance correlation coefficient': 0.26167328261686296,
+    #  'DINOBot NN score': 0.39310839106453443,
+    #  'Explained variance score': -0.2229647099169109,
+    #  "Kendall's Tau": 0.3054861751266894,
+    #  'Linear regression R^2': 0.05024008686293339,
+    #  'MLP regression R^2': 0.024666459667378647,
+    #  'Mean absolute error': 0.39085247919203026,
+    #  "Pearson's correlation": 0.30548617512668946,
+    #  'Random forest regression R^2': 0.05053022453569915,
+    #  'Root mean squared error': 0.6056487449747027,
+    #  "Spearman's correlation": 0.30548617512668946,
+    #  'Support vector regression R^2': -0.1340152621187785,
+    #  'Symmetric mean absolute percentage error': 131.67871365289318}
+
+    # for all images
+    # {'Concordance correlation coefficient': 0.40653949358262276,
+    #  'DINOBot NN score': 0.2394087394087394,
+    #  'Explained variance score': 0.20555184697084164,
+    #  "Kendall's Tau": 0.32729876928954726,
+    #  'Linear regression R^2': 0.13024816509811718,
+    #  'MLP regression R^2': 0.04413927840036978,
+    #  'Mean absolute error': 0.24816474548411932,
+    #  "Pearson's correlation": 0.5173225962969629,
+    #  'Random forest regression R^2': -0.10800241408308939,
+    #  'Root mean squared error': 0.30463161777656833,
+    #  "Spearman's correlation": 0.4450618662620536,
+    #  'Support vector regression R^2': 0.09527712040152235,
+    #  'Symmetric mean absolute percentage error': 77.77975054131343}
+    # {'Concordance correlation coefficient': 0.29455822348650756,
+    #  'DINOBot NN score': 0.3980927493081421,
+    #  'Explained variance score': -0.27578548320269297,
+    #  "Kendall's Tau": 0.3550011713353796,
+    #  'Linear regression R^2': 0.09780481850600783,
+    #  'MLP regression R^2': 0.07787590659378839,
+    #  'Mean absolute error': 0.35313558942135753,
+    #  "Pearson's correlation": 0.3550011713353796,
+    #  'Random forest regression R^2': 0.0981484533156387,
+    #  'Root mean squared error': 0.574803596041499,
+    #  "Spearman's correlation": 0.3550011713353796,
+    #  'Support vector regression R^2': -0.04492286031208172,
+    #  'Symmetric mean absolute percentage error': 129.54964327241072}

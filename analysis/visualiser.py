@@ -171,7 +171,7 @@ def prepare_data():
             image_pairs.append(
                 (
                     os.path.join(env.get_objects()[i].image_path, "image_0.png"),
-                    os.path.join(env.get_objects()[j].image_path, "image_1.png")
+                    os.path.join(env.get_objects()[j].image_path, "image_1.png"),
                 )
             )
 
@@ -186,11 +186,9 @@ def prepare_data():
 def prepare_data_test():
     # Example DataFrame creation
     data = {
-        'visual_similarity': [0.1, 0.2, 0.3],
-        'transfer_success_rate': [0.5, 0.6, 0.7],
-        'image_pair_path': ['image_0.png',
-                            'image_1.png',
-                            'image_2.png']
+        "visual_similarity": [0.1, 0.2, 0.3],
+        "transfer_success_rate": [0.5, 0.6, 0.7],
+        "image_pair_path": ["image_0.png", "image_1.png", "image_2.png"],
     }
     image_folder = "/Users/mikolajdeja/Coding/learning/tests/_test_assets/"
     return pd.DataFrame(data), image_folder
@@ -219,8 +217,8 @@ if __name__ == "__main__":
             html.Div(id="click-data"),
             html.Div(
                 html.Img(id="displayed-image", style={"display": "none"}),
-                style={"textAlign": "center"}  # Center the image
-            )
+                style={"textAlign": "center"},  # Center the image
+            ),
         ]
     )
 
@@ -229,20 +227,22 @@ if __name__ == "__main__":
     def serve_image(image_path):
         return flask.send_from_directory(image_folder, image_path)
 
-
     # Callback to display the image when a point is clicked
     @app.callback(
         Output("displayed-image", "src"),
         Output("displayed-image", "style"),
-        Input("scatter-plot", "clickData")
+        Input("scatter-plot", "clickData"),
     )
     def display_image(click_data):
         if click_data:
             point_index = click_data["points"][0]["pointIndex"]
             image_pair_path = df.iloc[point_index]["image_pair_path"]
             image_pair_url = f"/images/{image_pair_path}"
-            return image_pair_url, {"display": "block", "width": "20%", "margin": "auto"}
+            return image_pair_url, {
+                "display": "block",
+                "width": "20%",
+                "margin": "auto",
+            }
         return "", {"display": "none"}
-
 
     app.run_server(debug=True)

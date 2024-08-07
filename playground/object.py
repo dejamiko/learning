@@ -3,7 +3,13 @@ from abc import ABC, abstractmethod
 import numpy as np
 from scipy.spatial.distance import directed_hausdorff, cdist
 
-from tm_utils import Task, SimilarityMeasure, ContourSimilarityMeasure
+from tm_utils import (
+    Task,
+    SimilarityMeasure,
+    ContourSimilarityMeasure,
+    ContourImageEmbeddings,
+    ImageEmbeddings,
+)
 
 
 class Object(ABC):
@@ -26,19 +32,63 @@ class Object(ABC):
         self.visible_repr = None
 
     def get_visual_similarity(self, other):
+        this_vis_repr = self.visible_repr
+        other_vis_repr = other.visible_repr
+
+        if (
+            self.c.SIMILARITY_MEASURE in SimilarityMeasure
+            and len(this_vis_repr.shape) == 1
+        ):
+            this_vis_repr = this_vis_repr.reshape(1, *this_vis_repr.shape)
+            other_vis_repr = other_vis_repr.reshape(1, *other_vis_repr.shape)
+        elif self.c.SIMILARITY_MEASURE in ContourSimilarityMeasure:
+            this_vis_repr = self.ensure_3d(this_vis_repr)
+            other_vis_repr = self.ensure_3d(other_vis_repr)
+
+        aggregate = []
+        for a, b in zip(this_vis_repr, other_vis_repr):
+            aggregate.append(self._get_visual_similarity_for_vectors(a, b))
+
+        return sum(aggregate) / len(aggregate)
+
+    def _get_visual_similarity_for_vectors(self, a, b):
         match self.c.SIMILARITY_MEASURE:
             case SimilarityMeasure.COSINE:
-                return self._get_cos_sim(self.visible_repr, other.visible_repr)
+                assert self.c.IMAGE_EMBEDDINGS in ImageEmbeddings, (
+                    f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` "
+                    f"do not work with non-contour similarity measures."
+                )
+                return self._get_cos_sim(a, b)
             case SimilarityMeasure.EUCLIDEAN:
-                return self._get_euclidean(self.visible_repr, other.visible_repr)
+                assert self.c.IMAGE_EMBEDDINGS in ImageEmbeddings, (
+                    f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` "
+                    f"do not work with non-contour similarity measures."
+                )
+                return self._get_euclidean(a, b)
             case SimilarityMeasure.MANHATTAN:
-                return self._get_manhattan(self.visible_repr, other.visible_repr)
+                assert self.c.IMAGE_EMBEDDINGS in ImageEmbeddings, (
+                    f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` "
+                    f"do not work with non-contour similarity measures."
+                )
+                return self._get_manhattan(a, b)
             case SimilarityMeasure.PEARSON:
-                return self._get_pearson(self.visible_repr, other.visible_repr)
+                assert self.c.IMAGE_EMBEDDINGS in ImageEmbeddings, (
+                    f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` "
+                    f"do not work with non-contour similarity measures."
+                )
+                return self._get_pearson(a, b)
             case ContourSimilarityMeasure.HAUSDORFF:
-                return self._get_hausdorff(self.visible_repr, other.visible_repr)
+                assert self.c.IMAGE_EMBEDDINGS in ContourImageEmbeddings, (
+                    f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` "
+                    f"do not work with contour similarity measures."
+                )
+                return self._get_hausdorff(a, b)
             case ContourSimilarityMeasure.ASD:
-                return self._get_asd(self.visible_repr, other.visible_repr)
+                assert self.c.IMAGE_EMBEDDINGS in ContourImageEmbeddings, (
+                    f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` "
+                    f"do not work with contour similarity measures."
+                )
+                return self._get_asd(a, b)
         raise ValueError(
             f"Unknown similarity measure provided `{self.c.SIMILARITY_MEASURE}`."
         )
@@ -89,3 +139,14 @@ class Object(ABC):
         # The average surface distance is the mean of these two values
         asd = (avg_dist_1_to_2 + avg_dist_2_to_1) / 2.0
         return 1 / (1 + asd)
+
+    @staticmethod
+    def ensure_3d(lst):
+        if not isinstance(lst, list):
+            return lst
+
+        if all(isinstance(i, list) and all(not isinstance(j, list) for j in i) for i in lst):
+            return [lst]
+
+        if all(isinstance(i, list) and all(isinstance(j, list) and all(not isinstance(k, list) for k in j) for j in i) for i in lst):
+            return lst

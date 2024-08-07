@@ -28,6 +28,7 @@ class Config:
     SIMILARITY_MEASURE = SimilarityMeasure.COSINE
     SIM_MEASURE_SIGMA = 1.0
     IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_2_FULL
+    USE_ALL_IMAGES = False
 
     DEVICE = "cpu"
     MODEL_TYPE = "dino_vits8"

@@ -18,15 +18,6 @@ class BasicObject(Object):
         :param latent_representation: The latent representation of the object
         """
         super().__init__(index, c, task)
-        assert isinstance(
-            latent_representation, np.ndarray
-        ), f"Expected np.ndarray, got {type(latent_representation)}"
-        assert (
-            len(latent_representation.shape) == 1
-        ), f"Expected 1D array, got {len(latent_representation.shape)}D"
-        assert (
-            latent_representation.shape[0] == c.LATENT_DIM
-        ), f"Expected array of length {c.LATENT_DIM}, got {latent_representation.shape[0]}"
 
         self.name = f"Object {index}"
         self.latent_repr = latent_representation

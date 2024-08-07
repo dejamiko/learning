@@ -131,6 +131,8 @@ class Extractor:
             embeddings.append(
                 image_embeddings[config.IMAGE_EMBEDDINGS.value]
             )  # this can raise KeyError?
+        if config.IMAGE_EMBEDDINGS in ContourImageEmbeddings:
+            return embeddings
         return np.array(embeddings)
 
     @staticmethod
@@ -289,6 +291,7 @@ class Extractor:
         from detectron2.config import get_cfg
         from detectron2.engine import DefaultPredictor
         from detectron2.model_zoo import model_zoo
+
         # This only runs on gpu
         cfg = get_cfg()
         cfg.merge_from_file(model_zoo.get_config_file(model))
