@@ -50,8 +50,10 @@ class Extractor:
                 image = image
             elif config.IMAGE_PREPROCESSING == ImagePreprocessing.GREYSCALE:
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+                image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
             elif config.IMAGE_PREPROCESSING == ImagePreprocessing.BINARY:
                 # TODO first segment this maybe
+                raise NotImplementedError()
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
                 image = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY)[1]
             images_with_names.append((image, im))

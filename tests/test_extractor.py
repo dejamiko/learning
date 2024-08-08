@@ -356,3 +356,11 @@ def test_extractor_wrong_method_fails(empty_dir_and_config):
     with raises(ValueError) as e:
         Extractor()(emb_dir, config)
     assert str(e.value) == f"The method provided {config.IMAGE_EMBEDDINGS} is unknown."
+
+
+def test_all_embeddings_greyscale(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
+    for ie in ImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = ie
+        Extractor()(emb_dir, config)
