@@ -212,26 +212,40 @@ if __name__ == "__main__":
             html.Div(id="click-data"),
             html.Div(
                 [
-                    html.Div(id="object-name-1", style={"textAlign": "center", "marginBottom": "10px", "marginRight": "15px"}),
-                    html.Div(id="object-name-2", style={"textAlign": "center", "marginBottom": "10px", "marginLeft": "15px"}),
+                    html.Div(
+                        id="object-name-1",
+                        style={
+                            "textAlign": "center",
+                            "marginBottom": "10px",
+                            "marginRight": "15px",
+                        },
+                    ),
+                    html.Div(
+                        id="object-name-2",
+                        style={
+                            "textAlign": "center",
+                            "marginBottom": "10px",
+                            "marginLeft": "15px",
+                        },
+                    ),
                 ],
-                style={"display": "flex", "justifyContent": "center"}
+                style={"display": "flex", "justifyContent": "center"},
             ),
             html.Div(
                 [
                     html.Img(id="displayed-image-1", style={"display": "none"}),
                     html.Img(id="displayed-image-2", style={"display": "none"}),
                 ],
-                style={"display": "flex", "justifyContent": "center"}
+                style={"display": "flex", "justifyContent": "center"},
             ),
             html.Div(
                 id="visual-similarity",
-                style={"textAlign": "center", "marginTop": "10px"}
+                style={"textAlign": "center", "marginTop": "10px"},
             ),
             html.Div(
                 id="transfer-success-rate",
-                style={"textAlign": "center", "marginTop": "10px"}
-            )
+                style={"textAlign": "center", "marginTop": "10px"},
+            ),
         ]
     )
 
@@ -250,7 +264,7 @@ if __name__ == "__main__":
             Output("object-name-1", "children"),
             Output("object-name-2", "children"),
             Output("visual-similarity", "children"),
-            Output("transfer-success-rate", "children")
+            Output("transfer-success-rate", "children"),
         ],
         Input("scatter-plot", "clickData"),
     )
@@ -267,17 +281,11 @@ if __name__ == "__main__":
             transfer_success_rate = df.iloc[point_index]["transfer_success_rate"]
             return (
                 image_1_url,
-                {
-                    "display": "inline-block",
-                    "width": "20%",
-                    "marginRight": "10px"
-                },
+                {"display": "inline-block", "width": "20%", "marginRight": "10px"},
                 image_2_url,
-                {
-                    "display": "inline-block",
-                    "width": "20%",
-                    "marginLeft": "10px"
-                }, object_name_1, object_name_2,
+                {"display": "inline-block", "width": "20%", "marginLeft": "10px"},
+                object_name_1,
+                object_name_2,
                 f"Visual similarity: {visual_similarity}",
                 f"Transfer success rate: {transfer_success_rate}",
             )

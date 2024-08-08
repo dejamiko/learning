@@ -9,6 +9,7 @@ import torchvision.transforms as T
 from PIL import Image
 from dino_vit_features.extractor import ViTExtractor
 from timm.data.transforms_factory import create_transform
+from torchvision.transforms import transforms
 from transformers import (
     AutoImageProcessor,
     AutoModel,
@@ -90,6 +91,9 @@ class Extractor:
                 return self._extract_cascade_mask_rcnn(
                     image, config.CASCADE_MASK_RCNN_THRESHOLD
                 )
+            # own trained models
+            case ImageEmbeddings.OWN_TRAINED:
+                return self._extract_own_trained(image)
         raise ValueError(f"The method provided {config.IMAGE_EMBEDDINGS} is unknown.")
 
     @staticmethod
@@ -328,3 +332,17 @@ class Extractor:
         )
 
         return np.vstack(contours).squeeze().tolist()
+
+    @staticmethod
+    def _extract_own_trained(image):
+        transform = transforms.Compose(
+            [
+                transforms.Resize((256, 256)),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+                ),
+            ]
+        )
+        image = Image.fromarray(image)
+        return transform(image).detach().flatten().numpy().tolist()

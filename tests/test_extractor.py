@@ -300,6 +300,24 @@ def test_extractor_no_embeddings_vc_works(empty_dir_and_config):
     assert np.allclose(embeddings[0][2:10], expected)
 
 
+def test_extractor_no_embeddings_own_models_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+    embeddings = Extractor()(emb_dir, config)
+    expected = [
+        -0.2170563,
+        -0.2170563,
+        -0.2170563,
+        -0.2170563,
+        -0.2170563,
+        -0.2170563,
+        -0.2170563,
+        -0.2170563,
+    ]
+    assert embeddings.shape == (5, 256**2 * 3)
+    assert np.allclose(embeddings[0][2:10], expected)
+
+
 def test_extractor_wrong_method_fails(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     config.IMAGE_EMBEDDINGS = "different metric"

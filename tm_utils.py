@@ -69,6 +69,12 @@ class ContourSimilarityMeasure(AutoName):
     ASD = auto()
 
 
+class NNSimilarityMeasure(AutoName):
+    TRAINED = auto()
+    FINE_TUNED = auto()
+    LINEARLY_PROBED = auto()
+
+
 class ImageEmbeddings(AutoName):
     DINO_LAYER_9 = auto()
     DINO_LAYER_11 = auto()
@@ -80,6 +86,7 @@ class ImageEmbeddings(AutoName):
     VIT_MSN = auto()
     DOBBE = auto()
     VC = auto()
+    OWN_TRAINED = auto()
 
 
 class ContourImageEmbeddings(AutoName):

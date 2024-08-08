@@ -4,3 +4,4 @@ omit =
     dino_vit_features/*
     tests/*
     eai_vc/*
+    playground/model_training.py
