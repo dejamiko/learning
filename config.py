@@ -4,6 +4,7 @@ from tm_utils import (
     SimilarityMeasure,
     ImageEmbeddings,
     ObjectSelectionStrategyAffine,
+    ImagePreprocessing,
 )
 
 
@@ -29,6 +30,7 @@ class Config:
     SIM_MEASURE_SIGMA = 1.0
     IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_2_FULL
     USE_ALL_IMAGES = False
+    IMAGE_PREPROCESSING = ImagePreprocessing.COLOUR
 
     DEVICE = "cpu"
     MODEL_TYPE = "dino_vits8"

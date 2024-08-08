@@ -18,6 +18,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 
+from config import Config
 from playground.environment import Environment
 from tm_utils import (
     Task,
@@ -25,6 +26,7 @@ from tm_utils import (
     SimilarityMeasure,
     ContourImageEmbeddings,
     ContourSimilarityMeasure,
+    ImagePreprocessing,
 )
 
 metrics_is_larger_better = {
@@ -437,52 +439,60 @@ def load_results(filename):
 
 
 if __name__ == "__main__":
-    # config = Config()
-    # config.OBJ_NUM = 30
-    # run_and_save(config, "analysis/results_one_image_30.json", 100)
-    # config = Config()
-    # config.OBJ_NUM = 30
-    # config.USE_ALL_IMAGES = True
-    # run_and_save(config, "analysis/results_all_images_30.json", 100)
+    config = Config()
+    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
+    run_and_save(
+        config,
+        f"analysis/results_one_image_{config.OBJ_NUM}_{config.IMAGE_PREPROCESSING.value}",
+        100,
+    )
+    config = Config()
+    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
+    config.USE_ALL_IMAGES = True
+    run_and_save(
+        config,
+        f"analysis/results_all_images_{config.OBJ_NUM}_{config.IMAGE_PREPROCESSING.value}.json",
+        100,
+    )
 
     # results, results_b = load_results("analysis/results_one_image_51.json")
-    results, results_b = load_results("analysis/results_all_images_51.json")
-
-    results_sorted = sorted(results, key=cmp_to_key(compare_counts), reverse=True)
-    pprint(results_sorted[:4])
-
-    print("=" * 50)
-    print("=" * 50)
-    print("Compare sums")
-    print("=" * 50)
-    print("=" * 50)
-
-    results_sorted = sorted(results, key=cmp_to_key(compare_sums), reverse=True)
-    pprint(results_sorted[:4])
-
-    print("=" * 50)
-    print("=" * 50)
-    print("Compare sums scaled")
-    print("=" * 50)
-    print("=" * 50)
-
-    results_sorted = sorted(results, key=cmp_to_key(compare_sums_scaled), reverse=True)
-    pprint(results_sorted[:4])
-
-    print("=" * 50)
-    print("=" * 50)
-    print("Compare weighted sum")
-    print("=" * 50)
-    print("=" * 50)
-
-    results_sorted = sorted(results, key=cmp_to_key(compare_weighted_sum), reverse=True)
-    pprint(results_sorted[:4])
-
-    print("=" * 50)
-    print("=" * 50)
-    print("Compare DINOBot NN")
-    print("=" * 50)
-    print("=" * 50)
-
-    results_sorted = sorted(results, key=cmp_to_key(compare_dinobot_nn), reverse=True)
-    pprint(results_sorted[:4])
+    # results, results_b = load_results("analysis/results_all_images_51.json")
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_counts), reverse=True)
+    # pprint(results_sorted[:4])
+    #
+    # print("=" * 50)
+    # print("=" * 50)
+    # print("Compare sums")
+    # print("=" * 50)
+    # print("=" * 50)
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_sums), reverse=True)
+    # pprint(results_sorted[:4])
+    #
+    # print("=" * 50)
+    # print("=" * 50)
+    # print("Compare sums scaled")
+    # print("=" * 50)
+    # print("=" * 50)
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_sums_scaled), reverse=True)
+    # pprint(results_sorted[:4])
+    #
+    # print("=" * 50)
+    # print("=" * 50)
+    # print("Compare weighted sum")
+    # print("=" * 50)
+    # print("=" * 50)
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_weighted_sum), reverse=True)
+    # pprint(results_sorted[:4])
+    #
+    # print("=" * 50)
+    # print("=" * 50)
+    # print("Compare DINOBot NN")
+    # print("=" * 50)
+    # print("=" * 50)
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_dinobot_nn), reverse=True)
+    # pprint(results_sorted[:4])

@@ -93,3 +93,9 @@ class ContourImageEmbeddings(AutoName):
     MASK_RCNN = auto()
     PANOPTIC_FPN = auto()
     CASCADE_MASK_RCNN = auto()
+
+
+class ImagePreprocessing(AutoName):
+    COLOUR = auto()
+    GREYSCALE = auto()
+    BINARY = auto()

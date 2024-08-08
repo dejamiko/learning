@@ -1,12 +1,13 @@
 import json
 import os
 
+import cv2
 import numpy as np
 from pytest import fixture, raises
 
 from config import Config
 from playground.extractor import Extractor
-from tm_utils import ImageEmbeddings, ContourImageEmbeddings
+from tm_utils import ImageEmbeddings, ContourImageEmbeddings, ImagePreprocessing
 
 
 @fixture
@@ -46,7 +47,14 @@ def test_extractor_some_embeddings_works(empty_dir_and_config):
     # create embeddings for the same metric, but not all of them
     expected = [[1, 2, 3], [2, 4, 6]]
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump([{config.IMAGE_EMBEDDINGS.value: expected}], f)
+        json.dump(
+            [
+                {
+                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": expected
+                }
+            ],
+            f,
+        )
     embeddings = Extractor()(emb_dir, config)
     assert embeddings.shape == (1, 2, 3)
     assert np.allclose(embeddings[0], np.array(expected))
@@ -57,7 +65,7 @@ def test_extractor_some_embeddings_but_wrong_metric_works(empty_dir_and_config):
     # create embeddings of different metric
     other = [[1, 2, 3], [2, 4, 6]]
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump([{"different metric": other}], f)
+        json.dump([{f"different, {config.IMAGE_PREPROCESSING.value}": other}], f)
     embeddings = Extractor()(emb_dir, config)
     expected = [
         0.18434414,
@@ -86,11 +94,36 @@ def test_extractor_all_embeddings_works(empty_dir_and_config):
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
         json.dump(
             [
-                {config.IMAGE_EMBEDDINGS.value: expected[0]},
-                {config.IMAGE_EMBEDDINGS.value: expected[1]},
-                {config.IMAGE_EMBEDDINGS.value: expected[2]},
-                {config.IMAGE_EMBEDDINGS.value: expected[3]},
-                {config.IMAGE_EMBEDDINGS.value: expected[4]},
+                {
+                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": e
+                }
+                for e in expected
+            ],
+            f,
+        )
+    embeddings = Extractor()(emb_dir, config)
+    assert embeddings.shape == (5, 2, 3)
+    assert np.allclose(embeddings, np.array(expected))
+
+
+def test_extractor_all_embeddings_different_preprocessing_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    # create all embeddings
+    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
+    expected = [
+        [[1, 2, 3], [2, 4, 6]],
+        [[1.1, 2.1, 3.1], [2.1, 4.1, 6.1]],
+        [[1.2, 2.2, 3.2], [2.2, 4.2, 6.2]],
+        [[1.3, 2.3, 3.3], [2.3, 4.3, 6.3]],
+        [[1.4, 2.4, 3.4], [2.4, 4.4, 6.4]],
+    ]
+    with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
+        json.dump(
+            [
+                {
+                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": e
+                }
+                for e in expected
             ],
             f,
         )
@@ -113,11 +146,10 @@ def test_extractor_all_embeddings_contour_works(empty_dir_and_config):
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
         json.dump(
             [
-                {config.IMAGE_EMBEDDINGS.value: expected[0]},
-                {config.IMAGE_EMBEDDINGS.value: expected[1]},
-                {config.IMAGE_EMBEDDINGS.value: expected[2]},
-                {config.IMAGE_EMBEDDINGS.value: expected[3]},
-                {config.IMAGE_EMBEDDINGS.value: expected[4]},
+                {
+                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": e
+                }
+                for e in expected
             ],
             f,
         )

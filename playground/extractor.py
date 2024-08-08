@@ -19,21 +19,25 @@ from transformers import (
     ViTMSNModel,
 )
 
-from tm_utils import ImageEmbeddings, ContourImageEmbeddings
+from tm_utils import ImageEmbeddings, ContourImageEmbeddings, ImagePreprocessing
 from vc_models.models.vit import model_utils
 
 
 class Extractor:
     def __call__(self, img_path, config):
         try:
+            print("try first")
             return self._load_embeddings(img_path, config)
         except (FileNotFoundError, KeyError):
-            images = self._load_images(img_path)
+            print("catch here")
+            images = self._load_images(img_path, config)
+            print("loaded images")
             self._extract_and_save_embeddings(images, img_path, config)
+            print("Extracted and saved")
             return self._load_embeddings(img_path, config)
 
     @staticmethod
-    def _load_images(img_dir):
+    def _load_images(img_dir, config):
         assert os.path.exists(
             img_dir
         ), f"The provided image path {img_dir} does not exist"
@@ -45,7 +49,16 @@ class Extractor:
         for im in sorted(os.listdir(img_dir)):
             if not im.endswith(".png"):
                 continue
-            images_with_names.append((cv2.imread(os.path.join(img_dir, im)), im))
+            image = cv2.imread(os.path.join(img_dir, im))
+            if config.IMAGE_PREPROCESSING == ImagePreprocessing.COLOUR:
+                image = image
+            elif config.IMAGE_PREPROCESSING == ImagePreprocessing.GREYSCALE:
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+            elif config.IMAGE_PREPROCESSING == ImagePreprocessing.BINARY:
+                # TODO first segment this maybe
+                image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+                image = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY)[1]
+            images_with_names.append((image, im))
         return images_with_names
 
     def _extract_and_save_embeddings(self, images_with_names, img_dir, config):
@@ -102,9 +115,15 @@ class Extractor:
             with open(os.path.join(img_path, "embeddings.json"), "r") as f:
                 current_embeddings = json.load(f)
             if index < len(current_embeddings):
-                current_embeddings[index][config.IMAGE_EMBEDDINGS.value] = embedding
+                current_embeddings[index][
+                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}"
+                ] = embedding
             else:
-                current_embeddings.append({config.IMAGE_EMBEDDINGS.value: embedding})
+                current_embeddings.append(
+                    {
+                        f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": embedding
+                    }
+                )
             with open(os.path.join(img_path, "embeddings.json"), "w") as f:
                 json.dump(current_embeddings, f)
         else:
@@ -113,7 +132,14 @@ class Extractor:
                     raise ValueError(
                         "The index cannot be different than 0 if there is no embeddings file"
                     )
-                json.dump([{config.IMAGE_EMBEDDINGS.value: embedding}], f)
+                json.dump(
+                    [
+                        {
+                            f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": embedding
+                        }
+                    ],
+                    f,
+                )
 
     @staticmethod
     def _load_embeddings(img_path, config):
@@ -132,7 +158,9 @@ class Extractor:
             all_image_embeddings = json.load(f)
         for image_embeddings in all_image_embeddings:
             embeddings.append(
-                image_embeddings[config.IMAGE_EMBEDDINGS.value]
+                image_embeddings[
+                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}"
+                ]
             )  # this can raise KeyError?
         if config.IMAGE_EMBEDDINGS in ContourImageEmbeddings:
             return embeddings

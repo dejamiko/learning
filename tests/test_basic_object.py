@@ -106,30 +106,30 @@ def test_get_latent_similarity_works(object_fixture):
 def test_str_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     assert (
-            str(obj_0) == "Object 0 ([0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]), "
-                          "[ 0.01257302 -0.01321049  0.06404227  0.01049001 -0.05356694  0.03615951\n  "
-                          "0.1304      0.0947081  -0.07037352 -0.12654215], hammering"
+        str(obj_0) == "Object 0 ([0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]), "
+        "[ 0.01257302 -0.01321049  0.06404227  0.01049001 -0.05356694  0.03615951\n  "
+        "0.1304      0.0947081  -0.07037352 -0.12654215], hammering"
     )
 
     assert (
-            str(obj_1) == "Object 1 ([1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]), "
-                          "[1.01257302 0.98678951 1.06404227 1.01049001 0.94643306 1.03615951\n "
-                          "1.1304     1.0947081  0.92962648 0.87345785], hammering"
+        str(obj_1) == "Object 1 ([1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]), "
+        "[1.01257302 0.98678951 1.06404227 1.01049001 0.94643306 1.03615951\n "
+        "1.1304     1.0947081  0.92962648 0.87345785], hammering"
     )
 
 
 def test_repr_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     assert (
-            repr(obj_0) == "Object 0 ([0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]), "
-                           "[ 0.01257302 -0.01321049  0.06404227  0.01049001 -0.05356694  0.03615951\n  "
-                           "0.1304      0.0947081  -0.07037352 -0.12654215], hammering"
+        repr(obj_0) == "Object 0 ([0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]), "
+        "[ 0.01257302 -0.01321049  0.06404227  0.01049001 -0.05356694  0.03615951\n  "
+        "0.1304      0.0947081  -0.07037352 -0.12654215], hammering"
     )
 
     assert (
-            repr(obj_1) == "Object 1 ([1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]), "
-                           "[1.01257302 0.98678951 1.06404227 1.01049001 0.94643306 1.03615951\n "
-                           "1.1304     1.0947081  0.92962648 0.87345785], hammering"
+        repr(obj_1) == "Object 1 ([1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]), "
+        "[1.01257302 0.98678951 1.06404227 1.01049001 0.94643306 1.03615951\n "
+        "1.1304     1.0947081  0.92962648 0.87345785], hammering"
     )
 
 
@@ -276,7 +276,7 @@ def test_get_visual_similarity_other_fails(object_fixture):
     with raises(ValueError) as e:
         obj_0.get_visual_similarity(obj_1)
     assert (
-            str(e.value) == f"Unknown similarity measure provided `{c.SIMILARITY_MEASURE}`."
+        str(e.value) == f"Unknown similarity measure provided `{c.SIMILARITY_MEASURE}`."
     )
 
 
@@ -608,7 +608,7 @@ def test_get_visual_similarity_own_trained_multi_dim_works(object_fixture_multi_
 
 
 def test_get_visual_similarity_linearly_probed_multi_dim_works(
-        object_fixture_multi_dim,
+    object_fixture_multi_dim,
 ):
     obj_0, obj_1, c = object_fixture_multi_dim
     c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
@@ -726,7 +726,7 @@ def test_get_visual_similarity_fine_tuned_with_wrong_embeddings_fails(object_fix
 
 
 def test_get_visual_similarity_linearly_probed_with_wrong_embeddings_fails(
-        object_fixture,
+    object_fixture,
 ):
     obj_0, obj_1, c = object_fixture
     c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
