@@ -26,14 +26,10 @@ from vc_models.models.vit import model_utils
 class Extractor:
     def __call__(self, img_path, config):
         try:
-            print("try first")
             return self._load_embeddings(img_path, config)
         except (FileNotFoundError, KeyError):
-            print("catch here")
-            images = self._load_images(img_path, config)
-            print("loaded images")
+            images = self._load_images(img_path)
             self._extract_and_save_embeddings(images, img_path, config)
-            print("Extracted and saved")
             return self._load_embeddings(img_path, config)
 
     @staticmethod
