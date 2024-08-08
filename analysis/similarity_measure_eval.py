@@ -1,4 +1,6 @@
 import json
+from functools import cmp_to_key
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,6 +42,38 @@ metrics_is_larger_better = {
     "Root mean squared error": False,
     "Symmetric mean absolute percentage error": False,
     "DINOBot NN score": True,
+}
+
+metrics_scale_0_1 = {
+    "Linear regression R^2": lambda x: (x + 1) / 2,
+    "Pearson's correlation": lambda x: (x + 1) / 2,
+    "Random forest regression R^2": lambda x: (x + 1) / 2,
+    "Support vector regression R^2": lambda x: (x + 1) / 2,
+    "MLP regression R^2": lambda x: (x + 1) / 2,
+    "Spearman's correlation": lambda x: (x + 1) / 2,
+    "Kendall's Tau": lambda x: (x + 1) / 2,
+    "Explained variance score": lambda x: max(0, (1 + x) / 2),
+    "Concordance correlation coefficient": lambda x: (x + 1) / 2,
+    "Mean absolute error": lambda x: 1 - x / 2,
+    "Root mean squared error": lambda x: 1 - x / 2,
+    "Symmetric mean absolute percentage error": lambda x: 1 - x / 200,
+    "DINOBot NN score": lambda x: x,
+}
+
+metrics_weights = {
+    "Pearson's correlation": 0.16,
+    "Linear regression R^2": 0.16,
+    "Explained variance score": 0.12,
+    "Concordance correlation coefficient": 0.12,
+    "DINOBot NN score": 0.12,
+    "Random forest regression R^2": 0.04,
+    "Support vector regression R^2": 0.04,
+    "MLP regression R^2": 0.04,
+    "Spearman's correlation": 0.04,
+    "Kendall's Tau": 0.04,
+    "Mean absolute error": 0.04,
+    "Root mean squared error": 0.04,
+    "Symmetric mean absolute percentage error": 0.04,
 }
 
 
@@ -297,42 +331,79 @@ def run_eval_one_config(config, n=10):
     return scores_all, scores_b_all
 
 
-def compare_real(scores_1, scores_2):
-    sc_1, _, _ = scores_1
-    sc_2, _, _ = scores_2
+def float_comp(tally):
+    if tally < 0:
+        return -1
+    elif tally > 0:
+        return 1
+    else:
+        return 0
 
-    score_1, score_2 = 0, 0
+
+def compare_counts(scores_1, scores_2):
+    sc_1, _ = scores_1
+    sc_2, _ = scores_2
+
+    tally = 0
     for metric in metrics_is_larger_better.keys():
         if sc_1[metric] > sc_2[metric]:
             if metrics_is_larger_better[metric]:
-                score_1 += 1
+                tally += 1
             else:
-                score_2 += 1
+                tally -= 1
         elif sc_1[metric] < sc_2[metric]:
             if not metrics_is_larger_better[metric]:
-                score_1 += 1
+                tally += 1
             else:
-                score_2 += 1
-    return score_1 - score_2
+                tally -= 1
+    return tally
 
 
-def compare_bool(scores_1, scores_2):
-    _, sc_1, _ = scores_1
-    _, sc_2, _ = scores_2
+def compare_sums(scores_1, scores_2):
+    sc_1, _ = scores_1
+    sc_2, _ = scores_2
 
-    score_1, score_2 = 0, 0
-    for metric in metrics_is_larger_better.keys():
-        if sc_1[metric] > sc_2[metric]:
-            if metrics_is_larger_better[metric]:
-                score_1 += 1
-            else:
-                score_2 += 1
-        elif sc_1[metric] < sc_2[metric]:
-            if not metrics_is_larger_better[metric]:
-                score_1 += 1
-            else:
-                score_2 += 1
-    return score_1 - score_2
+    tally = 0.0
+    for m in metrics_is_larger_better.keys():
+        if not metrics_is_larger_better[m]:
+            tally += 1 / (1 + sc_1[m])
+            tally -= 1 / (1 + sc_2[m])
+        else:
+            tally += sc_1[m]
+            tally -= sc_2[m]
+
+    return float_comp(tally)
+
+
+def compare_sums_scaled(scores_1, scores_2):
+    sc_1, _ = scores_1
+    sc_2, _ = scores_2
+
+    tally = 0.0
+    for m in metrics_scale_0_1.keys():
+        tally += metrics_scale_0_1[m](sc_1[m])
+        tally -= metrics_scale_0_1[m](sc_2[m])
+
+    return float_comp(tally)
+
+
+def compare_dinobot_nn(scores_1, scores_2):
+    sc_1, _ = scores_1
+    sc_2, _ = scores_2
+
+    return float_comp(sc_1["DINOBot NN score"] - sc_2["DINOBot NN score"])
+
+
+def compare_weighted_sum(scores_1, scores_2):
+    sc_1, _ = scores_1
+    sc_2, _ = scores_2
+
+    tally = 0.0
+    for m in metrics_scale_0_1.keys():
+        tally += metrics_weights[m] * metrics_scale_0_1[m](sc_1[m])
+        tally -= metrics_weights[m] * metrics_scale_0_1[m](sc_2[m])
+
+    return float_comp(tally)
 
 
 def run_and_save(config, filename, n=10):
@@ -353,65 +424,57 @@ def run_and_save(config, filename, n=10):
         json.dump(all_scores, f)
 
 
+def load_results(filename):
+    with open(filename) as f:
+        data = json.load(f)
+
+    all_results = []
+    all_results_b = []
+    for k in data.keys():
+        all_results.append((data[k][0], k))
+        all_results_b.append((data[k][1], k))
+
+    return all_results, all_results_b
+
+
 if __name__ == "__main__":
     config = Config()
-    run_and_save(config, "analysis/results_one_image.json", 100)
+    config.OBJ_NUM = 30
+    run_and_save(config, "analysis/results_one_image_30.json", 100)
     config = Config()
+    config.OBJ_NUM = 30
     config.USE_ALL_IMAGES = True
-    run_and_save(config, "analysis/results_all_images.json", 100)
+    run_and_save(config, "analysis/results_all_images_30.json", 100)
 
-    # for one image
-    # {'Concordance correlation coefficient': 0.3880452044087268,
-    #  'DINOBot NN score': 0.2585270747770748,
-    #  'Explained variance score': 0.13578266768025454,
-    #  "Kendall's Tau": 0.3052502476381539,
-    #  'Linear regression R^2': 0.10434625590757132,
-    #  'MLP regression R^2': 0.007788162591002859,
-    #  'Mean absolute error': 0.263051495045864,
-    #  "Pearson's correlation": 0.48912095198698397,
-    #  'Random forest regression R^2': -0.09514402318179714,
-    #  'Root mean squared error': 0.32285327261019564,
-    #  "Spearman's correlation": 0.41804103443072993,
-    #  'Support vector regression R^2': 0.06551740961912488,
-    #  'Symmetric mean absolute percentage error': 78.04026528324077}
-    # {'Concordance correlation coefficient': 0.26167328261686296,
-    #  'DINOBot NN score': 0.39310839106453443,
-    #  'Explained variance score': -0.2229647099169109,
-    #  "Kendall's Tau": 0.3054861751266894,
-    #  'Linear regression R^2': 0.05024008686293339,
-    #  'MLP regression R^2': 0.024666459667378647,
-    #  'Mean absolute error': 0.39085247919203026,
-    #  "Pearson's correlation": 0.30548617512668946,
-    #  'Random forest regression R^2': 0.05053022453569915,
-    #  'Root mean squared error': 0.6056487449747027,
-    #  "Spearman's correlation": 0.30548617512668946,
-    #  'Support vector regression R^2': -0.1340152621187785,
-    #  'Symmetric mean absolute percentage error': 131.67871365289318}
-
-    # for all images
-    # {'Concordance correlation coefficient': 0.40653949358262276,
-    #  'DINOBot NN score': 0.2394087394087394,
-    #  'Explained variance score': 0.20555184697084164,
-    #  "Kendall's Tau": 0.32729876928954726,
-    #  'Linear regression R^2': 0.13024816509811718,
-    #  'MLP regression R^2': 0.04413927840036978,
-    #  'Mean absolute error': 0.24816474548411932,
-    #  "Pearson's correlation": 0.5173225962969629,
-    #  'Random forest regression R^2': -0.10800241408308939,
-    #  'Root mean squared error': 0.30463161777656833,
-    #  "Spearman's correlation": 0.4450618662620536,
-    #  'Support vector regression R^2': 0.09527712040152235,
-    #  'Symmetric mean absolute percentage error': 77.77975054131343}
-    # {'Concordance correlation coefficient': 0.29455822348650756,
-    #  'DINOBot NN score': 0.3980927493081421,
-    #  'Explained variance score': -0.27578548320269297,
-    #  "Kendall's Tau": 0.3550011713353796,
-    #  'Linear regression R^2': 0.09780481850600783,
-    #  'MLP regression R^2': 0.07787590659378839,
-    #  'Mean absolute error': 0.35313558942135753,
-    #  "Pearson's correlation": 0.3550011713353796,
-    #  'Random forest regression R^2': 0.0981484533156387,
-    #  'Root mean squared error': 0.574803596041499,
-    #  "Spearman's correlation": 0.3550011713353796,
-    #  'Support vector regression R^2': -0.04492286031208172,
-    #  'Symmetric mean absolute percentage error': 129.54964327241072}
+    # results, results_b = load_results("analysis/results_one_image_40.json")
+    # results, results_b = load_results("analysis/results_all_images_40.json")
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_counts), reverse=True)
+    # pprint(results_sorted[:4])
+    #
+    # print("=" * 50)
+    # print("=" * 50)
+    # print("Compare sums")
+    # print("=" * 50)
+    # print("=" * 50)
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_sums), reverse=True)
+    # pprint(results_sorted[:4])
+    #
+    # print("=" * 50)
+    # print("=" * 50)
+    # print("Compare sums scaled")
+    # print("=" * 50)
+    # print("=" * 50)
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_sums_scaled), reverse=True)
+    # pprint(results_sorted[:4])
+    #
+    # print("=" * 50)
+    # print("=" * 50)
+    # print("Compare weighted sum")
+    # print("=" * 50)
+    # print("=" * 50)
+    #
+    # results_sorted = sorted(results, key=cmp_to_key(compare_weighted_sum), reverse=True)
+    # pprint(results_sorted[:4])
