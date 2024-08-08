@@ -28,7 +28,7 @@ class Extractor:
         try:
             return self._load_embeddings(img_path, config)
         except (FileNotFoundError, KeyError):
-            images = self._load_images(img_path)
+            images = self._load_images(img_path, config)
             self._extract_and_save_embeddings(images, img_path, config)
             return self._load_embeddings(img_path, config)
 
