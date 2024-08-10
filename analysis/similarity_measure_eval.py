@@ -415,12 +415,12 @@ def run_and_save(config, filename, n=10):
             config.SIMILARITY_MEASURE = sim
             scores, scores_b = run_eval_one_config(config, n)
             all_scores[str(config)] = [scores, scores_b]
-    for emb in ContourImageEmbeddings:
-        config.IMAGE_EMBEDDINGS = emb
-        for sim in ContourSimilarityMeasure:
-            config.SIMILARITY_MEASURE = sim
-            scores, scores_b = run_eval_one_config(config, n)
-            all_scores[str(config)] = [scores, scores_b]
+    # for emb in ContourImageEmbeddings:
+    #     config.IMAGE_EMBEDDINGS = emb
+    #     for sim in ContourSimilarityMeasure:
+    #         config.SIMILARITY_MEASURE = sim
+    #         scores, scores_b = run_eval_one_config(config, n)
+    #         all_scores[str(config)] = [scores, scores_b]
     with open(filename, "w") as f:
         json.dump(all_scores, f)
 
@@ -439,21 +439,36 @@ def load_results(filename):
 
 
 if __name__ == "__main__":
-    config = Config()
-    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
-    run_and_save(
-        config,
-        f"analysis/results_one_image_{config.OBJ_NUM}_{config.IMAGE_PREPROCESSING.value}",
-        100,
-    )
-    config = Config()
-    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
-    config.USE_ALL_IMAGES = True
-    run_and_save(
-        config,
-        f"analysis/results_all_images_{config.OBJ_NUM}_{config.IMAGE_PREPROCESSING.value}.json",
-        100,
-    )
+    processing_steps_to_try = [
+        [],
+        [ImagePreprocessing.GREYSCALE],
+        [ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING],
+        [ImagePreprocessing.SEGMENTATION],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE],
+        [
+            ImagePreprocessing.CROPPING,
+            ImagePreprocessing.BACKGROUND_REM,
+            ImagePreprocessing.GREYSCALE,
+        ],
+    ]
+    for ps in processing_steps_to_try:
+        config = Config()
+        config.IMAGE_PREPROCESSING = ps
+        run_and_save(
+            config,
+            f"analysis/results_one_image_{config.OBJ_NUM}_{ps}",
+            10,
+        )
+        config = Config()
+        config.IMAGE_PREPROCESSING = ps
+        config.USE_ALL_IMAGES = True
+        run_and_save(
+            config,
+            f"analysis/results_all_images_{config.OBJ_NUM}_{ps}.json",
+            10,
+        )
 
     # results, results_b = load_results("analysis/results_one_image_51.json")
     # results, results_b = load_results("analysis/results_all_images_51.json")
