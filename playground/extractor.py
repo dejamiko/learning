@@ -9,7 +9,7 @@ import torchvision.transforms as T
 from PIL import Image
 from dino_vit_features.extractor import ViTExtractor
 from huggingface_hub import hf_hub_download
-from segment_anything import sam_model_registry, SamAutomaticMaskGenerator
+from segment_anything import sam_model_registry, SamPredictor
 from timm.data.transforms_factory import create_transform
 from transformers import (
     AutoImageProcessor,
@@ -419,40 +419,36 @@ class Extractor:
         )
         sam = sam_model_registry["vit_b"](checkpoint=chkpt_path)
         sam.to(device=config.DEVICE)
-        mask_generator = SamAutomaticMaskGenerator(sam)
-        masks = mask_generator.generate(image)
+        predictor = SamPredictor(sam)
+        predictor.set_image(image)
 
-        # Sort annotations by area, largest first
-        sorted_anns = sorted(masks, key=lambda x: x["area"], reverse=True)
+        # Define a region of interest (ROI)
+        height, width, _ = image.shape
 
-        # Initialize an image with an alpha channel (RGBA)
-        img = np.ones(
-            (
-                sorted_anns[0]["segmentation"].shape[0],
-                sorted_anns[0]["segmentation"].shape[1],
-                4,
-            ),
-            dtype=np.float32,
+        # Generate points within the ROI
+        num_points = 10
+        x_points = np.random.randint(0, height, size=num_points)
+        y_points = np.random.randint(0, width, size=num_points)
+        point_coords = np.stack((x_points, y_points), axis=1)
+
+        # Predict the mask for the object(s) in the ROI
+        masks, _, _ = predictor.predict(
+            point_coords=point_coords, point_labels=np.ones(num_points)
         )
 
-        # Set alpha to 0 (fully transparent initially)
-        img[:, :, 3] = 0
+        # Combine all masks into one (logical OR)
+        combined_mask = np.any(masks, axis=0)
 
-        # Apply each annotation mask
-        for ann in sorted_anns:
-            m = ann["segmentation"]
-            color_mask = np.concatenate(
-                [np.random.random(3), [0.35]]
-            )  # RGBA with alpha=0.35
-            img[m] = color_mask
+        inverted_mask = np.logical_not(combined_mask).astype(np.uint8)
 
-        # Convert the RGBA image to RGB (ignoring alpha)
-        img_rgb = cv2.cvtColor((img * 255).astype(np.uint8), cv2.COLOR_RGBA2RGB)
+        final_mask = cv2.morphologyEx(
+            inverted_mask.astype(np.uint8), cv2.MORPH_OPEN, np.ones((5, 5), np.uint8)
+        )
 
-        # Overlay the segmentation mask onto the original image
-        combined_img = cv2.addWeighted(image, 1.0, img_rgb, 0.7, 0)
-
-        return combined_img
+        # Create an empty image and apply the combined mask
+        isolated_image = np.zeros_like(image)
+        isolated_image[final_mask > 0] = image[final_mask > 0]
+        return isolated_image
 
     @staticmethod
     def _preprocess_greyscale(image):

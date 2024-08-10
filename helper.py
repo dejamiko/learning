@@ -66,6 +66,7 @@ def calculate_all_embeddings():
             config.IMAGE_EMBEDDINGS = m
             _ = Environment(config)
             print(f"Method {m.value} done in {time.time() - start_time} s")
+        print(f"Preprocessing steps done {ps}")
 
 
 if __name__ == "__main__":
