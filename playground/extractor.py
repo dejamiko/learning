@@ -8,8 +8,9 @@ import torch
 import torchvision.transforms as T
 from PIL import Image
 from dino_vit_features.extractor import ViTExtractor
+from huggingface_hub import hf_hub_download
+from segment_anything import sam_model_registry, SamAutomaticMaskGenerator
 from timm.data.transforms_factory import create_transform
-from torchvision.transforms import transforms
 from transformers import (
     AutoImageProcessor,
     AutoModel,
@@ -42,22 +43,30 @@ class Extractor:
         ), f"The provided image path {img_dir} is not a directory"
 
         images_with_names = []
-        for im in sorted(os.listdir(img_dir)):
-            if not im.endswith(".png"):
+        for filename in sorted(os.listdir(img_dir)):
+            if not filename.endswith(".png"):
                 continue
-            image = cv2.imread(os.path.join(img_dir, im))
-            if config.IMAGE_PREPROCESSING == ImagePreprocessing.COLOUR:
-                image = image
-            elif config.IMAGE_PREPROCESSING == ImagePreprocessing.GREYSCALE:
-                image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-                image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
-            elif config.IMAGE_PREPROCESSING == ImagePreprocessing.BINARY:
-                # TODO first segment this maybe
-                raise NotImplementedError()
-                image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-                image = cv2.threshold(image, 100, 255, cv2.THRESH_BINARY)[1]
-            images_with_names.append((image, im))
+            image = cv2.imread(os.path.join(img_dir, filename))
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            image = Extractor._apply_preprocessing(
+                config, image, os.path.join(img_dir, filename)
+            )
+            images_with_names.append((image, filename))
         return images_with_names
+
+    @staticmethod
+    def _apply_preprocessing(config, image, filename):
+        for pre in config.IMAGE_PREPROCESSING:
+            match pre:
+                case ImagePreprocessing.BACKGROUND_REM:
+                    image = Extractor._preprocess_background_rem(image)
+                case ImagePreprocessing.SEGMENTATION:
+                    image = Extractor._preprocess_segmentation(image, config)
+                case ImagePreprocessing.GREYSCALE:
+                    image = Extractor._preprocess_greyscale(image)
+                case ImagePreprocessing.CROPPING:
+                    image = Extractor._preprocess_cropping(image, filename)
+        return image
 
     def _extract_and_save_embeddings(self, images_with_names, img_dir, config):
         if len(images_with_names) == 0:
@@ -103,8 +112,8 @@ class Extractor:
                     image, config.CASCADE_MASK_RCNN_THRESHOLD
                 )
             # own trained models
-            case ImageEmbeddings.OWN_TRAINED:
-                return self._extract_own_trained(image)
+            # case ImageEmbeddings.OWN_TRAINED:
+            #     return self._extract_own_trained(image)
         raise ValueError(f"The method provided {config.IMAGE_EMBEDDINGS} is unknown.")
 
     @staticmethod
@@ -113,15 +122,9 @@ class Extractor:
             with open(os.path.join(img_path, "embeddings.json"), "r") as f:
                 current_embeddings = json.load(f)
             if index < len(current_embeddings):
-                current_embeddings[index][
-                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}"
-                ] = embedding
+                current_embeddings[index][config.get_embedding_spec()] = embedding
             else:
-                current_embeddings.append(
-                    {
-                        f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": embedding
-                    }
-                )
+                current_embeddings.append({config.get_embedding_spec(): embedding})
             with open(os.path.join(img_path, "embeddings.json"), "w") as f:
                 json.dump(current_embeddings, f)
         else:
@@ -131,11 +134,7 @@ class Extractor:
                         "The index cannot be different than 0 if there is no embeddings file"
                     )
                 json.dump(
-                    [
-                        {
-                            f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": embedding
-                        }
-                    ],
+                    [{config.get_embedding_spec(): embedding}],
                     f,
                 )
 
@@ -156,9 +155,7 @@ class Extractor:
             all_image_embeddings = json.load(f)
         for image_embeddings in all_image_embeddings:
             embeddings.append(
-                image_embeddings[
-                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}"
-                ]
+                image_embeddings[config.get_embedding_spec()]
             )  # this can raise KeyError?
         if config.IMAGE_EMBEDDINGS in ContourImageEmbeddings:
             return embeddings
@@ -321,7 +318,7 @@ class Extractor:
         from detectron2.engine import DefaultPredictor
         from detectron2.model_zoo import model_zoo
 
-        # This only runs on gpu
+        # NOTE This only runs on gpu
         cfg = get_cfg()
         cfg.merge_from_file(model_zoo.get_config_file(model))
         cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = threshold
@@ -359,16 +356,135 @@ class Extractor:
 
         return np.vstack(contours).squeeze().tolist()
 
+    # @staticmethod
+    # def _extract_own_trained(image):
+    #     transform = transforms.Compose(
+    #         [
+    #             transforms.Resize((256, 256)),
+    #             transforms.ToTensor(),
+    #             transforms.Normalize(
+    #                 mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+    #             ),
+    #         ]
+    #     )
+    #     image = Image.fromarray(image)
+    #     return transform(image).detach().flatten().numpy().tolist()
+
     @staticmethod
-    def _extract_own_trained(image):
-        transform = transforms.Compose(
-            [
-                transforms.Resize((256, 256)),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
-                ),
-            ]
+    def _preprocess_background_rem(image):
+        def bincount_app(a):
+            a2D = a.reshape(-1, a.shape[-1])
+            col_range = (256, 256, 256)
+            a1D = np.ravel_multi_index(a2D.T, col_range)
+            return np.unravel_index(np.bincount(a1D).argmax(), col_range)
+
+        dominant_colour = np.array(bincount_app(image))
+
+        lower_bound = dominant_colour - (1, 1, 1)
+        upper_bound = dominant_colour + (1, 1, 1)
+
+        mask = cv2.inRange(image, lower_bound, upper_bound)
+
+        masked_image = cv2.bitwise_and(image, image, mask=cv2.bitwise_not(mask))
+
+        return masked_image
+
+    @staticmethod
+    def _preprocess_segmentation(image, config):
+        chkpt_path = hf_hub_download(
+            "ybelkada/segment-anything", "checkpoints/sam_vit_b_01ec64.pth"
         )
-        image = Image.fromarray(image)
-        return transform(image).detach().flatten().numpy().tolist()
+        sam = sam_model_registry["vit_b"](checkpoint=chkpt_path)
+        sam.to(device=config.DEVICE)
+        mask_generator = SamAutomaticMaskGenerator(sam)
+        masks = mask_generator.generate(image)
+
+        # Sort annotations by area, largest first
+        sorted_anns = sorted(masks, key=lambda x: x["area"], reverse=True)
+
+        # Initialize an image with an alpha channel (RGBA)
+        img = np.ones(
+            (
+                sorted_anns[0]["segmentation"].shape[0],
+                sorted_anns[0]["segmentation"].shape[1],
+                4,
+            ),
+            dtype=np.float32,
+        )
+
+        # Set alpha to 0 (fully transparent initially)
+        img[:, :, 3] = 0
+
+        # Apply each annotation mask
+        for ann in sorted_anns:
+            m = ann["segmentation"]
+            color_mask = np.concatenate(
+                [np.random.random(3), [0.35]]
+            )  # RGBA with alpha=0.35
+            img[m] = color_mask
+
+        # Convert the RGBA image to RGB (ignoring alpha)
+        img_rgb = cv2.cvtColor((img * 255).astype(np.uint8), cv2.COLOR_RGBA2RGB)
+
+        # Overlay the segmentation mask onto the original image
+        combined_img = cv2.addWeighted(image, 1.0, img_rgb, 0.7, 0)
+
+        return combined_img
+
+    @staticmethod
+    def _preprocess_greyscale(image):
+        # this has to be done twice to have a grey but 3-channel image
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+        image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
+        return image
+
+    @staticmethod
+    def _preprocess_cropping(image, filename):
+        if filename[0] == "/":
+            filename = filename[1:]
+        obj_and_task, img_name = filename.split("/")[1:]
+        img_num = int(img_name[6])  # image_[num].png
+
+        img_size = image.shape[0]  # assume square image
+
+        def crop_mid(image):
+            return image[
+                int(img_size * 0.1) : int(img_size * 0.9),
+                int(img_size * 0.1) : int(img_size * 0.9),
+            ]
+
+        def crop_top(image):
+            return image[
+                0 : int(img_size * 0.8), int(img_size * 0.1) : int(img_size * 0.9)
+            ]
+
+        def crop_bottom(image):
+            return image[
+                int(img_size * 0.2) : img_size,
+                int(img_size * 0.1) : int(img_size * 0.9),
+            ]
+
+        def crop_left(image):
+            return image[
+                int(img_size * 0.1) : int(img_size * 0.9), 0 : int(img_size * 0.8)
+            ]
+
+        def crop_right(image):
+            return image[
+                int(img_size * 0.1) : int(img_size * 0.9),
+                int(img_size * 0.2) : img_size,
+            ]
+
+        match img_num:
+            case 1:
+                return crop_top(image)
+            case 2:
+                return crop_bottom(image)
+            case 3:
+                return crop_left(image)
+            case 4:
+                return crop_right(image)
+
+        if obj_and_task.find("pushing") != -1:
+            return crop_top(image)
+        return crop_mid(image)

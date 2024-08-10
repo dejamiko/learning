@@ -1,6 +1,3 @@
-import os
-
-import cv2
 import numpy as np
 from pytest import fixture
 
@@ -42,17 +39,7 @@ def object_fixture():
     return obj_0, obj_1, config
 
 
-@fixture
-def images_fixture():
-    images = []
-    img_path = "tests/_test_assets"
-    ims = ["image_0.png", "image_1.png", "image_2.png", "image_3.png", "image_4.png"]
-    for im in ims:
-        images.append(cv2.imread(os.path.join(img_path, im)))
-    return images
-
-
-def test_object_fields_work(object_fixture, images_fixture):
+def test_object_fields_work(object_fixture):
     obj_0, obj_1, c = object_fixture
 
     assert obj_0.index == 0
@@ -114,7 +101,7 @@ def test_actual_embeddings_sim_works():
     assert obj_0.visible_repr.shape == (768,)
     assert obj_1.visible_repr.shape == (768,)
 
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6810652587491944)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.7400139849342894)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
@@ -140,6 +127,6 @@ def test_actual_embeddings_all_images_sim_works():
     assert obj_0.visible_repr.shape == (5, 768)
     assert obj_1.visible_repr.shape == (5, 768)
 
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6907545822535078)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6954608364472726)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)

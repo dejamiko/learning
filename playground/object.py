@@ -92,21 +92,21 @@ class Object(ABC):
                     f"do not work with contour similarity measures."
                 )
                 return self._get_asd(a, b)
-            case NNSimilarityMeasure.TRAINED:
-                assert (
-                    self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
-                ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
-                return self._get_own_trained(a, b)
-            case NNSimilarityMeasure.FINE_TUNED:
-                assert (
-                    self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
-                ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
-                return self._get_fine_tuned(a, b)
-            case NNSimilarityMeasure.LINEARLY_PROBED:
-                assert (
-                    self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
-                ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
-                return self._get_linearly_probed(a, b)
+            # case NNSimilarityMeasure.TRAINED:
+            #     assert (
+            #         self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
+            #     ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
+            #     return self._get_own_trained(a, b)
+            # case NNSimilarityMeasure.FINE_TUNED:
+            #     assert (
+            #         self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
+            #     ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
+            #     return self._get_fine_tuned(a, b)
+            # case NNSimilarityMeasure.LINEARLY_PROBED:
+            #     assert (
+            #         self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
+            #     ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
+            #     return self._get_linearly_probed(a, b)
         raise ValueError(
             f"Unknown similarity measure provided `{self.c.SIMILARITY_MEASURE}`."
         )
@@ -184,32 +184,32 @@ class Object(ABC):
         ):
             return lst
 
-    @staticmethod
-    def _get_own_trained(a, b):
-        return Object._get_nn_sim(
-            a, b, {"frozen": False, "backbone": False}, "siamese_network_train.pth"
-        )
-
-    @staticmethod
-    def _get_fine_tuned(a, b):
-        return Object._get_nn_sim(
-            a, b, {"frozen": True, "backbone": True}, "siamese_network_fine_tuning.pth"
-        )
-
-    @staticmethod
-    def _get_linearly_probed(a, b):
-        return Object._get_nn_sim(
-            a,
-            b,
-            {"frozen": False, "backbone": True},
-            "siamese_network_linear_probing.pth",
-        )
-
-    @staticmethod
-    def _get_nn_sim(a, b, config, model_path):
-        a = torch.from_numpy(a).float().reshape(1, 3, 256, 256)
-        b = torch.from_numpy(b).float().reshape(1, 3, 256, 256)
-        model = SiameseNetwork(**config)
-        model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
-        model.eval()
-        return float(model(a, b).squeeze().detach().numpy())
+    # @staticmethod
+    # def _get_own_trained(a, b):
+    #     return Object._get_nn_sim(
+    #         a, b, {"frozen": False, "backbone": False}, "siamese_network_train.pth"
+    #     )
+    #
+    # @staticmethod
+    # def _get_fine_tuned(a, b):
+    #     return Object._get_nn_sim(
+    #         a, b, {"frozen": True, "backbone": True}, "siamese_network_fine_tuning.pth"
+    #     )
+    #
+    # @staticmethod
+    # def _get_linearly_probed(a, b):
+    #     return Object._get_nn_sim(
+    #         a,
+    #         b,
+    #         {"frozen": False, "backbone": True},
+    #         "siamese_network_linear_probing.pth",
+    #     )
+    #
+    # @staticmethod
+    # def _get_nn_sim(a, b, config, model_path):
+    #     a = torch.from_numpy(a).float().reshape(1, 3, 256, 256)
+    #     b = torch.from_numpy(b).float().reshape(1, 3, 256, 256)
+    #     model = SiameseNetwork(**config)
+    #     model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
+    #     model.eval()
+    #     return float(model(a, b).squeeze().detach().numpy())

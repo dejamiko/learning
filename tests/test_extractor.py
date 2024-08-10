@@ -1,7 +1,6 @@
 import json
 import os
 
-import cv2
 import numpy as np
 from pytest import fixture, raises
 
@@ -48,11 +47,7 @@ def test_extractor_some_embeddings_works(empty_dir_and_config):
     expected = [[1, 2, 3], [2, 4, 6]]
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
         json.dump(
-            [
-                {
-                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": expected
-                }
-            ],
+            [{config.get_embedding_spec(): expected}],
             f,
         )
     embeddings = Extractor()(emb_dir, config)
@@ -65,7 +60,7 @@ def test_extractor_some_embeddings_but_wrong_metric_works(empty_dir_and_config):
     # create embeddings of different metric
     other = [[1, 2, 3], [2, 4, 6]]
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump([{f"different, {config.IMAGE_PREPROCESSING.value}": other}], f)
+        json.dump([{f"different, []": other}], f)
     embeddings = Extractor()(emb_dir, config)
     expected = [
         0.18434414,
@@ -93,12 +88,7 @@ def test_extractor_all_embeddings_works(empty_dir_and_config):
     ]
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
         json.dump(
-            [
-                {
-                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": e
-                }
-                for e in expected
-            ],
+            [{config.get_embedding_spec(): e} for e in expected],
             f,
         )
     embeddings = Extractor()(emb_dir, config)
@@ -109,7 +99,7 @@ def test_extractor_all_embeddings_works(empty_dir_and_config):
 def test_extractor_all_embeddings_different_preprocessing_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     # create all embeddings
-    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.GREYSCALE]
     expected = [
         [[1, 2, 3], [2, 4, 6]],
         [[1.1, 2.1, 3.1], [2.1, 4.1, 6.1]],
@@ -119,12 +109,7 @@ def test_extractor_all_embeddings_different_preprocessing_works(empty_dir_and_co
     ]
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
         json.dump(
-            [
-                {
-                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": e
-                }
-                for e in expected
-            ],
+            [{config.get_embedding_spec(): e} for e in expected],
             f,
         )
     embeddings = Extractor()(emb_dir, config)
@@ -145,12 +130,7 @@ def test_extractor_all_embeddings_contour_works(empty_dir_and_config):
     ]
     with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
         json.dump(
-            [
-                {
-                    f"{config.IMAGE_EMBEDDINGS.value}, {config.IMAGE_PREPROCESSING.value}": e
-                }
-                for e in expected
-            ],
+            [{config.get_embedding_spec(): e} for e in expected],
             f,
         )
     embeddings = Extractor()(emb_dir, config)
@@ -193,14 +173,14 @@ def test_extractor_no_embeddings_dino_full_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_FULL
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -0.35703462,
-        1.19266963,
-        -2.00560188,
-        0.56439084,
-        3.33149242,
-        -0.28680599,
-        0.3572948,
-        -1.21180332,
+        -3.09272385,
+        3.10472727,
+        -1.42315328,
+        0.87985611,
+        0.58063781,
+        -1.47418904,
+        2.11999035,
+        -2.34510541,
     ]
     assert embeddings.shape == (5, 384)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -211,14 +191,14 @@ def test_extractor_no_embeddings_dino_2_full_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_2_FULL
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        2.19594669,
-        2.36873817,
-        1.9113816,
-        0.00589865,
-        -0.49594384,
-        1.22531855,
-        -0.76101184,
-        1.61280763,
+        0.96855688,
+        1.35322404,
+        1.6999315,
+        0.06761098,
+        -0.16643545,
+        0.44783533,
+        -0.03544366,
+        1.30553341,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -229,14 +209,14 @@ def test_extractor_no_embeddings_vit_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.VIT
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -0.09678458,
-        0.06691732,
-        -0.15958279,
-        0.03637185,
-        -0.03019533,
-        0.37906396,
-        0.01801646,
-        -0.05673098,
+        0.00308969,
+        0.02598491,
+        -0.03046953,
+        -0.19576237,
+        -0.26125684,
+        0.18287084,
+        -0.11704297,
+        -0.0689105,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -247,14 +227,14 @@ def test_extractor_no_embeddings_convnet_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.CONVNET
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.02492115,
-        -0.41968155,
-        0.10588291,
-        0.42363903,
-        0.16527481,
-        0.35282275,
-        -0.17214058,
-        0.06407911,
+        0.06297413,
+        -0.21367723,
+        0.48447192,
+        -0.44642058,
+        0.2480932,
+        0.46501365,
+        -0.3112483,
+        -0.204081,
     ]
     assert embeddings.shape == (5, 1024)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -265,14 +245,14 @@ def test_extractor_no_embeddings_swin_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.SWIN
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        1.21000528,
-        0.32423934,
-        -0.27246797,
-        0.8030616,
-        -1.11264479,
-        -0.62838131,
-        -1.59494519,
-        0.17526984,
+        0.65817058,
+        -0.01108037,
+        -0.17194957,
+        0.44754627,
+        -0.87932968,
+        0.2345365,
+        -1.51616478,
+        0.10756487,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -283,14 +263,14 @@ def test_extractor_no_embeddings_vit_msn_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.VIT_MSN
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -0.01929749,
-        0.82064128,
-        0.3429876,
-        -0.02154515,
-        -0.06944458,
-        0.08527613,
-        0.95244491,
-        -0.24541642,
+        -0.19736178,
+        0.67368895,
+        0.42296565,
+        -0.16271308,
+        -0.08438256,
+        -0.13777353,
+        1.17792237,
+        -0.44260886,
     ]
     assert embeddings.shape == (5, 384)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -302,13 +282,13 @@ def test_extractor_no_embeddings_dobbe_works(empty_dir_and_config):
     embeddings = Extractor()(emb_dir, config)
     expected = [
         0.00000000e00,
-        9.76836532e-02,
+        5.47229797e-02,
         0.00000000e00,
-        9.16914069e-05,
-        5.58353439e-02,
-        9.66009051e-02,
-        1.58980978e-03,
-        1.07888551e-02,
+        4.96147841e-05,
+        4.17437814e-02,
+        7.57765546e-02,
+        0.00000000e00,
+        5.33931982e-03,
     ]
     assert embeddings.shape == (5, 512)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -319,35 +299,35 @@ def test_extractor_no_embeddings_vc_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.VC
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -0.08057675,
-        0.05576405,
-        0.04301557,
-        -0.15548532,
-        -0.05920196,
-        -0.09089668,
-        -0.04518005,
-        -0.13219847,
+        -0.03540432,
+        0.05867103,
+        0.06300978,
+        -0.153437,
+        0.02411774,
+        -0.11084762,
+        -0.02518206,
+        -0.11365147,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
 
 
-def test_extractor_no_embeddings_own_models_works(empty_dir_and_config):
-    emb_dir, config = empty_dir_and_config
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    embeddings = Extractor()(emb_dir, config)
-    expected = [
-        -0.2170563,
-        -0.2170563,
-        -0.2170563,
-        -0.2170563,
-        -0.2170563,
-        -0.2170563,
-        -0.2170563,
-        -0.2170563,
-    ]
-    assert embeddings.shape == (5, 256**2 * 3)
-    assert np.allclose(embeddings[0][2:10], expected)
+# def test_extractor_no_embeddings_own_models_works(empty_dir_and_config):
+#     emb_dir, config = empty_dir_and_config
+#     config.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+#     embeddings = Extractor()(emb_dir, config)
+#     expected = [
+#         -0.2170563,
+#         -0.2170563,
+#         -0.2170563,
+#         -0.2170563,
+#         -0.2170563,
+#         -0.2170563,
+#         -0.2170563,
+#         -0.2170563,
+#     ]
+#     assert embeddings.shape == (5, 256**2 * 3)
+#     assert np.allclose(embeddings[0][2:10], expected)
 
 
 def test_extractor_wrong_method_fails(empty_dir_and_config):
@@ -360,7 +340,7 @@ def test_extractor_wrong_method_fails(empty_dir_and_config):
 
 def test_all_embeddings_greyscale(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
-    config.IMAGE_PREPROCESSING = ImagePreprocessing.GREYSCALE
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.GREYSCALE]
     for ie in ImageEmbeddings:
         config.IMAGE_EMBEDDINGS = ie
         Extractor()(emb_dir, config)

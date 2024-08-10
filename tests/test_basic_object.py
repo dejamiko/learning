@@ -280,37 +280,37 @@ def test_get_visual_similarity_other_fails(object_fixture):
     )
 
 
-def test_get_visual_similarity_own_trained_works(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
-    obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.9999375343322754)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
-
-
-def test_get_visual_similarity_linearly_probed_works(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
-    obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 1)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
-
-
-def test_get_visual_similarity_fine_tuned_works(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
-    obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 1)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+# def test_get_visual_similarity_own_trained_works(object_fixture):
+#     obj_0, obj_1, c = object_fixture
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+#     obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
+#     obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.9999375343322754)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+#     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+#
+#
+# def test_get_visual_similarity_linearly_probed_works(object_fixture):
+#     obj_0, obj_1, c = object_fixture
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+#     obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
+#     obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_1), 1)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+#     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+#
+#
+# def test_get_visual_similarity_fine_tuned_works(object_fixture):
+#     obj_0, obj_1, c = object_fixture
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+#     obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
+#     obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_1), 1)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+#     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 @fixture
@@ -596,39 +596,39 @@ def test_get_visual_similarity_asd_multi_dim_works(object_fixture_multi_dim):
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
-def test_get_visual_similarity_own_trained_multi_dim_works(object_fixture_multi_dim):
-    obj_0, obj_1, c = object_fixture_multi_dim
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
-    obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.9999375343322754)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+# def test_get_visual_similarity_own_trained_multi_dim_works(object_fixture_multi_dim):
+#     obj_0, obj_1, c = object_fixture_multi_dim
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+#     obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
+#     obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.9999375343322754)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+#     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
-def test_get_visual_similarity_linearly_probed_multi_dim_works(
-    object_fixture_multi_dim,
-):
-    obj_0, obj_1, c = object_fixture_multi_dim
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
-    obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 1.0)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+# def test_get_visual_similarity_linearly_probed_multi_dim_works(
+#     object_fixture_multi_dim,
+# ):
+#     obj_0, obj_1, c = object_fixture_multi_dim
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+#     obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
+#     obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_1), 1.0)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+#     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
-def test_get_visual_similarity_fine_tuned_multi_dim_works(object_fixture_multi_dim):
-    obj_0, obj_1, c = object_fixture_multi_dim
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
-    obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 1.0)
-    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
-    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
+# def test_get_visual_similarity_fine_tuned_multi_dim_works(object_fixture_multi_dim):
+#     obj_0, obj_1, c = object_fixture_multi_dim
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
+#     obj_0.visible_repr = Extractor()("tests/_test_assets/obj_1_img", c)
+#     obj_1.visible_repr = Extractor()("tests/_test_assets/obj_2_img", c)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_1), 1.0)
+#     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+#     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_get_visual_similarity_cosine_with_wrong_embeddings_fails(object_fixture):
@@ -703,36 +703,36 @@ def test_get_visual_similarity_asd_with_wrong_embeddings_fails(object_fixture):
     )
 
 
-def test_get_visual_similarity_own_trained_with_wrong_embeddings_fails(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
-    with raises(AssertionError) as e:
-        obj_0.get_visual_similarity(obj_1)
-    assert str(e.value) == (
-        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` do not work with own models."
-    )
+# def test_get_visual_similarity_own_trained_with_wrong_embeddings_fails(object_fixture):
+#     obj_0, obj_1, c = object_fixture
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
+#     with raises(AssertionError) as e:
+#         obj_0.get_visual_similarity(obj_1)
+#     assert str(e.value) == (
+#         f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` do not work with own models."
+#     )
 
 
-def test_get_visual_similarity_fine_tuned_with_wrong_embeddings_fails(object_fixture):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
-    with raises(AssertionError) as e:
-        obj_0.get_visual_similarity(obj_1)
-    assert str(e.value) == (
-        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` do not work with own models."
-    )
+# def test_get_visual_similarity_fine_tuned_with_wrong_embeddings_fails(object_fixture):
+#     obj_0, obj_1, c = object_fixture
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
+#     with raises(AssertionError) as e:
+#         obj_0.get_visual_similarity(obj_1)
+#     assert str(e.value) == (
+#         f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` do not work with own models."
+#     )
 
 
-def test_get_visual_similarity_linearly_probed_with_wrong_embeddings_fails(
-    object_fixture,
-):
-    obj_0, obj_1, c = object_fixture
-    c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
-    c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
-    with raises(AssertionError) as e:
-        obj_0.get_visual_similarity(obj_1)
-    assert str(e.value) == (
-        f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` do not work with own models."
-    )
+# def test_get_visual_similarity_linearly_probed_with_wrong_embeddings_fails(
+#     object_fixture,
+# ):
+#     obj_0, obj_1, c = object_fixture
+#     c.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
+#     c.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
+#     with raises(AssertionError) as e:
+#         obj_0.get_visual_similarity(obj_1)
+#     assert str(e.value) == (
+#         f"The ImageEmbeddings provided `{c.IMAGE_EMBEDDINGS}` do not work with own models."
+#     )

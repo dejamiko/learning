@@ -86,7 +86,7 @@ class ImageEmbeddings(AutoName):
     VIT_MSN = auto()
     DOBBE = auto()
     VC = auto()
-    OWN_TRAINED = auto()
+    # OWN_TRAINED = auto()  # TODO fix this
 
 
 class ContourImageEmbeddings(AutoName):
@@ -96,6 +96,8 @@ class ContourImageEmbeddings(AutoName):
 
 
 class ImagePreprocessing(AutoName):
-    COLOUR = auto()
+    BACKGROUND_REM = auto()
+    SEGMENTATION = auto()
     GREYSCALE = auto()
-    BINARY = auto()
+    # BINARY = auto()  # TODO fix this
+    CROPPING = auto()

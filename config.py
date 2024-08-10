@@ -1,10 +1,11 @@
+import torch.cuda
+
 from tm_utils import (
     VisualisationMethod,
     ObjectSelectionStrategyThreshold,
     SimilarityMeasure,
     ImageEmbeddings,
     ObjectSelectionStrategyAffine,
-    ImagePreprocessing,
 )
 
 
@@ -30,9 +31,9 @@ class Config:
     SIM_MEASURE_SIGMA = 1.0
     IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_2_FULL
     USE_ALL_IMAGES = False
-    IMAGE_PREPROCESSING = ImagePreprocessing.COLOUR
+    IMAGE_PREPROCESSING = []
 
-    DEVICE = "cpu"
+    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
     MODEL_TYPE = "dino_vits8"
     STRIDE = 8
     LOAD_SIZE = 256
@@ -87,3 +88,6 @@ class Config:
 
     def __str__(self):  # pragma: no cover
         return f"Config: {self.__dict__}"
+
+    def get_embedding_spec(self):
+        return f"{self.IMAGE_EMBEDDINGS.value}, [{', '.join([a.value for a in self.IMAGE_PREPROCESSING])}]"
