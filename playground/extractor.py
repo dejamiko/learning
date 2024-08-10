@@ -88,20 +88,20 @@ class Extractor:
             case ImageEmbeddings.DINO_FULL:
                 return self._extract_dino_full(image, config)
             case ImageEmbeddings.DINO_2_FULL:
-                return self._extract_dino_2_full(image)
+                return self._extract_dino_2_full(image, config)
             case ImageEmbeddings.VIT:
-                return self._extract_vit(image)
+                return self._extract_vit(image, config)
             case ImageEmbeddings.CONVNET:
-                return self._extract_convnet(image)
+                return self._extract_convnet(image, config)
             case ImageEmbeddings.SWIN:
-                return self._extract_swin(image)
+                return self._extract_swin(image, config)
             case ImageEmbeddings.VIT_MSN:
-                return self._extract_vit_msn(image)
+                return self._extract_vit_msn(image, config)
             # robotics specific models
             case ImageEmbeddings.DOBBE:
-                return self._extract_dobbe(image)
+                return self._extract_dobbe(image, config)
             case ImageEmbeddings.VC:
-                return self._extract_vc(image)
+                return self._extract_vc(image, config)
             # contour models
             case ContourImageEmbeddings.MASK_RCNN:  # pragma: no cover
                 return self._extract_mask_rcnn(image, config.MASK_RCNN_THRESHOLD)
@@ -170,6 +170,7 @@ class Extractor:
                 image_batch.to(config.DEVICE), layer, config.FACET, config.BIN
             )
             .detach()
+            .cpu()
             .numpy()
         )
         embedding = embedding.squeeze().mean(axis=0)
@@ -177,7 +178,9 @@ class Extractor:
 
     @staticmethod
     def _extract_dino_full(image, config):
-        dino = torch.hub.load("facebookresearch/dino:main", config.MODEL_TYPE)
+        dino = torch.hub.load("facebookresearch/dino:main", config.MODEL_TYPE).to(
+            config.DEVICE
+        )
 
         image_transforms = T.Compose(
             [
@@ -189,90 +192,101 @@ class Extractor:
 
         image = Image.fromarray(image)
         img = image_transforms(image)
-        img = img.unsqueeze(0)
+        img = img.unsqueeze(0).to(config.DEVICE)
         with torch.no_grad():
             img_emb = dino(img).squeeze()
-        return img_emb.tolist()
+        return img_emb.detach().cpu().numpy().tolist()
 
     @staticmethod
-    def _extract_dino_2_full(image):
+    def _extract_dino_2_full(image, config):
         processor = AutoImageProcessor.from_pretrained("facebook/dinov2-base")
-        model = AutoModel.from_pretrained("facebook/dinov2-base")
+        model = AutoModel.from_pretrained("facebook/dinov2-base").to(config.DEVICE)
 
-        inputs = processor(images=image, return_tensors="pt")
+        inputs = processor(images=image, return_tensors="pt").to(config.DEVICE)
         with torch.no_grad():
             outputs = model(**inputs)
 
         cls_token = outputs.pooler_output
-        return cls_token.flatten().tolist()
+        return cls_token.flatten().detach().cpu().numpy().tolist()
 
     @staticmethod
-    def _extract_vit(image):
+    def _extract_vit(image, config):
         processor = ViTImageProcessor.from_pretrained(
             "google/vit-base-patch16-224-in21k"
         )
-        model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k")
-        inputs = processor(images=image, return_tensors="pt")
+        model = ViTModel.from_pretrained("google/vit-base-patch16-224-in21k").to(
+            config.DEVICE
+        )
+        inputs = processor(images=image, return_tensors="pt").to(config.DEVICE)
 
         with torch.no_grad():
             outputs = model(**inputs)
 
         last_hidden_states = outputs.last_hidden_state.squeeze().mean(axis=0)
-        return last_hidden_states.detach().numpy().tolist()
+        return last_hidden_states.detach().cpu().numpy().tolist()
 
     @staticmethod
-    def _extract_convnet(image):
+    def _extract_convnet(image, config):
         model = timm.create_model(
             "convnextv2_base.fcmae",
             pretrained=True,
             num_classes=0,  # remove classifier nn.Linear
-        )
-        model = model.eval()
+        ).to(config.DEVICE)
+        model.eval()
 
         image = Image.fromarray(image)
 
         data_config = timm.data.resolve_model_data_config(model)
         transforms = timm.data.create_transform(**data_config, is_training=False)
 
-        output = model.forward_features(transforms(image).unsqueeze(0))
+        output = model.forward_features(
+            transforms(image).unsqueeze(0).to(config.DEVICE)
+        )
         return (
             model.forward_head(output, pre_logits=True)
             .squeeze()
             .detach()
+            .cpu()
             .numpy()
             .tolist()
         )
 
     @staticmethod
-    def _extract_swin(image):
+    def _extract_swin(image, config):
         image_processor = AutoImageProcessor.from_pretrained(
             "microsoft/swin-small-patch4-window7-224"
         )
-        model = SwinModel.from_pretrained("microsoft/swin-small-patch4-window7-224")
+        model = SwinModel.from_pretrained("microsoft/swin-small-patch4-window7-224").to(
+            config.DEVICE
+        )
 
-        inputs = image_processor(image, return_tensors="pt")
+        inputs = image_processor(image, return_tensors="pt").to(config.DEVICE)
 
         with torch.no_grad():
             outputs = model(**inputs)
 
         last_hidden_states = outputs.last_hidden_state
-        return last_hidden_states.detach().squeeze().numpy().mean(axis=0).tolist()
+        return last_hidden_states.detach().squeeze().cpu().numpy().mean(axis=0).tolist()
 
     @staticmethod
-    def _extract_vit_msn(image):
+    def _extract_vit_msn(image, config):
         image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
-        model = ViTMSNModel.from_pretrained("facebook/vit-msn-small")
+        model = ViTMSNModel.from_pretrained("facebook/vit-msn-small").to(config.DEVICE)
 
-        inputs = image_processor(images=image, return_tensors="pt")
+        inputs = image_processor(images=image, return_tensors="pt").to(config.DEVICE)
 
         with torch.no_grad():
             outputs = model(**inputs)
 
-        return outputs.last_hidden_state.detach().numpy().squeeze().mean(0).tolist()
+        return (
+            outputs.last_hidden_state.detach().cpu().numpy().squeeze().mean(0).tolist()
+        )
 
     @staticmethod
-    def _extract_dobbe(image):
-        model = timm.create_model("hf_hub:notmahi/dobb-e", pretrained=True)
+    def _extract_dobbe(image, config):
+        model = timm.create_model("hf_hub:notmahi/dobb-e", pretrained=True).to(
+            config.DEVICE
+        )
 
         model.eval()
 
@@ -281,21 +295,30 @@ class Extractor:
 
         image = Image.fromarray(image)
 
-        outputs = model(transforms(image).unsqueeze(0))
+        outputs = model(transforms(image).unsqueeze(0).to(config.DEVICE))
 
-        outputs = outputs.detach().numpy().squeeze()
+        outputs = outputs.detach().cpu().numpy().squeeze()
         return outputs.tolist()
 
     @staticmethod
-    def _extract_vc(image):
+    def _extract_vc(image, config):
         model, embd_size, model_transforms, model_info = model_utils.load_model(
             model_utils.VC1_BASE_NAME
         )
 
+        model.to(config.DEVICE)
+
         image = Image.fromarray(image)
 
         transformed_img = model_transforms(image)
-        return model(transformed_img.unsqueeze(0)).detach().squeeze().numpy().tolist()
+        return (
+            model(transformed_img.unsqueeze(0).to(config.DEVICE))
+            .detach()
+            .cpu()
+            .squeeze()
+            .numpy()
+            .tolist()
+        )
 
     def _extract_mask_rcnn(self, image, threshold):  # pragma: no cover
         return self._extract_detectron(
