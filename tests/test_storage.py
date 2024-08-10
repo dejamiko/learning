@@ -114,7 +114,7 @@ def storage_fixture_real():
 def test_get_visual_similarity_real_obj_works(storage_fixture_real):
     storage, c = storage_fixture_real
     assert np.allclose(storage.get_visual_similarity(0, 16), 0)
-    assert np.allclose(storage.get_visual_similarity(0, 3), 0.15911361833693083)
+    assert np.allclose(storage.get_visual_similarity(0, 3), 0.16021325735045983)
 
 
 def test_get_true_success_probability_boolean_real_obj_works(storage_fixture_real):
@@ -154,7 +154,7 @@ def test_get_visual_similarity_real_obj_small_works(storage_fixture_real_small):
     storage, c = storage_fixture_real_small
     print([(o.index, o.task) for o in storage.get_objects()])
     assert np.allclose(storage.get_visual_similarity(0, 16), 0)
-    assert np.allclose(storage.get_visual_similarity(0, 1), 0.6232984775935889)
+    assert np.allclose(storage.get_visual_similarity(0, 1), 0.5887539364632154)
 
 
 def test_get_true_success_probability_boolean_real_obj_small_works(

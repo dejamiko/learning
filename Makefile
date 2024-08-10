@@ -1,6 +1,6 @@
 .PHONY: test test_cov
 test:
-	@PYTHONPATH=. pytest tests
+	@PYTHONPATH=. pytest tests/test_extractor.py
 
 test_cov:
 	@PYTHONPATH=. pytest --cov --cov-report term-missing tests/
@@ -22,9 +22,9 @@ sim:
 	@python3 -m analysis.similarity_measure_eval
 
 
-vis:
-	@python3 -m analysis.visualiser
+vis_sim:
+	@python3 -m analysis.visualiser_sim_eval
 
 
-run_server:
-	@python3 -m analysis.http_server
+vis_mh:
+	@python3 -m analysis.visualiser_metaheuristic

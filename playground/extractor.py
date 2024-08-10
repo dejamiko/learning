@@ -461,7 +461,7 @@ class Extractor:
     def _preprocess_cropping(image, filename):
         if filename[0] == "/":
             filename = filename[1:]
-        obj_and_task, img_name = filename.split("/")[1:]
+        obj_and_task, img_name = filename.split("/")[-2:]
         img_num = int(img_name[6])  # image_[num].png
 
         img_size = image.shape[0]  # assume square image

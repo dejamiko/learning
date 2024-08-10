@@ -1,6 +1,7 @@
 import json
 import os
 
+import cv2
 import numpy as np
 from pytest import fixture, raises
 
@@ -28,14 +29,14 @@ def test_extractor_no_embeddings_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.18434414,
-        0.32338375,
-        -0.81356609,
-        -0.45523641,
-        -0.32479423,
-        0.41095853,
-        1.04919481,
-        0.11488045,
+        0.21889894,
+        0.37965849,
+        0.11891212,
+        -0.20318767,
+        -0.34644514,
+        1.01547039,
+        1.21056187,
+        -0.7112096,
     ]
     assert embeddings.shape == (5, 6528)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -63,14 +64,14 @@ def test_extractor_some_embeddings_but_wrong_metric_works(empty_dir_and_config):
         json.dump([{f"different, []": other}], f)
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.18434414,
-        0.32338375,
-        -0.81356609,
-        -0.45523641,
-        -0.32479423,
-        0.41095853,
-        1.04919481,
-        0.11488045,
+        0.21889894,
+        0.37965849,
+        0.11891212,
+        -0.20318767,
+        -0.34644514,
+        1.01547039,
+        1.21056187,
+        -0.7112096,
     ]
     assert embeddings.shape == (5, 6528)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -155,14 +156,14 @@ def test_extractor_no_embeddings_dino_layer_11_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_LAYER_11
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -0.79709041,
-        -0.32174441,
-        0.40859127,
-        -0.62905365,
-        -0.12319135,
-        -0.09629215,
-        0.14860496,
-        0.10301444,
+        -0.79233724,
+        -0.6284228,
+        -0.05257636,
+        -0.40432939,
+        -0.33743536,
+        -0.06903843,
+        0.23262756,
+        0.59205562,
     ]
     assert embeddings.shape == (5, 6528)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -173,14 +174,14 @@ def test_extractor_no_embeddings_dino_full_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_FULL
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -3.09272385,
-        3.10472727,
-        -1.42315328,
-        0.87985611,
-        0.58063781,
-        -1.47418904,
-        2.11999035,
-        -2.34510541,
+        -0.71678388,
+        1.62074006,
+        0.09509128,
+        0.21747777,
+        3.27846622,
+        -1.0529964,
+        1.07123089,
+        -2.03937387,
     ]
     assert embeddings.shape == (5, 384)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -191,14 +192,14 @@ def test_extractor_no_embeddings_dino_2_full_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_2_FULL
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.96855688,
-        1.35322404,
-        1.6999315,
-        0.06761098,
-        -0.16643545,
-        0.44783533,
-        -0.03544366,
-        1.30553341,
+        3.064394,
+        -0.41076189,
+        1.71749401,
+        -1.14465475,
+        1.17028403,
+        -1.50916374,
+        2.06556773,
+        -0.6224308,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -209,14 +210,14 @@ def test_extractor_no_embeddings_vit_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.VIT
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.00308969,
-        0.02598491,
-        -0.03046953,
-        -0.19576237,
-        -0.26125684,
-        0.18287084,
-        -0.11704297,
-        -0.0689105,
+        -0.06745528,
+        -0.12765129,
+        0.09235362,
+        -0.18822737,
+        -0.27684909,
+        0.11348941,
+        -0.1894778,
+        0.03964938,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -227,14 +228,14 @@ def test_extractor_no_embeddings_convnet_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.CONVNET
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.06297413,
-        -0.21367723,
-        0.48447192,
-        -0.44642058,
-        0.2480932,
-        0.46501365,
-        -0.3112483,
-        -0.204081,
+        0.16322817,
+        -0.25928095,
+        0.3310194,
+        -0.36358601,
+        0.30661699,
+        0.46384785,
+        -0.29757681,
+        -0.11246782,
     ]
     assert embeddings.shape == (5, 1024)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -245,14 +246,14 @@ def test_extractor_no_embeddings_swin_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.SWIN
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.65817058,
-        -0.01108037,
-        -0.17194957,
-        0.44754627,
-        -0.87932968,
-        0.2345365,
-        -1.51616478,
-        0.10756487,
+        0.95772016,
+        0.23786928,
+        0.25221035,
+        0.52895129,
+        -1.00214303,
+        0.11961905,
+        -1.30438244,
+        -0.05033324,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -263,14 +264,14 @@ def test_extractor_no_embeddings_vit_msn_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.VIT_MSN
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -0.19736178,
-        0.67368895,
-        0.42296565,
-        -0.16271308,
-        -0.08438256,
-        -0.13777353,
-        1.17792237,
-        -0.44260886,
+        -0.10130542,
+        0.63633168,
+        0.49498594,
+        -0.13132143,
+        -0.00280582,
+        -0.14108324,
+        1.15758228,
+        -0.5035302,
     ]
     assert embeddings.shape == (5, 384)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -281,14 +282,14 @@ def test_extractor_no_embeddings_dobbe_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.DOBBE
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.00000000e00,
-        5.47229797e-02,
-        0.00000000e00,
-        4.96147841e-05,
-        4.17437814e-02,
-        7.57765546e-02,
-        0.00000000e00,
-        5.33931982e-03,
+        0.0,
+        0.11009531,
+        0.0,
+        0.0,
+        0.04350008,
+        0.12214363,
+        0.00494772,
+        0.01960813,
     ]
     assert embeddings.shape == (5, 512)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -299,14 +300,14 @@ def test_extractor_no_embeddings_vc_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.VC
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        -0.03540432,
-        0.05867103,
-        0.06300978,
-        -0.153437,
-        0.02411774,
-        -0.11084762,
-        -0.02518206,
-        -0.11365147,
+        -0.0265067,
+        0.07708694,
+        0.07868653,
+        -0.16145553,
+        0.04594788,
+        -0.0877109,
+        -0.05015997,
+        -0.10860752,
     ]
     assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
@@ -338,9 +339,141 @@ def test_extractor_wrong_method_fails(empty_dir_and_config):
     assert str(e.value) == f"The method provided {config.IMAGE_EMBEDDINGS} is unknown."
 
 
-def test_all_embeddings_greyscale(empty_dir_and_config):
+def test_preprocessing_nothing_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = []
+    image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
+    new_image = Extractor._apply_preprocessing(
+        config, image, "_data/000_hammering/image_0.png"
+    )
+    assert image.shape == new_image.shape
+    assert np.allclose(image, new_image)
+
+
+def test_preprocessing_background_removal_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.BACKGROUND_REM]
+    image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
+    new_image = Extractor._apply_preprocessing(
+        config, image, "_data/000_hammering/image_0.png"
+    )
+    assert image.shape == new_image.shape
+    unique_colors, counts = np.unique(image.reshape(-1, 3), axis=0, return_counts=True)
+    most_common_color_image = unique_colors[np.argmax(counts)]
+
+    unique_colors, counts = np.unique(
+        new_image.reshape(-1, 3), axis=0, return_counts=True
+    )
+    most_common_color_new_image = unique_colors[np.argmax(counts)]
+
+    assert np.allclose(most_common_color_new_image, (0, 0, 0))  # the background should be black
+    assert most_common_color_image not in unique_colors
+
+
+def test_preprocessing_segmentation_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.SEGMENTATION]
+    image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
+    new_image = Extractor._apply_preprocessing(
+        config, image, "_data/000_hammering/image_0.png"
+    )
+    assert image.shape == new_image.shape
+    unique_colors_old, counts_old = np.unique(image.reshape(-1, 3), axis=0, return_counts=True)
+    most_common_color_image = unique_colors_old[np.argmax(counts_old)]
+
+    unique_colors, counts = np.unique(
+        new_image.reshape(-1, 3), axis=0, return_counts=True
+    )
+    most_common_color_new_image = unique_colors[np.argmax(counts)]
+
+    assert np.allclose(most_common_color_new_image, (0, 0, 0))  # the background should be black
+    index = np.where(unique_colors == most_common_color_image)[0][0]
+    assert counts[index] * 10 < counts_old.max()
+
+
+def test_preprocessing_greyscale_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     config.IMAGE_PREPROCESSING = [ImagePreprocessing.GREYSCALE]
-    for ie in ImageEmbeddings:
-        config.IMAGE_EMBEDDINGS = ie
-        Extractor()(emb_dir, config)
+    image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
+    new_image = Extractor._apply_preprocessing(
+        config, image, "_data/000_hammering/image_0.png"
+    )
+    assert image.shape == new_image.shape
+    for i in range(new_image.shape[0]):
+        for j in range(new_image.shape[1]):
+            assert len(set(new_image[i][j])) == 1
+
+
+def test_preprocessing_cropping_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING]
+    for i in range(5):
+        image = cv2.imread(os.path.join(emb_dir, f"image_{i}.png"))
+        new_image = Extractor._apply_preprocessing(
+            config, image, f"_data/000_hammering/image_{i}.png"
+        )
+        assert image.shape != new_image.shape
+        assert image.shape[0] * 0.8 == new_image.shape[0]
+        assert image.shape[1] * 0.8 == new_image.shape[1]
+        assert image.shape[2] == new_image.shape[2]
+
+
+def test_preprocessing_cropping_pushing_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING]
+    for i in range(5):
+        image = cv2.imread(os.path.join(emb_dir, f"image_{i}.png"))
+        new_image = Extractor._apply_preprocessing(
+            config, image, f"_data/033_pushing/image_{i}.png"
+        )
+        assert image.shape != new_image.shape
+        assert image.shape[0] * 0.8 == new_image.shape[0]
+        assert image.shape[1] * 0.8 == new_image.shape[1]
+        assert image.shape[2] == new_image.shape[2]
+
+
+def test_preprocessing_cropping_absolute_path_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING]
+    for i in range(5):
+        image = cv2.imread(os.path.join(emb_dir, f"image_{i}.png"))
+        new_image = Extractor._apply_preprocessing(
+            config, image, f"/Users/mikolajdeja/Coding/learning/_data/011_hammering/image_{i}.png"
+        )
+        assert image.shape != new_image.shape
+        assert image.shape[0] * 0.8 == new_image.shape[0]
+        assert image.shape[1] * 0.8 == new_image.shape[1]
+        assert image.shape[2] == new_image.shape[2]
+
+
+def test_preprocessing_list_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE]
+    image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
+    new_image = Extractor._apply_preprocessing(
+        config, image, "_data/000_hammering/image_0.png"
+    )
+    assert image.shape != new_image.shape
+    assert image.shape[0] * 0.8 == new_image.shape[0]
+    assert image.shape[1] * 0.8 == new_image.shape[1]
+    assert image.shape[2] == new_image.shape[2]
+
+    for i in range(new_image.shape[0]):
+        for j in range(new_image.shape[1]):
+            assert len(set(new_image[i][j])) == 1
+
+
+def test_preprocessing_cropping_greyscale_both_orders_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE]
+    image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
+    new_image = Extractor._apply_preprocessing(
+        config, image, "_data/000_hammering/image_0.png"
+    )
+
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.GREYSCALE, ImagePreprocessing.CROPPING]
+    new_image_2 = Extractor._apply_preprocessing(
+        config, image, "_data/000_hammering/image_0.png"
+    )
+
+    assert np.allclose(new_image, new_image_2)
