@@ -442,9 +442,9 @@ def load_results(filename):
 if __name__ == "__main__":
     processing_steps_to_try = [
         [],
-        # [ImagePreprocessing.GREYSCALE],
-        # [ImagePreprocessing.BACKGROUND_REM],
-        # [ImagePreprocessing.CROPPING],
+        [ImagePreprocessing.GREYSCALE],
+        [ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING],
         [ImagePreprocessing.SEGMENTATION],
         [ImagePreprocessing.CROPPING, ImagePreprocessing.BACKGROUND_REM],
         [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE],
@@ -457,21 +457,21 @@ if __name__ == "__main__":
     for ps in processing_steps_to_try:
         start = time.time()
         config = Config()
-        # config.OBJ_NUM = 30
+        config.OBJ_NUM = 51
         config.IMAGE_PREPROCESSING = ps
         run_and_save(
             config,
             f"analysis/results_one_image_{config.OBJ_NUM}_{ps}.json",
-            10,
+            1,
         )
         config = Config()
-        # config.OBJ_NUM = 30
+        config.OBJ_NUM = 51
         config.IMAGE_PREPROCESSING = ps
         config.USE_ALL_IMAGES = True
         run_and_save(
             config,
             f"analysis/results_all_images_{config.OBJ_NUM}_{ps}.json",
-            10,
+            1,
         )
         print(f"Finished with {ps} in {time.time() - start}")
 
