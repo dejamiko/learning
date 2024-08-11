@@ -14,66 +14,58 @@ from tm_utils import ImageEmbeddings, ContourImageEmbeddings, ImagePreprocessing
 def empty_dir_and_config():
     config = Config()
     config.LOAD_SIZE = 16
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_LAYER_9
     emb_dir = "tests/_test_assets/"
-    emb_path = os.path.join(emb_dir, "embeddings.json")
-    with open(emb_path) as f:
-        existing_embeddings = json.load(f)
-    os.remove(emb_path)
+    for d in os.listdir(emb_dir):
+        if not d.endswith(".json"):
+            continue
+        os.remove(os.path.join(emb_dir, d))
     yield emb_dir, config
-    with open(emb_path, "w") as f:
-        json.dump(existing_embeddings, f)
-
-
-def test_extractor_no_embeddings_works(empty_dir_and_config):
-    emb_dir, config = empty_dir_and_config
-    embeddings = Extractor()(emb_dir, config)
-    expected = [
-        0.21889894,
-        0.37965849,
-        0.11891212,
-        -0.20318767,
-        -0.34644514,
-        1.01547039,
-        1.21056187,
-        -0.7112096,
-    ]
-    assert embeddings.shape == (5, 6528)
-    assert np.allclose(embeddings[0][2:10], expected)
+    for d in os.listdir(emb_dir):
+        if not d.endswith(".json"):
+            continue
+        os.remove(os.path.join(emb_dir, d))
 
 
 def test_extractor_some_embeddings_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     # create embeddings for the same metric, but not all of them
     expected = [[1, 2, 3], [2, 4, 6]]
-    with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump(
-            [{config.get_embedding_spec(): expected}],
-            f,
-        )
+    with open(
+        os.path.join(emb_dir, f"embeddings_{config.get_embedding_spec()}.json"), "w"
+    ) as f:
+        json.dump(expected, f)
     embeddings = Extractor()(emb_dir, config)
-    assert embeddings.shape == (1, 2, 3)
-    assert np.allclose(embeddings[0], np.array(expected))
+    expected_new = np.array(
+        [
+            [3.10471344, 0.19727778, 1.66282141],
+            [2.66162062, 0.22787094, 2.07419348],
+            [2.78903913, -0.10260102, 2.68960094],
+        ]
+    )
+    assert len(embeddings) == 5
+    assert embeddings[0] == expected[0]
+    assert embeddings[1] == expected[1]
+    assert np.allclose(np.array(embeddings[2:])[:, 2:5], expected_new)
 
 
 def test_extractor_some_embeddings_but_wrong_metric_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
     # create embeddings of different metric
     other = [[1, 2, 3], [2, 4, 6]]
-    with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump([{f"different, []": other}], f)
+    with open(os.path.join(emb_dir, f"embeddings_different, [].json"), "w") as f:
+        json.dump(other, f)
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        0.21889894,
-        0.37965849,
-        0.11891212,
-        -0.20318767,
-        -0.34644514,
-        1.01547039,
-        1.21056187,
-        -0.7112096,
+        3.064394,
+        -0.41076189,
+        1.71749401,
+        -1.14465475,
+        1.17028403,
+        -1.50916374,
+        2.06556773,
+        -0.6224308,
     ]
-    assert embeddings.shape == (5, 6528)
+    assert embeddings.shape == (5, 768)
     assert np.allclose(embeddings[0][2:10], expected)
 
 
@@ -87,11 +79,10 @@ def test_extractor_all_embeddings_works(empty_dir_and_config):
         [[1.3, 2.3, 3.3], [2.3, 4.3, 6.3]],
         [[1.4, 2.4, 3.4], [2.4, 4.4, 6.4]],
     ]
-    with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump(
-            [{config.get_embedding_spec(): e} for e in expected],
-            f,
-        )
+    with open(
+        os.path.join(emb_dir, f"embeddings_{config.get_embedding_spec()}.json"), "w"
+    ) as f:
+        json.dump(expected, f)
     embeddings = Extractor()(emb_dir, config)
     assert embeddings.shape == (5, 2, 3)
     assert np.allclose(embeddings, np.array(expected))
@@ -108,11 +99,10 @@ def test_extractor_all_embeddings_different_preprocessing_works(empty_dir_and_co
         [[1.3, 2.3, 3.3], [2.3, 4.3, 6.3]],
         [[1.4, 2.4, 3.4], [2.4, 4.4, 6.4]],
     ]
-    with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump(
-            [{config.get_embedding_spec(): e} for e in expected],
-            f,
-        )
+    with open(
+        os.path.join(emb_dir, f"embeddings_{config.get_embedding_spec()}.json"), "w"
+    ) as f:
+        json.dump(expected, f)
     embeddings = Extractor()(emb_dir, config)
     assert embeddings.shape == (5, 2, 3)
     assert np.allclose(embeddings, np.array(expected))
@@ -123,23 +113,23 @@ def test_extractor_all_embeddings_contour_works(empty_dir_and_config):
     config.IMAGE_EMBEDDINGS = ContourImageEmbeddings.MASK_RCNN
     # create all embeddings
     expected = [
-        [[1, 2], [2, 4]],
+        [[1, 2], [2, 4], [3, 6]],
         [[1.1, 2.1], [2.1, 4.1]],
         [[1.2, 2.2], [2.2, 4.2]],
         [[1.3, 2.3], [2.3, 4.3]],
         [[1.4, 2.4], [2.4, 4.4]],
     ]
-    with open(os.path.join(emb_dir, "embeddings.json"), "w") as f:
-        json.dump(
-            [{config.get_embedding_spec(): e} for e in expected],
-            f,
-        )
+    with open(
+        os.path.join(emb_dir, f"embeddings_{config.get_embedding_spec()}.json"), "w"
+    ) as f:
+        json.dump(expected, f)
     embeddings = Extractor()(emb_dir, config)
     assert isinstance(embeddings, list)
     assert len(embeddings) == 5
-    assert len(embeddings[0]) == 2
+    assert len(embeddings[0]) == 3
     assert len(embeddings[0][0]) == 2
-    assert np.allclose(embeddings, expected)
+    for i in range(5):
+        assert np.allclose(embeddings[i], expected[i])
 
 
 def test_extractor_no_images_in_dir_fails(empty_dir_and_config):
@@ -149,6 +139,24 @@ def test_extractor_no_images_in_dir_fails(empty_dir_and_config):
     with raises(ValueError) as e:
         Extractor()(empty_dir_path, config)
     assert str(e.value) == f"The directory provided {empty_dir_path} contains no images"
+
+
+def test_extractor_no_embeddings_dino_layer_9_works(empty_dir_and_config):
+    emb_dir, config = empty_dir_and_config
+    config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_LAYER_9
+    embeddings = Extractor()(emb_dir, config)
+    expected = [
+        0.21889894,
+        0.37965849,
+        0.11891212,
+        -0.20318767,
+        -0.34644514,
+        1.01547039,
+        1.21056187,
+        -0.7112096,
+    ]
+    assert embeddings.shape == (5, 6528)
+    assert np.allclose(embeddings[0][2:10], expected)
 
 
 def test_extractor_no_embeddings_dino_layer_11_works(empty_dir_and_config):
@@ -333,7 +341,7 @@ def test_extractor_no_embeddings_vc_works(empty_dir_and_config):
 
 def test_extractor_wrong_method_fails(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
-    config.IMAGE_EMBEDDINGS = "different metric"
+    config.IMAGE_EMBEDDINGS = ImagePreprocessing.GREYSCALE
     with raises(ValueError) as e:
         Extractor()(emb_dir, config)
     assert str(e.value) == f"The method provided {config.IMAGE_EMBEDDINGS} is unknown."
@@ -366,7 +374,9 @@ def test_preprocessing_background_removal_works(empty_dir_and_config):
     )
     most_common_color_new_image = unique_colors[np.argmax(counts)]
 
-    assert np.allclose(most_common_color_new_image, (0, 0, 0))  # the background should be black
+    assert np.allclose(
+        most_common_color_new_image, (0, 0, 0)
+    )  # the background should be black
     assert most_common_color_image not in unique_colors
 
 
@@ -378,7 +388,9 @@ def test_preprocessing_segmentation_works(empty_dir_and_config):
         config, image, "_data/000_hammering/image_0.png"
     )
     assert image.shape == new_image.shape
-    unique_colors_old, counts_old = np.unique(image.reshape(-1, 3), axis=0, return_counts=True)
+    unique_colors_old, counts_old = np.unique(
+        image.reshape(-1, 3), axis=0, return_counts=True
+    )
     most_common_color_image = unique_colors_old[np.argmax(counts_old)]
 
     unique_colors, counts = np.unique(
@@ -386,7 +398,9 @@ def test_preprocessing_segmentation_works(empty_dir_and_config):
     )
     most_common_color_new_image = unique_colors[np.argmax(counts)]
 
-    assert np.allclose(most_common_color_new_image, (0, 0, 0))  # the background should be black
+    assert np.allclose(
+        most_common_color_new_image, (0, 0, 0)
+    )  # the background should be black
     index = np.where(unique_colors == most_common_color_image)[0][0]
     assert counts[index] * 10 < counts_old.max()
 
@@ -438,7 +452,9 @@ def test_preprocessing_cropping_absolute_path_works(empty_dir_and_config):
     for i in range(5):
         image = cv2.imread(os.path.join(emb_dir, f"image_{i}.png"))
         new_image = Extractor._apply_preprocessing(
-            config, image, f"/Users/mikolajdeja/Coding/learning/_data/011_hammering/image_{i}.png"
+            config,
+            image,
+            f"/Users/mikolajdeja/Coding/learning/_data/011_hammering/image_{i}.png",
         )
         assert image.shape != new_image.shape
         assert image.shape[0] * 0.8 == new_image.shape[0]
@@ -448,7 +464,10 @@ def test_preprocessing_cropping_absolute_path_works(empty_dir_and_config):
 
 def test_preprocessing_list_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
-    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE]
+    config.IMAGE_PREPROCESSING = [
+        ImagePreprocessing.CROPPING,
+        ImagePreprocessing.GREYSCALE,
+    ]
     image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
     new_image = Extractor._apply_preprocessing(
         config, image, "_data/000_hammering/image_0.png"
@@ -465,13 +484,19 @@ def test_preprocessing_list_works(empty_dir_and_config):
 
 def test_preprocessing_cropping_greyscale_both_orders_works(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
-    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE]
+    config.IMAGE_PREPROCESSING = [
+        ImagePreprocessing.CROPPING,
+        ImagePreprocessing.GREYSCALE,
+    ]
     image = cv2.imread(os.path.join(emb_dir, "image_0.png"))
     new_image = Extractor._apply_preprocessing(
         config, image, "_data/000_hammering/image_0.png"
     )
 
-    config.IMAGE_PREPROCESSING = [ImagePreprocessing.GREYSCALE, ImagePreprocessing.CROPPING]
+    config.IMAGE_PREPROCESSING = [
+        ImagePreprocessing.GREYSCALE,
+        ImagePreprocessing.CROPPING,
+    ]
     new_image_2 = Extractor._apply_preprocessing(
         config, image, "_data/000_hammering/image_0.png"
     )

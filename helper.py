@@ -23,23 +23,16 @@ def embedding_change():
             continue
         with open(os.path.join(parent, d, "embeddings.json"), "r") as f:
             data = json.load(f)
-        new_data = []
-        for im in data:
-            new_im = {}
-            for k in im.keys():
-                if k.startswith("own_trained"):
-                    continue
-                emb, pre = [s.strip() for s in k.split(",")]
-                new_k = f"{emb}, "
-                if pre != "colour":
-                    new_k += f"[{pre}]"
-                else:
-                    new_k += "[]"
-                new_im[new_k] = im[k]
-
-            new_data.append(new_im)
-        with open(os.path.join(parent, d, "embeddings.json"), "w") as f:
-            json.dump(new_data, f)
+        new_data = {}
+        for im_dict in data:
+            for k in im_dict:
+                if k not in new_data:
+                    new_data[k] = []
+                new_data[k].append(im_dict[k])
+        for k, v in new_data.items():
+            with open(os.path.join(parent, d, f"embeddings_{k}.json"), "w") as f:
+                json.dump(v, f)
+        os.remove(os.path.join(parent, d, "embeddings.json"))
 
 
 def calculate_all_embeddings():
@@ -70,4 +63,4 @@ def calculate_all_embeddings():
 
 
 if __name__ == "__main__":
-    calculate_all_embeddings()
+    pass

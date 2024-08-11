@@ -28,13 +28,18 @@ class Extractor:
     def __call__(self, img_path, config):
         try:
             return self._load_embeddings(img_path, config)
-        except (FileNotFoundError, KeyError):
+        except FileNotFoundError:
             images = self._load_images(img_path, config)
             self._extract_and_save_embeddings(images, img_path, config)
             return self._load_embeddings(img_path, config)
+        except KeyError as e:
+            num_found = int(str(e)[-2])
+            images = self._load_images(img_path, config, num_found)
+            self._extract_and_save_embeddings(images, img_path, config, num_found)
+            return self._load_embeddings(img_path, config)
 
     @staticmethod
-    def _load_images(img_dir, config):
+    def _load_images(img_dir, config, num_found=0):
         assert os.path.exists(
             img_dir
         ), f"The provided image path {img_dir} does not exist"
@@ -43,8 +48,12 @@ class Extractor:
         ), f"The provided image path {img_dir} is not a directory"
 
         images_with_names = []
+        index = 0
         for filename in sorted(os.listdir(img_dir)):
             if not filename.endswith(".png"):
+                continue
+            if index < num_found:
+                index += 1
                 continue
             image = cv2.imread(os.path.join(img_dir, filename))
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -68,14 +77,16 @@ class Extractor:
                     image = Extractor._preprocess_cropping(image, filename)
         return image
 
-    def _extract_and_save_embeddings(self, images_with_names, img_dir, config):
+    def _extract_and_save_embeddings(
+        self, images_with_names, img_dir, config, num_found=0
+    ):
         if len(images_with_names) == 0:
             raise ValueError(f"The directory provided {img_dir} contains no images")
         for i, (image, n) in enumerate(images_with_names):
             self._save_embedding(
                 img_dir,
                 self._extract_embeddings(image, os.path.join(img_dir, n), config),
-                i,
+                num_found + i,
                 config,
             )
 
@@ -118,25 +129,36 @@ class Extractor:
 
     @staticmethod
     def _save_embedding(img_path, embedding, index, config):
-        if os.path.exists(os.path.join(img_path, "embeddings.json")):
-            with open(os.path.join(img_path, "embeddings.json"), "r") as f:
+        if os.path.exists(
+            os.path.join(img_path, f"embeddings_{config.get_embedding_spec()}.json")
+        ):
+            with open(
+                os.path.join(
+                    img_path, f"embeddings_{config.get_embedding_spec()}.json"
+                ),
+                "r",
+            ) as f:
                 current_embeddings = json.load(f)
-            if index < len(current_embeddings):
-                current_embeddings[index][config.get_embedding_spec()] = embedding
-            else:
-                current_embeddings.append({config.get_embedding_spec(): embedding})
-            with open(os.path.join(img_path, "embeddings.json"), "w") as f:
+            current_embeddings.append(embedding)
+            with open(
+                os.path.join(
+                    img_path, f"embeddings_{config.get_embedding_spec()}.json"
+                ),
+                "w",
+            ) as f:
                 json.dump(current_embeddings, f)
         else:
-            with open(os.path.join(img_path, "embeddings.json"), "w") as f:
+            with open(
+                os.path.join(
+                    img_path, f"embeddings_{config.get_embedding_spec()}.json"
+                ),
+                "w",
+            ) as f:
                 if index != 0:  # pragma: no cover
                     raise ValueError(
                         "The index cannot be different than 0 if there is no embeddings file"
                     )
-                json.dump(
-                    [{config.get_embedding_spec(): embedding}],
-                    f,
-                )
+                json.dump([embedding], f)
 
     @staticmethod
     def _load_embeddings(img_path, config):
@@ -144,22 +166,26 @@ class Extractor:
         assert os.path.isdir(
             img_path
         ), f"The provided path {img_path} is not a directory"
-        embeddings = []
         with open(
             os.path.join(
                 img_path,
-                "embeddings.json",
+                f"embeddings_{config.get_embedding_spec()}.json",
             ),
             "r",
         ) as f:  # this can raise FileNotFound
             all_image_embeddings = json.load(f)
-        for image_embeddings in all_image_embeddings:
-            embeddings.append(
-                image_embeddings[config.get_embedding_spec()]
-            )  # this can raise KeyError?
-        if config.IMAGE_EMBEDDINGS in ContourImageEmbeddings:
-            return embeddings
-        return np.array(embeddings)
+        if len(all_image_embeddings) < 5:
+            raise KeyError(
+                f"Not all embeddings are present, found {len(all_image_embeddings)}"
+            )
+        try:
+            return np.array(all_image_embeddings)
+        except ValueError as e:
+            assert str(e).startswith(
+                "setting an array element with a sequence. "
+                "The requested array has an inhomogeneous shape"
+            )
+            return all_image_embeddings
 
     @staticmethod
     def _extract_dino(image_path, layer, config):

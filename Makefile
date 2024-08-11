@@ -1,6 +1,6 @@
 .PHONY: test test_cov
 test:
-	@PYTHONPATH=. pytest tests/test_extractor.py
+	@PYTHONPATH=. pytest tests
 
 test_cov:
 	@PYTHONPATH=. pytest --cov --cov-report term-missing tests/
@@ -28,3 +28,7 @@ vis_sim:
 
 vis_mh:
 	@python3 -m analysis.visualiser_metaheuristic
+
+
+approx:
+	@python3 -m analysis.approximation_calculations

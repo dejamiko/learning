@@ -1,0 +1,6722 @@
+{
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.48743718592964824,
+      0.6331658291457286,
+      0.7437185929648241
+    ],
+    "affine_fns": [
+      [
+        0.7181944867911111,
+        0.11388010772324386
+      ],
+      [
+        0.7687713724858166,
+        -0.044940505947724085
+      ],
+      [
+        0.5604995163692348,
+        0.09807984839240674
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6153208001174907,
+        0.3106703889942011
+      ],
+      [
+        0.44354584708388606,
+        0.3579211393414222
+      ],
+      [
+        0.3470929645941479,
+        0.44322321896824113
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130755723544399,
+        0.3119949284643096
+      ],
+      [
+        0.42853467690964975,
+        0.3612108792241039
+      ],
+      [
+        0.3364282122051484,
+        0.4464699591546547
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.48743718592964824,
+      0.6331658291457286,
+      0.7437185929648241
+    ],
+    "affine_fns": [
+      [
+        0.7180891854143023,
+        0.11395612974082106
+      ],
+      [
+        0.7687708039978847,
+        -0.044940545525974374
+      ],
+      [
+        0.5604456163841578,
+        0.09813235083767063
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.678391959798995,
+      0.5477386934673367,
+      0.7788944723618091
+    ],
+    "affine_fns": [
+      [
+        0.5711963539296869,
+        0.13349903399688404
+      ],
+      [
+        0.6429459823121814,
+        0.03973455158568301
+      ],
+      [
+        0.5242731011157827,
+        0.12014654759271626
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.020100502512562814
+    ],
+    "affine_fns": [
+      [
+        0.6174058971419055,
+        0.3093275478681843
+      ],
+      [
+        0.45227379825922337,
+        0.3555881713300757
+      ],
+      [
+        0.35499375795804206,
+        0.44080966314045494
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6131396860868029,
+        0.3119424905991984
+      ],
+      [
+        0.4286417538457731,
+        0.36116543545953395
+      ],
+      [
+        0.3365796341608737,
+        0.44642039875331574
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.678391959798995,
+      0.5477386934673367,
+      0.7788944723618091
+    ],
+    "affine_fns": [
+      [
+        0.5716196203644374,
+        0.1334372073078736
+      ],
+      [
+        0.6430235784434779,
+        0.039799340319415344
+      ],
+      [
+        0.524437278741459,
+        0.12010124048731352
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5175879396984925,
+      0.4321608040201005,
+      0.5025125628140703
+    ],
+    "affine_fns": [
+      [
+        0.6509720628597688,
+        0.14440819883623743
+      ],
+      [
+        0.687766641767988,
+        0.0778257784385799
+      ],
+      [
+        0.5393644207158981,
+        0.20566985927461268
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.06532663316582915,
+      0.04522613065326633,
+      0.05527638190954774
+    ],
+    "affine_fns": [
+      [
+        0.6393078391424094,
+        0.2955441812532072
+      ],
+      [
+        0.49932289075017244,
+        0.3315466944370181
+      ],
+      [
+        0.41672856184636436,
+        0.4191144075805413
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6144954419468383,
+        0.3111810904794286
+      ],
+      [
+        0.43183608161233755,
+        0.35990040954690944
+      ],
+      [
+        0.3406631687696199,
+        0.4453218879078705
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5175879396984925,
+      0.4321608040201005,
+      0.507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6506577477241064,
+        0.14411520818545162
+      ],
+      [
+        0.6882331931291595,
+        0.07771037639262646
+      ],
+      [
+        0.5393791602231935,
+        0.20555484100044952
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.964824120603015,
+      0.9195979899497487,
+      0.8542713567839196
+    ],
+    "affine_fns": [
+      [
+        0.6716800334129391,
+        -0.2310473229355668
+      ],
+      [
+        0.8226083737525706,
+        -0.32026730836543693
+      ],
+      [
+        0.40593369595188644,
+        0.13253093416251704
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.32160804020100503,
+      0.23115577889447236,
+      0.15577889447236182
+    ],
+    "affine_fns": [
+      [
+        0.6740933334156729,
+        0.1944082041945337
+      ],
+      [
+        0.6321481502844498,
+        0.23607628868576752
+      ],
+      [
+        0.43165919070261977,
+        0.3721266582313897
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.010050251256281407,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.619589909045185,
+        0.3057848062602191
+      ],
+      [
+        0.44301710015483653,
+        0.3559100019825391
+      ],
+      [
+        0.34366789062755354,
+        0.44283485677439566
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.964824120603015,
+      0.9195979899497487,
+      0.8542713567839196
+    ],
+    "affine_fns": [
+      [
+        0.6716800334129925,
+        -0.23104732293561697
+      ],
+      [
+        0.8226083737525395,
+        -0.3202673083654143
+      ],
+      [
+        0.4059336959518821,
+        0.13253093416251838
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.32160804020100503,
+      0.5477386934673367,
+      0.678391959798995
+    ],
+    "affine_fns": [
+      [
+        0.6240644821315563,
+        0.15761905990809483
+      ],
+      [
+        0.7311498172998018,
+        0.037407296795583855
+      ],
+      [
+        0.44029808918220736,
+        0.23222189786572048
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.17587939698492464,
+      0.03015075376884422,
+      0.04522613065326633
+    ],
+    "affine_fns": [
+      [
+        0.6160645131449141,
+        0.3012910788387746
+      ],
+      [
+        0.4791748108960474,
+        0.34513585432869076
+      ],
+      [
+        0.3914061966781975,
+        0.424007327490351
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.0,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6132054946938095,
+        0.3115288184033002
+      ],
+      [
+        0.43012726128845524,
+        0.36066285384871377
+      ],
+      [
+        0.34044898621189146,
+        0.4454306654215861
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.32160804020100503,
+      0.5477386934673367,
+      0.6733668341708543
+    ],
+    "affine_fns": [
+      [
+        0.6244868780623557,
+        0.15726836142111744
+      ],
+      [
+        0.7310704199459459,
+        0.03718070532914208
+      ],
+      [
+        0.4403034237489657,
+        0.2321780627294163
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.678391959798995,
+      0.7386934673366834,
+      0.7085427135678392
+    ],
+    "affine_fns": [
+      [
+        0.5848092910651317,
+        0.031091847704944553
+      ],
+      [
+        1.0161511961144307,
+        -0.3226158483044316
+      ],
+      [
+        0.8555750286471615,
+        -0.1588312315895859
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.10050251256281408,
+      0.1306532663316583,
+      0.11055276381909548
+    ],
+    "affine_fns": [
+      [
+        0.6907658469745039,
+        0.26137480213953246
+      ],
+      [
+        0.6365027572553961,
+        0.27656592317458406
+      ],
+      [
+        0.4586405902832997,
+        0.3843818572591359
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6204330806170342,
+        0.3084322083774764
+      ],
+      [
+        0.44674715157260914,
+        0.3559501511617168
+      ],
+      [
+        0.34674959440141195,
+        0.4424653787393715
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.678391959798995,
+      0.7386934673366834,
+      0.7035175879396985
+    ],
+    "affine_fns": [
+      [
+        0.5847830035664985,
+        0.031096339854113808
+      ],
+      [
+        1.0161414357172764,
+        -0.3226117863249487
+      ],
+      [
+        0.8556522789290614,
+        -0.15892016763891859
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7688442211055276,
+      0.6984924623115578,
+      0.7638190954773869
+    ],
+    "affine_fns": [
+      [
+        0.4659361789500835,
+        0.16841731210149016
+      ],
+      [
+        0.7273090399013404,
+        -0.03706843005137317
+      ],
+      [
+        0.5259544090385512,
+        0.0881986745898945
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.2613065326633166,
+      0.24120603015075376,
+      0.20100502512562815
+    ],
+    "affine_fns": [
+      [
+        0.7286871295409764,
+        0.21445589369716728
+      ],
+      [
+        0.7826519762432181,
+        0.15559525986542216
+      ],
+      [
+        0.4370594380014983,
+        0.3558250769340569
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.02512562814070352,
+      0.035175879396984924,
+      0.03015075376884422
+    ],
+    "affine_fns": [
+      [
+        0.6354254615300194,
+        0.30321942436500915
+      ],
+      [
+        0.5059915917176652,
+        0.33822916103413025
+      ],
+      [
+        0.36737957738498445,
+        0.4343810410507788
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7537688442211056,
+      0.6884422110552764,
+      0.7487437185929648
+    ],
+    "affine_fns": [
+      [
+        0.4429262439409036,
+        0.19711026227296038
+      ],
+      [
+        0.7206486637798268,
+        -0.025778671025296296
+      ],
+      [
+        0.5143555538285228,
+        0.10155288171510696
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.8090452261306533,
+      0.8140703517587939
+    ],
+    "affine_fns": [
+      [
+        0.6772028883872552,
+        -0.1069537507381938
+      ],
+      [
+        0.6411878092367791,
+        -0.07667390502886257
+      ],
+      [
+        1.0650600670331776,
+        -0.3808993182616284
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.3165829145728643,
+      0.32663316582914576,
+      0.3417085427135678
+    ],
+    "affine_fns": [
+      [
+        0.7529531391839922,
+        0.14083938551583022
+      ],
+      [
+        0.7210814537786114,
+        0.15503343979611212
+      ],
+      [
+        0.6051951787290176,
+        0.24308206649532368
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.03015075376884422
+    ],
+    "affine_fns": [
+      [
+        0.6344187751765857,
+        0.2985339501317388
+      ],
+      [
+        0.4673051955255386,
+        0.3466357391052027
+      ],
+      [
+        0.36660548008993266,
+        0.4333704243750445
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.8090452261306533,
+      0.8140703517587939
+    ],
+    "affine_fns": [
+      [
+        0.6779843391391486,
+        -0.10749714637855284
+      ],
+      [
+        0.6414910449079925,
+        -0.0768970815621044
+      ],
+      [
+        1.0652407179316732,
+        -0.3810188437892096
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.49748743718592964,
+      0.5829145728643216,
+      0.7738693467336684
+    ],
+    "affine_fns": [
+      [
+        0.7382019658550224,
+        0.11056186831478701
+      ],
+      [
+        0.7897150219889447,
+        -0.05191867307329695
+      ],
+      [
+        0.5891478416565981,
+        0.07661663537691565
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6155309524508613,
+        0.3106778953650722
+      ],
+      [
+        0.442768019068701,
+        0.35800452251626175
+      ],
+      [
+        0.34742103186026424,
+        0.443173103039632
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130853118406958,
+        0.3119940388137037
+      ],
+      [
+        0.42845684358276365,
+        0.3612189453745046
+      ],
+      [
+        0.3364510733672266,
+        0.44646339638945576
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.49748743718592964,
+      0.5829145728643216,
+      0.7738693467336684
+    ],
+    "affine_fns": [
+      [
+        0.7381476378369195,
+        0.11060850139435802
+      ],
+      [
+        0.7896878120026811,
+        -0.051906728563967997
+      ],
+      [
+        0.589105398912525,
+        0.07665676982454822
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5477386934673367,
+      0.5175879396984925,
+      0.6130653266331658
+    ],
+    "affine_fns": [
+      [
+        0.6401067307116113,
+        0.13450228116132945
+      ],
+      [
+        0.6871753287383087,
+        0.03700731783144512
+      ],
+      [
+        0.5748376431316979,
+        0.11817241554063196
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6167376951254796,
+        0.30983346766282643
+      ],
+      [
+        0.4494260173883687,
+        0.3563677118156007
+      ],
+      [
+        0.34961879650502586,
+        0.44233230874740714
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6131049971727326,
+        0.31197440232362184
+      ],
+      [
+        0.42849487369447375,
+        0.36120626481239765
+      ],
+      [
+        0.33632052819115466,
+        0.4464913782775987
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5477386934673367,
+      0.5175879396984925,
+      0.6130653266331658
+    ],
+    "affine_fns": [
+      [
+        0.6405248437407306,
+        0.13447972673653244
+      ],
+      [
+        0.6872257020060577,
+        0.037114086078762876
+      ],
+      [
+        0.5748912956150671,
+        0.11820809153289641
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5326633165829145,
+      0.5577889447236181,
+      0.5276381909547738
+    ],
+    "affine_fns": [
+      [
+        0.5695004098533314,
+        0.15782523162749712
+      ],
+      [
+        0.7767979089130489,
+        -0.0002967192818632558
+      ],
+      [
+        0.5742911717890816,
+        0.15166716570288258
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.10050251256281408,
+      0.07035175879396985,
+      0.10552763819095477
+    ],
+    "affine_fns": [
+      [
+        0.6431939726973541,
+        0.2887227272837788
+      ],
+      [
+        0.5192345922121856,
+        0.3241619566968771
+      ],
+      [
+        0.4247605793966213,
+        0.40997499504630297
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6148538108006903,
+        0.310921697885969
+      ],
+      [
+        0.4330585805178866,
+        0.35966831356182755
+      ],
+      [
+        0.34108865353634316,
+        0.4449595526543106
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5326633165829145,
+      0.5577889447236181,
+      0.5276381909547738
+    ],
+    "affine_fns": [
+      [
+        0.5685361345082978,
+        0.15851350457209604
+      ],
+      [
+        0.7759241701259879,
+        0.0006309462010266609
+      ],
+      [
+        0.5732920554280714,
+        0.15268233792192026
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.9547738693467337,
+      0.9045226130653267,
+      0.9045226130653267
+    ],
+    "affine_fns": [
+      [
+        0.39047828160186604,
+        0.047786095785891325
+      ],
+      [
+        0.6922788888608725,
+        -0.17610966784638027
+      ],
+      [
+        0.8643970693087843,
+        -0.27708170307823754
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.2613065326633166,
+      0.16080402010050251,
+      0.19597989949748745
+    ],
+    "affine_fns": [
+      [
+        0.670073208687279,
+        0.23745727112078963
+      ],
+      [
+        0.5577074844744849,
+        0.2886024529409906
+      ],
+      [
+        0.48675818300352325,
+        0.3646015456705653
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6177773382626977,
+        0.30845387585510875
+      ],
+      [
+        0.4364036377867732,
+        0.3581844084248641
+      ],
+      [
+        0.34639633521009033,
+        0.44312673042371165
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.9547738693467337,
+      0.9045226130653267,
+      0.9045226130653267
+    ],
+    "affine_fns": [
+      [
+        0.39047828160187054,
+        0.04778609578588722
+      ],
+      [
+        0.6922788888608735,
+        -0.17610966784638138
+      ],
+      [
+        0.8643970693087839,
+        -0.2770817030782392
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.4221105527638191,
+      0.5678391959798995,
+      0.7487437185929648
+    ],
+    "affine_fns": [
+      [
+        0.5991583752597469,
+        0.15120273731270858
+      ],
+      [
+        0.6580198646204294,
+        0.012027809730429051
+      ],
+      [
+        0.5265212533956443,
+        0.13042203502583993
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.035175879396984924,
+      0.05025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6314238793383496,
+        0.29681894556514954
+      ],
+      [
+        0.5197062308575624,
+        0.3352741401496153
+      ],
+      [
+        0.3881718334912956,
+        0.4271938057243725
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.005025125628140704,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6140482867538216,
+        0.31131550614708886
+      ],
+      [
+        0.43247091965377304,
+        0.3602471036920735
+      ],
+      [
+        0.33844811314167705,
+        0.44579198507574197
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.4221105527638191,
+      0.5678391959798995,
+      0.7487437185929648
+    ],
+    "affine_fns": [
+      [
+        0.5988672968972044,
+        0.15116262585067827
+      ],
+      [
+        0.6584042117531683,
+        0.011554574760323177
+      ],
+      [
+        0.5265097719370588,
+        0.1302009210010477
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.8693467336683417,
+      0.8492462311557789,
+      0.8542713567839196
+    ],
+    "affine_fns": [
+      [
+        0.2283132187928582,
+        0.19622694438949964
+      ],
+      [
+        1.0563810857139444,
+        -0.4356169587504085
+      ],
+      [
+        0.406410519105949,
+        0.1567162447209376
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.18592964824120603,
+      0.1708542713567839,
+      0.1708542713567839
+    ],
+    "affine_fns": [
+      [
+        0.6729507456725874,
+        0.24725583447477595
+      ],
+      [
+        0.6701847277872197,
+        0.25413491401607907
+      ],
+      [
+        0.4495516218949682,
+        0.37859464513085783
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.01507537688442211,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6201494834714142,
+        0.30708961674191904
+      ],
+      [
+        0.4527849761085303,
+        0.3543632281508509
+      ],
+      [
+        0.34989574819736524,
+        0.4415404126354078
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.8693467336683417,
+      0.8492462311557789,
+      0.8542713567839196
+    ],
+    "affine_fns": [
+      [
+        0.22823534049704686,
+        0.19627291317479242
+      ],
+      [
+        1.0563317449010632,
+        -0.43559823639204476
+      ],
+      [
+        0.4063404078578776,
+        0.15675873671526913
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.8140703517587939,
+      0.7336683417085427,
+      0.7738693467336684
+    ],
+    "affine_fns": [
+      [
+        0.47161586817479273,
+        0.17428648665214344
+      ],
+      [
+        0.7405606199240984,
+        -0.03082189301591276
+      ],
+      [
+        0.47777398209887384,
+        0.1558111421669795
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.23618090452261306,
+      0.24120603015075376,
+      0.22110552763819097
+    ],
+    "affine_fns": [
+      [
+        0.729047790444101,
+        0.21667032449057044
+      ],
+      [
+        0.7596683116213528,
+        0.1667672060003276
+      ],
+      [
+        0.4408176578942011,
+        0.3632604833640006
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.03015075376884422,
+      0.02512562814070352
+    ],
+    "affine_fns": [
+      [
+        0.6342351287900282,
+        0.303670413791462
+      ],
+      [
+        0.5006438376584554,
+        0.3392774970442614
+      ],
+      [
+        0.3657738927339932,
+        0.435878877212513
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7989949748743719,
+      0.7236180904522613,
+      0.7638190954773869
+    ],
+    "affine_fns": [
+      [
+        0.4521212158954416,
+        0.20035326128320655
+      ],
+      [
+        0.7333600274429508,
+        -0.019801504093338806
+      ],
+      [
+        0.46537614180421305,
+        0.1698749570332349
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.914572864321608,
+      0.8442211055276382,
+      0.9396984924623115
+    ],
+    "affine_fns": [
+      [
+        0.576105343000947,
+        -0.07480002323825852
+      ],
+      [
+        0.9374490050148055,
+        -0.354695398879039
+      ],
+      [
+        1.0415290729113702,
+        -0.41675961629764946
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.3919597989949749,
+      0.36683417085427134,
+      0.507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.7323218531323595,
+        0.12769393109893692
+      ],
+      [
+        0.8400006259684827,
+        0.08182041850660465
+      ],
+      [
+        0.6165985090141526,
+        0.21278404280868257
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.05527638190954774,
+      0.03015075376884422,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6349002395065729,
+        0.2981941932481254
+      ],
+      [
+        0.4812351570641571,
+        0.34410244796966216
+      ],
+      [
+        0.3756607064819419,
+        0.4308236098938682
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.914572864321608,
+      0.8442211055276382,
+      0.9396984924623115
+    ],
+    "affine_fns": [
+      [
+        0.5764405126073856,
+        -0.07500754054692199
+      ],
+      [
+        0.9372257354597817,
+        -0.3544449206748168
+      ],
+      [
+        1.0410413646571521,
+        -0.41627501110447596
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.4371859296482412,
+      0.5829145728643216,
+      0.8442211055276382
+    ],
+    "affine_fns": [
+      [
+        0.6676848243478887,
+        0.12283663733574252
+      ],
+      [
+        0.7330887292779361,
+        -0.015789570137899445
+      ],
+      [
+        0.4922698005250814,
+        0.1400640128551497
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6152923493654996,
+        0.31059260608697037
+      ],
+      [
+        0.44506181253336824,
+        0.35777778654741926
+      ],
+      [
+        0.3499849407411519,
+        0.4425415815016091
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130742068596088,
+        0.3119856143466031
+      ],
+      [
+        0.4286152929219129,
+        0.36120290634673746
+      ],
+      [
+        0.33664851420259806,
+        0.4464227894726434
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.4371859296482412,
+      0.5829145728643216,
+      0.8442211055276382
+    ],
+    "affine_fns": [
+      [
+        0.6676235875951704,
+        0.12289204140855126
+      ],
+      [
+        0.7330754559785899,
+        -0.01577641519427586
+      ],
+      [
+        0.49222354332259977,
+        0.1401062186739963
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.507537688442211,
+      0.5678391959798995,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.542568259748202,
+        0.16381800392835386
+      ],
+      [
+        0.6888941120220343,
+        0.024736530518367383
+      ],
+      [
+        0.47122217439445624,
+        0.1675861810886332
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6168934399551397,
+        0.30957623219042063
+      ],
+      [
+        0.450584436091595,
+        0.35607844964963004
+      ],
+      [
+        0.3528361767488703,
+        0.44124395438748576
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6131136161818591,
+        0.31195967923827445
+      ],
+      [
+        0.428550940178735,
+        0.361191930339517
+      ],
+      [
+        0.33647470901730425,
+        0.44644349226801844
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.507537688442211,
+      0.5678391959798995,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.5428459969709846,
+        0.16382683378073298
+      ],
+      [
+        0.6889835134914017,
+        0.024799273610558226
+      ],
+      [
+        0.47124297949884564,
+        0.1676386102771168
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5125628140703518,
+      0.40703517587939697,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.6460435298360064,
+        0.14361750606965942
+      ],
+      [
+        0.7291086287815233,
+        0.07012192900271974
+      ],
+      [
+        0.5032366049849369,
+        0.19741469865575734
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.07537688442211056,
+      0.05025125628140704,
+      0.10050251256281408
+    ],
+    "affine_fns": [
+      [
+        0.6419312694243887,
+        0.2896861739577543
+      ],
+      [
+        0.5231718464813433,
+        0.3270501004486822
+      ],
+      [
+        0.4258931395350148,
+        0.4101415555133967
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6145876476925417,
+        0.31094100650283457
+      ],
+      [
+        0.433122615713155,
+        0.35980034538338146
+      ],
+      [
+        0.3413934422734653,
+        0.44491306055482577
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.36180904522613067,
+      0.4020100502512563,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.6454594858472177,
+        0.14430216710366542
+      ],
+      [
+        0.7280106866998679,
+        0.0712062795308066
+      ],
+      [
+        0.5026714029225141,
+        0.1979191482809441
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.914572864321608,
+      0.8190954773869347,
+      0.9195979899497487
+    ],
+    "affine_fns": [
+      [
+        0.608617226099677,
+        -0.12660976354345455
+      ],
+      [
+        0.7177289796025671,
+        -0.15556267844732508
+      ],
+      [
+        0.8627826916283647,
+        -0.24474964603613258
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.17587939698492464,
+      0.11055276381909548,
+      0.17587939698492464
+    ],
+    "affine_fns": [
+      [
+        0.6865973076588741,
+        0.2414810285381199
+      ],
+      [
+        0.5585500822471362,
+        0.3029832743512634
+      ],
+      [
+        0.4399519588152968,
+        0.390346220390603
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6183382859701194,
+        0.30844936508867515
+      ],
+      [
+        0.4353375335807444,
+        0.358860080797829
+      ],
+      [
+        0.3419560255563182,
+        0.44415260763105535
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.914572864321608,
+      0.8190954773869347,
+      0.9195979899497487
+    ],
+    "affine_fns": [
+      [
+        0.6086172260996731,
+        -0.126609763543453
+      ],
+      [
+        0.7177289796025619,
+        -0.15556267844732308
+      ],
+      [
+        0.862782691628365,
+        -0.24474964603613603
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.19095477386934673,
+      0.3768844221105528,
+      0.2964824120603015
+    ],
+    "affine_fns": [
+      [
+        0.6352068247953672,
+        0.1773790209949112
+      ],
+      [
+        0.6594955605548322,
+        0.12144959963611962
+      ],
+      [
+        0.4216092541912451,
+        0.2725399918788074
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.035175879396984924,
+      0.03015075376884422
+    ],
+    "affine_fns": [
+      [
+        0.6350256260912152,
+        0.2910634664028414
+      ],
+      [
+        0.47447486465525307,
+        0.34641605121724345
+      ],
+      [
+        0.3814357673480111,
+        0.42698946666012116
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.0,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.614452764283803,
+        0.311013803456304
+      ],
+      [
+        0.4299277343630413,
+        0.36072393500024313
+      ],
+      [
+        0.3388257541593103,
+        0.4456861750247088
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.19095477386934673,
+      0.3768844221105528,
+      0.2964824120603015
+    ],
+    "affine_fns": [
+      [
+        0.6364464337902845,
+        0.177464891598059
+      ],
+      [
+        0.6594535050122065,
+        0.12131748146190707
+      ],
+      [
+        0.42125321086644196,
+        0.27284077696510217
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.8391959798994975,
+      0.7437185929648241,
+      0.8341708542713568
+    ],
+    "affine_fns": [
+      [
+        0.719901342822336,
+        -0.10352322469540709
+      ],
+      [
+        0.8643207395326981,
+        -0.2156446072615329
+      ],
+      [
+        0.9376651842057419,
+        -0.2700139915844124
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.19597989949748745,
+      0.1407035175879397,
+      0.18592964824120603
+    ],
+    "affine_fns": [
+      [
+        0.686454813261171,
+        0.24608211505666933
+      ],
+      [
+        0.6644210257200788,
+        0.264559389115784
+      ],
+      [
+        0.48974213741100964,
+        0.3607196867734453
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.01507537688442211,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6199865500366925,
+        0.3074521761876724
+      ],
+      [
+        0.45143621689999286,
+        0.3551669117497471
+      ],
+      [
+        0.3513692540844984,
+        0.44090457835559066
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.8391959798994975,
+      0.7437185929648241,
+      0.8341708542713568
+    ],
+    "affine_fns": [
+      [
+        0.7201704389867549,
+        -0.10374057574163148
+      ],
+      [
+        0.8642900240208911,
+        -0.21565119910822594
+      ],
+      [
+        0.9378360153491917,
+        -0.27018360640080874
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.9597989949748744,
+      0.6884422110552764,
+      0.8844221105527639
+    ],
+    "affine_fns": [
+      [
+        0.5135362106948358,
+        0.15594670047845105
+      ],
+      [
+        0.7381522812795925,
+        -0.05934457964193385
+      ],
+      [
+        0.5331231225362787,
+        0.08004805624748612
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.4271356783919598,
+      0.33668341708542715,
+      0.35175879396984927
+    ],
+    "affine_fns": [
+      [
+        0.7472039921006551,
+        0.20627905784123982
+      ],
+      [
+        0.777214629172782,
+        0.12470960167013373
+      ],
+      [
+        0.4402749175814638,
+        0.3449510267105829
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.02512562814070352,
+      0.05025125628140704,
+      0.04522613065326633
+    ],
+    "affine_fns": [
+      [
+        0.6382698068836673,
+        0.3019168222305816
+      ],
+      [
+        0.520956895490913,
+        0.3298818957219537
+      ],
+      [
+        0.3731211333716282,
+        0.4317969260004247
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5829145728643216,
+      0.6884422110552764,
+      0.8793969849246231
+    ],
+    "affine_fns": [
+      [
+        0.4759168699435976,
+        0.19093542363930008
+      ],
+      [
+        0.7267167063576587,
+        -0.04642011939148155
+      ],
+      [
+        0.5176384929750972,
+        0.09722106107681305
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.8442211055276382,
+      0.7386934673366834,
+      0.8040201005025126
+    ],
+    "affine_fns": [
+      [
+        0.6320093378159509,
+        -0.04864591510824995
+      ],
+      [
+        0.7296787509237724,
+        -0.10815749710504985
+      ],
+      [
+        0.7988055387536594,
+        -0.10882645732889529
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.34673366834170855,
+      0.271356783919598,
+      0.24623115577889448
+    ],
+    "affine_fns": [
+      [
+        0.7181521119971859,
+        0.17523409351085142
+      ],
+      [
+        0.6829262948168257,
+        0.19623082154643964
+      ],
+      [
+        0.5227094546123053,
+        0.3111292731397276
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.02512562814070352,
+      0.020100502512562814
+    ],
+    "affine_fns": [
+      [
+        0.6264394960857713,
+        0.30219086997336925
+      ],
+      [
+        0.4552819281386005,
+        0.3510312520047974
+      ],
+      [
+        0.3541283410999133,
+        0.43820208759008117
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.8442211055276382,
+      0.7386934673366834,
+      0.8040201005025126
+    ],
+    "affine_fns": [
+      [
+        0.6320712153725577,
+        -0.04869313051466001
+      ],
+      [
+        0.7296898102068543,
+        -0.10817831777164094
+      ],
+      [
+        0.799020973731308,
+        -0.1090047247838214
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.48743718592964824,
+      0.6331658291457286,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.7030296511292721,
+        0.13708998611057666
+      ],
+      [
+        0.7251118566266216,
+        -0.010638940544774822
+      ],
+      [
+        0.5795656320015593,
+        0.07932560881312878
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6151254331685521,
+        0.31083249549500047
+      ],
+      [
+        0.44402987240602554,
+        0.3579704952431174
+      ],
+      [
+        0.3481307362858521,
+        0.443006354579577
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130702269891521,
+        0.3120009843241392
+      ],
+      [
+        0.42856369665587307,
+        0.36121378892858447
+      ],
+      [
+        0.3365054069520214,
+        0.44645353564720663
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.48743718592964824,
+      0.6331658291457286,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.7029625334430735,
+        0.13713587762048043
+      ],
+      [
+        0.7251212536368499,
+        -0.010652205695181771
+      ],
+      [
+        0.5795096002999138,
+        0.07937416286144455
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.6331658291457286,
+      0.5125628140703518,
+      0.8592964824120604
+    ],
+    "affine_fns": [
+      [
+        0.6001094950795334,
+        0.15072724154308711
+      ],
+      [
+        0.6438171251304474,
+        0.058987985405765
+      ],
+      [
+        0.5321292682695249,
+        0.12802495303097272
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.02512562814070352
+    ],
+    "affine_fns": [
+      [
+        0.6163646667540915,
+        0.30994123210505264
+      ],
+      [
+        0.450175889226607,
+        0.35622143164040526
+      ],
+      [
+        0.3540109155655796,
+        0.4413226889774043
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.613090445738312,
+        0.3119726794842689
+      ],
+      [
+        0.42852745178559054,
+        0.3611961981209352
+      ],
+      [
+        0.33653565749403136,
+        0.44644363997953707
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.6331658291457286,
+      0.5125628140703518,
+      0.8592964824120604
+    ],
+    "affine_fns": [
+      [
+        0.6004023846724137,
+        0.15075823228915325
+      ],
+      [
+        0.6438174732813392,
+        0.05912468774608359
+      ],
+      [
+        0.5321516472834096,
+        0.12809083486412176
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.3316582914572864,
+      0.3969849246231156,
+      0.4371859296482412
+    ],
+    "affine_fns": [
+      [
+        0.6439973590433871,
+        0.17399652024584308
+      ],
+      [
+        0.683525214109398,
+        0.1188342196479858
+      ],
+      [
+        0.5152475791944165,
+        0.22455604284844127
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.04020100502512563,
+      0.04522613065326633,
+      0.04522613065326633
+    ],
+    "affine_fns": [
+      [
+        0.6393908216531164,
+        0.2961006302936921
+      ],
+      [
+        0.4894656813860173,
+        0.337021777827423
+      ],
+      [
+        0.4092837975970381,
+        0.41969108104186653
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6144723827267401,
+        0.3112131560313622
+      ],
+      [
+        0.4311027987133702,
+        0.3601887561294254
+      ],
+      [
+        0.3401929317455713,
+        0.4453363354170321
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.3316582914572864,
+      0.3969849246231156,
+      0.4271356783919598
+    ],
+    "affine_fns": [
+      [
+        0.6428708137381509,
+        0.17451220953898205
+      ],
+      [
+        0.6839045360181758,
+        0.11913881024261525
+      ],
+      [
+        0.5146642818551442,
+        0.22508294853676292
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.964824120603015,
+      0.914572864321608,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.675175554205185,
+        -0.22770697015371616
+      ],
+      [
+        0.5369372474412478,
+        -0.058413605632827936
+      ],
+      [
+        0.38972206222101113,
+        0.15735818727726386
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.2914572864321608,
+      0.19095477386934673,
+      0.1708542713567839
+    ],
+    "affine_fns": [
+      [
+        0.6642902190926897,
+        0.2123580856489992
+      ],
+      [
+        0.5826698659052763,
+        0.26329053346646875
+      ],
+      [
+        0.438993676980748,
+        0.38302990549279814
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.010050251256281407,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6180649845545705,
+        0.30684905351768194
+      ],
+      [
+        0.4408957147812321,
+        0.35668927060757394
+      ],
+      [
+        0.343698174943815,
+        0.44341040255518077
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.964824120603015,
+      0.914572864321608,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.6751755542051698,
+        -0.22770697015370228
+      ],
+      [
+        0.5369372474412483,
+        -0.05841360563282816
+      ],
+      [
+        0.3897220622210062,
+        0.15735818727726741
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.4824120603015075,
+      0.592964824120603,
+      0.5728643216080402
+    ],
+    "affine_fns": [
+      [
+        0.6743555048658032,
+        0.16227720827822112
+      ],
+      [
+        0.718147542856959,
+        0.04785864264145678
+      ],
+      [
+        0.4682469875614174,
+        0.23041592068662858
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.05527638190954774,
+      0.03015075376884422,
+      0.03015075376884422
+    ],
+    "affine_fns": [
+      [
+        0.614028618125407,
+        0.3043504508025805
+      ],
+      [
+        0.48133408194380184,
+        0.3447762775366983
+      ],
+      [
+        0.36491799440853223,
+        0.4337456653495704
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6129995617905523,
+        0.31171322903885346
+      ],
+      [
+        0.43019860276959865,
+        0.3606684017372264
+      ],
+      [
+        0.33721670648323204,
+        0.4460748222799124
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.4824120603015075,
+      0.592964824120603,
+      0.5728643216080402
+    ],
+    "affine_fns": [
+      [
+        0.6748697906037695,
+        0.16199961112974506
+      ],
+      [
+        0.717743703357429,
+        0.04803491387141767
+      ],
+      [
+        0.46781038327890856,
+        0.23065252512832488
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.592964824120603,
+      0.7035175879396985,
+      0.7989949748743719
+    ],
+    "affine_fns": [
+      [
+        0.6540312074945633,
+        0.01124115455281166
+      ],
+      [
+        0.972830857361472,
+        -0.2460490321835247
+      ],
+      [
+        0.6844503245394807,
+        -0.008868278666559037
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.08542713567839195,
+      0.10050251256281408,
+      0.15577889447236182
+    ],
+    "affine_fns": [
+      [
+        0.6758707658112084,
+        0.2687863700766332
+      ],
+      [
+        0.6288114280855864,
+        0.2887040801577421
+      ],
+      [
+        0.4406860127032194,
+        0.3926946390372088
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.618921301611396,
+        0.3088085099609973
+      ],
+      [
+        0.44608095401394837,
+        0.35663174530934677
+      ],
+      [
+        0.34573861144084744,
+        0.442793201240857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.592964824120603,
+      0.7035175879396985,
+      0.7989949748743719
+    ],
+    "affine_fns": [
+      [
+        0.6539574411533569,
+        0.01130936259245996
+      ],
+      [
+        0.9726322766400513,
+        -0.24586353676063888
+      ],
+      [
+        0.6843216110795111,
+        -0.008758335469698064
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7085427135678392,
+      0.6482412060301508,
+      0.6633165829145728
+    ],
+    "affine_fns": [
+      [
+        0.45910796002629606,
+        0.1837550270085313
+      ],
+      [
+        0.7309026416066201,
+        -0.020410238146846837
+      ],
+      [
+        0.460802292797698,
+        0.16825699598332594
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.19597989949748745,
+      0.21608040201005024,
+      0.22613065326633167
+    ],
+    "affine_fns": [
+      [
+        0.7499086399878263,
+        0.20335764877976106
+      ],
+      [
+        0.7707958537711287,
+        0.18000339225097722
+      ],
+      [
+        0.41764206131429427,
+        0.3693048204647513
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.04020100502512563,
+      0.03015075376884422,
+      0.020100502512562814
+    ],
+    "affine_fns": [
+      [
+        0.6331158230772316,
+        0.30289734645078475
+      ],
+      [
+        0.4916732347402416,
+        0.34349512115246345
+      ],
+      [
+        0.3621780410815935,
+        0.4361304500272435
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7035175879396985,
+      0.6482412060301508,
+      0.6733668341708543
+    ],
+    "affine_fns": [
+      [
+        0.46407163102196625,
+        0.19147802099445477
+      ],
+      [
+        0.7391440274862006,
+        -0.02661575908107422
+      ],
+      [
+        0.4698380876845173,
+        0.1607324014166377
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7738693467336684,
+      0.8341708542713568,
+      0.7839195979899498
+    ],
+    "affine_fns": [
+      [
+        0.6521686898994115,
+        -0.09705437479426615
+      ],
+      [
+        0.7923559167268995,
+        -0.19790432343112696
+      ],
+      [
+        1.019632292422518,
+        -0.35224128240938335
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.36180904522613067,
+      0.2663316582914573,
+      0.3768844221105528
+    ],
+    "affine_fns": [
+      [
+        0.7316630885693466,
+        0.16449752631289183
+      ],
+      [
+        0.7704852691071651,
+        0.16118480829120346
+      ],
+      [
+        0.5426310262305886,
+        0.2819266139982757
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.02512562814070352,
+      0.03015075376884422,
+      0.02512562814070352
+    ],
+    "affine_fns": [
+      [
+        0.6324656075038849,
+        0.2993720333665857
+      ],
+      [
+        0.46897667315548025,
+        0.3474552228397736
+      ],
+      [
+        0.3618887594116932,
+        0.43449910023246613
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7738693467336684,
+      0.8341708542713568,
+      0.7839195979899498
+    ],
+    "affine_fns": [
+      [
+        0.6528217550660418,
+        -0.0975416473577761
+      ],
+      [
+        0.7927008486932208,
+        -0.198181521744642
+      ],
+      [
+        1.019809510294049,
+        -0.352380371811454
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5025125628140703,
+      0.6432160804020101,
+      0.8291457286432161
+    ],
+    "affine_fns": [
+      [
+        0.6565825065563295,
+        0.0963902749189709
+      ],
+      [
+        0.6423621435959141,
+        -0.008913379634025886
+      ],
+      [
+        0.4998907814947159,
+        0.13226882860119205
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6148440270623171,
+        0.3103701228854664
+      ],
+      [
+        0.4345684994632697,
+        0.35814759496550297
+      ],
+      [
+        0.3456631571589772,
+        0.4432333597453897
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130357244409257,
+        0.3119735453021977
+      ],
+      [
+        0.4279330257046826,
+        0.36122234090968974
+      ],
+      [
+        0.3363352362669759,
+        0.4464693422515325
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5025125628140703,
+      0.6432160804020101,
+      0.8291457286432161
+    ],
+    "affine_fns": [
+      [
+        0.6565710647072747,
+        0.09643890490359158
+      ],
+      [
+        0.6423725369747805,
+        -0.008909364612717185
+      ],
+      [
+        0.4998194618721245,
+        0.1323359806120944
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.6683417085427136,
+      0.507537688442211,
+      0.5628140703517588
+    ],
+    "affine_fns": [
+      [
+        0.466947078134537,
+        0.16594344075307
+      ],
+      [
+        0.6240322476558948,
+        0.04473033867275267
+      ],
+      [
+        0.4695915371866712,
+        0.17836374168011682
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.010050251256281407,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6180333786048465,
+        0.30848264655740804
+      ],
+      [
+        0.44076355464216027,
+        0.3564298125688304
+      ],
+      [
+        0.34718678489459776,
+        0.4421036421748714
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6131645108531143,
+        0.31191387580460145
+      ],
+      [
+        0.4280855543908947,
+        0.3612065458157544
+      ],
+      [
+        0.33620850716053846,
+        0.446481146714976
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.6683417085427136,
+      0.507537688442211,
+      0.5628140703517588
+    ],
+    "affine_fns": [
+      [
+        0.46719707754461903,
+        0.1658678354774645
+      ],
+      [
+        0.6241631090355365,
+        0.044784653165931
+      ],
+      [
+        0.46967947199751137,
+        0.17834455775299346
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.44221105527638194,
+      0.35678391959798994,
+      0.6080402010050251
+    ],
+    "affine_fns": [
+      [
+        0.7054029192161502,
+        0.1192650089156391
+      ],
+      [
+        0.8176008998221624,
+        0.07794868681339201
+      ],
+      [
+        0.5260074687167497,
+        0.21383606142010103
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.06030150753768844,
+      0.04522613065326633,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6387801691133004,
+        0.29017864147260786
+      ],
+      [
+        0.4844379270065613,
+        0.33786883892251335
+      ],
+      [
+        0.39131430555779195,
+        0.4218500157624094
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6144636013250276,
+        0.31090850935827574
+      ],
+      [
+        0.43068249906310274,
+        0.36023375469369623
+      ],
+      [
+        0.33909995138718796,
+        0.4454102546271882
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.44221105527638194,
+      0.35678391959798994,
+      0.6030150753768845
+    ],
+    "affine_fns": [
+      [
+        0.704945836554548,
+        0.11978140397222001
+      ],
+      [
+        0.8175938191948123,
+        0.07822261741399572
+      ],
+      [
+        0.5258351704102465,
+        0.21393408999385338
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.9095477386934674,
+      0.7537688442211056,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.5225885140960351,
+        -0.031031197478302408
+      ],
+      [
+        0.7350087839906396,
+        -0.12924502367429025
+      ],
+      [
+        0.8205160222214777,
+        -0.2216453004526575
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.19095477386934673,
+      0.09045226130653267,
+      0.18090452261306533
+    ],
+    "affine_fns": [
+      [
+        0.6979808139419051,
+        0.24202544426568312
+      ],
+      [
+        0.5649623934550885,
+        0.30369465841925736
+      ],
+      [
+        0.42265228593235127,
+        0.38590034022294667
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6181908243423606,
+        0.3088596927740625
+      ],
+      [
+        0.4352951897492663,
+        0.3590802864508004
+      ],
+      [
+        0.3407150390214641,
+        0.44404000650624736
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.9095477386934674,
+      0.7537688442211056,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.5225885140960328,
+        -0.03103119747830191
+      ],
+      [
+        0.7350087839906396,
+        -0.1292450236742907
+      ],
+      [
+        0.8205160222214418,
+        -0.2216453004526292
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.2814070351758794,
+      0.592964824120603,
+      0.4623115577889447
+    ],
+    "affine_fns": [
+      [
+        0.41678341699396304,
+        0.20155307991546814
+      ],
+      [
+        0.3096639614135394,
+        0.26274808983025394
+      ],
+      [
+        0.4183538810886758,
+        0.27331386619516074
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.02512562814070352,
+      0.05025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.5831358060640861,
+        0.2883485722765647
+      ],
+      [
+        0.412359708001187,
+        0.33902280655880485
+      ],
+      [
+        0.38454202820317623,
+        0.42699627050913064
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.0,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6125866577697104,
+        0.31063396419901107
+      ],
+      [
+        0.42828963327160186,
+        0.35999415540031127
+      ],
+      [
+        0.3390215996403618,
+        0.44569516791480795
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.3165829145728643,
+      0.5879396984924623,
+      0.4623115577889447
+    ],
+    "affine_fns": [
+      [
+        0.4185927104880028,
+        0.2009866885951717
+      ],
+      [
+        0.3106314556170395,
+        0.2626275062980554
+      ],
+      [
+        0.41849511141881285,
+        0.273297393433468
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7487437185929648,
+      0.8090452261306533
+    ],
+    "affine_fns": [
+      [
+        0.9929822462999061,
+        -0.31872441132506574
+      ],
+      [
+        0.551711921401786,
+        -0.0036940143595803887
+      ],
+      [
+        0.9090212871089901,
+        -0.24183231523930782
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.12562814070351758,
+      0.135678391959799,
+      0.18090452261306533
+    ],
+    "affine_fns": [
+      [
+        0.6785138599057744,
+        0.24293200412438204
+      ],
+      [
+        0.5268529829556179,
+        0.2920578665499903
+      ],
+      [
+        0.4307968217026581,
+        0.37985173577661285
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6183952402625427,
+        0.3072871466156759
+      ],
+      [
+        0.4379171845330983,
+        0.35635713888618015
+      ],
+      [
+        0.34419540261233966,
+        0.44213837773574133
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7487437185929648,
+      0.8090452261306533
+    ],
+    "affine_fns": [
+      [
+        0.9928077270363262,
+        -0.31855398555557907
+      ],
+      [
+        0.5518838294063567,
+        -0.0037982803319527303
+      ],
+      [
+        0.9089566700842974,
+        -0.2417559419955424
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.6834170854271356,
+      0.7939698492462312,
+      0.864321608040201
+    ],
+    "affine_fns": [
+      [
+        0.5696879782465442,
+        0.03636888614290512
+      ],
+      [
+        0.09703118165037382,
+        0.32340334790438446
+      ],
+      [
+        0.3115484898841952,
+        0.24730639831124254
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.22613065326633167,
+      0.23115577889447236,
+      0.19095477386934673
+    ],
+    "affine_fns": [
+      [
+        0.7823964026537257,
+        0.16803842678182582
+      ],
+      [
+        0.544124165926388,
+        0.19674491414129677
+      ],
+      [
+        0.4369843521855147,
+        0.35722663041769437
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.04522613065326633,
+      0.03015075376884422
+    ],
+    "affine_fns": [
+      [
+        0.6445597273777095,
+        0.29832629689016654
+      ],
+      [
+        0.468708157884785,
+        0.33406493517430413
+      ],
+      [
+        0.37124257866147264,
+        0.43298413714668016
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.628140703517588,
+      0.592964824120603,
+      0.8693467336683417
+    ],
+    "affine_fns": [
+      [
+        0.5140302384144233,
+        0.1045896157921988
+      ],
+      [
+        0.125628106251444,
+        0.30751405284793326
+      ],
+      [
+        0.28993498883487084,
+        0.2690280376855101
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7839195979899498,
+      0.7989949748743719
+    ],
+    "affine_fns": [
+      [
+        0.9743558849851417,
+        -0.31391726221378663
+      ],
+      [
+        0.5475823024627662,
+        -0.007061831857570089
+      ],
+      [
+        1.0697626932467357,
+        -0.3658570173775001
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.32160804020100503,
+      0.30150753768844224,
+      0.31155778894472363
+    ],
+    "affine_fns": [
+      [
+        0.8003900643146382,
+        0.12590778025516422
+      ],
+      [
+        0.558147768261535,
+        0.21111560616409206
+      ],
+      [
+        0.5800166201808087,
+        0.26522132586890834
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.02512562814070352,
+      0.02512562814070352,
+      0.03015075376884422
+    ],
+    "affine_fns": [
+      [
+        0.629857558237378,
+        0.30050810460003907
+      ],
+      [
+        0.44462835213241536,
+        0.3507121768242304
+      ],
+      [
+        0.35630800430444814,
+        0.43639245530994664
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.SEGMENTATION: 'segmentation'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7839195979899498,
+      0.7989949748743719
+    ],
+    "affine_fns": [
+      [
+        0.9744971038594155,
+        -0.3140303644679006
+      ],
+      [
+        0.5475299051769031,
+        -0.007033707985181437
+      ],
+      [
+        1.0698062399748598,
+        -0.3659014765925649
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.34673366834170855,
+      0.5879396984924623,
+      0.8442211055276382
+    ],
+    "affine_fns": [
+      [
+        0.7227911796537271,
+        0.12563668556229088
+      ],
+      [
+        0.7031883880506491,
+        0.0025273010088077696
+      ],
+      [
+        0.5229996181595293,
+        0.11427449671573991
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6152161384079329,
+        0.31083113509580124
+      ],
+      [
+        0.4450839989130117,
+        0.35783547384769576
+      ],
+      [
+        0.34950960936613457,
+        0.4426761179188796
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130740946889691,
+        0.31199770133767213
+      ],
+      [
+        0.4286294671893325,
+        0.36120445067954376
+      ],
+      [
+        0.33661283257578684,
+        0.4464296785691495
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.34673366834170855,
+      0.5879396984924623,
+      0.8442211055276382
+    ],
+    "affine_fns": [
+      [
+        0.7227414601530023,
+        0.12568675635324875
+      ],
+      [
+        0.7031675471407122,
+        0.0025442147065616316
+      ],
+      [
+        0.5229600590074738,
+        0.1143106184495517
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5678391959798995,
+      0.5628140703517588,
+      0.6884422110552764
+    ],
+    "affine_fns": [
+      [
+        0.6354994776486674,
+        0.13838606421080546
+      ],
+      [
+        0.6976651998613197,
+        0.027879647553648745
+      ],
+      [
+        0.49782930983299023,
+        0.1486750687286103
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6158182340508085,
+        0.3100263638075858
+      ],
+      [
+        0.4485536158630645,
+        0.35658206247645585
+      ],
+      [
+        0.35203319220181223,
+        0.4415292961848636
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.61306093781484,
+        0.3119804853367413
+      ],
+      [
+        0.428438853219339,
+        0.36121553480756824
+      ],
+      [
+        0.3364459175834439,
+        0.4464555370743636
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5628140703517588,
+      0.5628140703517588,
+      0.6884422110552764
+    ],
+    "affine_fns": [
+      [
+        0.6357063295388324,
+        0.13842285249974087
+      ],
+      [
+        0.6977509643332107,
+        0.02793756619039589
+      ],
+      [
+        0.4978252763197519,
+        0.14872524318503538
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.45226130653266333,
+      0.3065326633165829,
+      0.4723618090452261
+    ],
+    "affine_fns": [
+      [
+        0.6345967151869915,
+        0.16830239563022148
+      ],
+      [
+        0.7240930275742756,
+        0.12666508435328255
+      ],
+      [
+        0.4698187204247214,
+        0.23997663219938925
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.04522613065326633,
+      0.05527638190954774
+    ],
+    "affine_fns": [
+      [
+        0.6362479121115351,
+        0.29459392306776433
+      ],
+      [
+        0.49826276653477036,
+        0.33892873325622264
+      ],
+      [
+        0.4185541743470244,
+        0.416809372457011
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6143170675691468,
+        0.31117107035491787
+      ],
+      [
+        0.4317448271224811,
+        0.36031586547272465
+      ],
+      [
+        0.3409612612112258,
+        0.44520652930248994
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.45226130653266333,
+      0.3065326633165829,
+      0.4723618090452261
+    ],
+    "affine_fns": [
+      [
+        0.6341682583516928,
+        0.16882665902825
+      ],
+      [
+        0.7240032309500559,
+        0.12710940814423782
+      ],
+      [
+        0.4695040824435862,
+        0.24025023393113484
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.9396984924623115,
+      0.7989949748743719,
+      0.8793969849246231
+    ],
+    "affine_fns": [
+      [
+        0.7491302488147901,
+        -0.2539398345022858
+      ],
+      [
+        0.543851667706807,
+        -0.024270785166055908
+      ],
+      [
+        0.7921945269557082,
+        -0.19573121396032656
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.18090452261306533,
+      0.08542713567839195,
+      0.12060301507537688
+    ],
+    "affine_fns": [
+      [
+        0.673092152242466,
+        0.25022056620344324
+      ],
+      [
+        0.5270722203485065,
+        0.3119209683607573
+      ],
+      [
+        0.43336332925139115,
+        0.39587925000706325
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6169145815532389,
+        0.3089844201956281
+      ],
+      [
+        0.4339746850548255,
+        0.3591016662800462
+      ],
+      [
+        0.34122769566875044,
+        0.4444570686555285
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.9396984924623115,
+      0.7989949748743719,
+      0.8793969849246231
+    ],
+    "affine_fns": [
+      [
+        0.7491302488147793,
+        -0.2539398345022775
+      ],
+      [
+        0.5438516677068025,
+        -0.02427078516605302
+      ],
+      [
+        0.7921945269557037,
+        -0.19573121396032267
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.4170854271356784,
+      0.32663316582914576,
+      0.6030150753768845
+    ],
+    "affine_fns": [
+      [
+        0.5893867430449544,
+        0.2041965104052379
+      ],
+      [
+        0.6298417239474793,
+        0.13308583547380098
+      ],
+      [
+        0.47388489861363814,
+        0.24047721753083603
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.2613065326633166,
+      0.035175879396984924,
+      0.04020100502512563
+    ],
+    "affine_fns": [
+      [
+        0.6120280547990903,
+        0.2977296548945576
+      ],
+      [
+        0.47859039746019516,
+        0.3459139771579285
+      ],
+      [
+        0.36063377448765693,
+        0.4348067663940936
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6133825514778599,
+        0.3113002771077204
+      ],
+      [
+        0.43015510163735576,
+        0.360694276494103
+      ],
+      [
+        0.33701468356268127,
+        0.44611314618881415
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.21608040201005024,
+      0.32663316582914576,
+      0.6030150753768845
+    ],
+    "affine_fns": [
+      [
+        0.5916674621799626,
+        0.2037034629182752
+      ],
+      [
+        0.6297261931581001,
+        0.13300260017150684
+      ],
+      [
+        0.4737905097825871,
+        0.24037083384697894
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.6030150753768845,
+      0.7939698492462312,
+      0.7738693467336684
+    ],
+    "affine_fns": [
+      [
+        0.7549592865049138,
+        -0.09985465507539248
+      ],
+      [
+        0.9337229285604205,
+        -0.26492825312058366
+      ],
+      [
+        0.7228627411456439,
+        -0.08359895873554402
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.1306532663316583,
+      0.15577889447236182,
+      0.1457286432160804
+    ],
+    "affine_fns": [
+      [
+        0.6775952681671281,
+        0.2584893745491219
+      ],
+      [
+        0.6880045069425099,
+        0.26337842484462426
+      ],
+      [
+        0.48474189594449535,
+        0.3681192525201458
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6186854522702987,
+        0.30832028851207216
+      ],
+      [
+        0.4540250847878211,
+        0.3550980375214301
+      ],
+      [
+        0.35206703265848516,
+        0.4411861118068432
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.6030150753768845,
+      0.7939698492462312,
+      0.7738693467336684
+    ],
+    "affine_fns": [
+      [
+        0.7549480037674374,
+        -0.09982551806553025
+      ],
+      [
+        0.9334747199167596,
+        -0.26471077175174473
+      ],
+      [
+        0.7227287298869677,
+        -0.08347716295677587
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.542713567839196,
+      0.6231155778894473,
+      0.7788944723618091
+    ],
+    "affine_fns": [
+      [
+        0.516006825774031,
+        0.170320318177079
+      ],
+      [
+        0.7047260214751147,
+        -0.011261904805291156
+      ],
+      [
+        0.4172361589920669,
+        0.2007542384228052
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.1658291457286432,
+      0.2964824120603015,
+      0.23618090452261306
+    ],
+    "affine_fns": [
+      [
+        0.7746460897189282,
+        0.19494293037782176
+      ],
+      [
+        0.7597636143576304,
+        0.16234879566007893
+      ],
+      [
+        0.402469722024961,
+        0.36599377655026516
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.035175879396984924,
+      0.035175879396984924
+    ],
+    "affine_fns": [
+      [
+        0.6380318369630166,
+        0.30179942750807454
+      ],
+      [
+        0.5005634958963648,
+        0.3394425287050565
+      ],
+      [
+        0.36343154545237094,
+        0.43503279598097105
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.49246231155778897,
+      0.6080402010050251,
+      0.8241206030150754
+    ],
+    "affine_fns": [
+      [
+        0.49181799596490167,
+        0.19732813093865118
+      ],
+      [
+        0.6933623979042318,
+        0.0025421663225215774
+      ],
+      [
+        0.4104595561788798,
+        0.20984867815753805
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.6984924623115578,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.6178391403994814,
+        -0.03128997246817422
+      ],
+      [
+        0.7679163105228334,
+        -0.12027420877658557
+      ],
+      [
+        0.9089243183133238,
+        -0.1927074241976804
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.2613065326633166,
+      0.20603015075376885,
+      0.21608040201005024
+    ],
+    "affine_fns": [
+      [
+        0.6981543686367564,
+        0.20169781965138892
+      ],
+      [
+        0.6585190402551135,
+        0.2285496465519174
+      ],
+      [
+        0.5236095216621285,
+        0.3222752477645374
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.02512562814070352,
+      0.020100502512562814,
+      0.020100502512562814
+    ],
+    "affine_fns": [
+      [
+        0.6261623982876042,
+        0.3031463633298402
+      ],
+      [
+        0.4546310614366716,
+        0.3519067895090865
+      ],
+      [
+        0.35501963457469676,
+        0.43843278652733775
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.6984924623115578,
+      0.7135678391959799
+    ],
+    "affine_fns": [
+      [
+        0.6178902377580938,
+        -0.03133450488870615
+      ],
+      [
+        0.7679399801151531,
+        -0.1203058448325065
+      ],
+      [
+        0.909078978762576,
+        -0.1928363697820572
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.46733668341708545,
+      0.5477386934673367,
+      0.5979899497487438
+    ],
+    "affine_fns": [
+      [
+        0.7201115744742557,
+        0.1385920918175931
+      ],
+      [
+        0.7149437979098717,
+        0.002712038934936545
+      ],
+      [
+        0.573308692698388,
+        0.08385836069619679
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6153671168339541,
+        0.31088456264648473
+      ],
+      [
+        0.44401425627944135,
+        0.35801836703865747
+      ],
+      [
+        0.3479422937841837,
+        0.4430427162939222
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.613076843923053,
+        0.3120061509812521
+      ],
+      [
+        0.4285425427145947,
+        0.36121840158712887
+      ],
+      [
+        0.3365027078577191,
+        0.4464540236692246
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.46733668341708545,
+      0.5477386934673367,
+      0.5979899497487438
+    ],
+    "affine_fns": [
+      [
+        0.7200910990674091,
+        0.13860725518599823
+      ],
+      [
+        0.7149437336758819,
+        0.0027009917138171025
+      ],
+      [
+        0.5732793480076551,
+        0.08388150641439063
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5376884422110553,
+      0.5326633165829145,
+      0.7437185929648241
+    ],
+    "affine_fns": [
+      [
+        0.6549728220254487,
+        0.14872711105445008
+      ],
+      [
+        0.6718666711914906,
+        0.05988335238682124
+      ],
+      [
+        0.5343100816669334,
+        0.1516394831674469
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.010050251256281407,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6162610279210503,
+        0.310218028144605
+      ],
+      [
+        0.4487125948018163,
+        0.35670301869008497
+      ],
+      [
+        0.35070826039562863,
+        0.4423784305727104
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.613083816935943,
+        0.3119892049553604
+      ],
+      [
+        0.4284535594335587,
+        0.36121979567276624
+      ],
+      [
+        0.33637659928079044,
+        0.44649279181284285
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5376884422110553,
+      0.5326633165829145,
+      0.7437185929648241
+    ],
+    "affine_fns": [
+      [
+        0.6552384789910064,
+        0.14875993110013974
+      ],
+      [
+        0.671872258525127,
+        0.06001045694247764
+      ],
+      [
+        0.534377364544123,
+        0.15163283757327167
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5678391959798995,
+      0.49246231155778897,
+      0.592964824120603
+    ],
+    "affine_fns": [
+      [
+        0.6004508889384723,
+        0.15741975343391643
+      ],
+      [
+        0.7519347960968625,
+        0.047032957386669016
+      ],
+      [
+        0.5511918256571791,
+        0.16849884788429298
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.08040201005025126,
+      0.05025125628140704,
+      0.08040201005025126
+    ],
+    "affine_fns": [
+      [
+        0.6465335659151961,
+        0.2902230555412618
+      ],
+      [
+        0.5129789712159168,
+        0.3288577349594585
+      ],
+      [
+        0.4216200610252257,
+        0.4111901881035268
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6149015678705266,
+        0.3109972820224322
+      ],
+      [
+        0.4326373466178213,
+        0.3598697406659113
+      ],
+      [
+        0.34106804693168413,
+        0.4449786136546165
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5678391959798995,
+      0.49246231155778897,
+      0.592964824120603
+    ],
+    "affine_fns": [
+      [
+        0.5987462101675022,
+        0.1583584971570908
+      ],
+      [
+        0.7515911456149865,
+        0.04769933315073299
+      ],
+      [
+        0.5504467164383008,
+        0.16923884021666735
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.964824120603015,
+      0.8442211055276382,
+      0.9195979899497487
+    ],
+    "affine_fns": [
+      [
+        0.4445389725319335,
+        0.008629153808677792
+      ],
+      [
+        0.5486485945446831,
+        -0.05171313199049926
+      ],
+      [
+        1.1393256919712873,
+        -0.5329875720325827
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.24623115577889448,
+      0.09547738693467336,
+      0.16080402010050251
+    ],
+    "affine_fns": [
+      [
+        0.6719607080486536,
+        0.24464404404980578
+      ],
+      [
+        0.5463188353492962,
+        0.29447105923803507
+      ],
+      [
+        0.48354669213664003,
+        0.36880259265230775
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6188722463750446,
+        0.30861299495137795
+      ],
+      [
+        0.4359557555219203,
+        0.35824546077002783
+      ],
+      [
+        0.34542372252730585,
+        0.44337632500888846
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.964824120603015,
+      0.8442211055276382,
+      0.9195979899497487
+    ],
+    "affine_fns": [
+      [
+        0.444538972531933,
+        0.008629153808677792
+      ],
+      [
+        0.5486485945446836,
+        -0.051713131990500816
+      ],
+      [
+        1.1393256919712804,
+        -0.5329875720325793
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.4824120603015075,
+      0.5678391959798995,
+      0.7386934673366834
+    ],
+    "affine_fns": [
+      [
+        0.6633494942899427,
+        0.14862347615083438
+      ],
+      [
+        0.7183489979684083,
+        -0.009763805680023774
+      ],
+      [
+        0.586566471547302,
+        0.10326439223716638
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.04522613065326633,
+      0.03015075376884422,
+      0.05025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6317782014878496,
+        0.30000215028498184
+      ],
+      [
+        0.5195881437227051,
+        0.3376568849378165
+      ],
+      [
+        0.37950489539145743,
+        0.42986385294322305
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.613918698499869,
+        0.3114782126834882
+      ],
+      [
+        0.4324476430232039,
+        0.3603457769449837
+      ],
+      [
+        0.337975224950769,
+        0.4458948958414415
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.4824120603015075,
+      0.5678391959798995,
+      0.7386934673366834
+    ],
+    "affine_fns": [
+      [
+        0.6630385138096089,
+        0.14879009672906945
+      ],
+      [
+        0.7186937437035523,
+        -0.010097964171359664
+      ],
+      [
+        0.5862565678527226,
+        0.10337551133373712
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7738693467336684,
+      0.8291457286432161,
+      0.7185929648241206
+    ],
+    "affine_fns": [
+      [
+        0.25763857602261697,
+        0.1835808253430495
+      ],
+      [
+        1.0759363928868906,
+        -0.43991477269431023
+      ],
+      [
+        0.3089702398875223,
+        0.24055170970995238
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.12562814070351758,
+      0.15577889447236182,
+      0.12562814070351758
+    ],
+    "affine_fns": [
+      [
+        0.6680139593438184,
+        0.2540109358421907
+      ],
+      [
+        0.6624223351302279,
+        0.2605623324359659
+      ],
+      [
+        0.4289106743208288,
+        0.3876575893286496
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.01507537688442211,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6192907044999632,
+        0.3075267300959881
+      ],
+      [
+        0.45190978781676316,
+        0.3547121587132421
+      ],
+      [
+        0.34712437270288543,
+        0.4421090395569809
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7738693467336684,
+      0.8291457286432161,
+      0.7185929648241206
+    ],
+    "affine_fns": [
+      [
+        0.25753265966139904,
+        0.1836386480977823
+      ],
+      [
+        1.075880179238109,
+        -0.4398851113134902
+      ],
+      [
+        0.3088981608712348,
+        0.24059819856816272
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7537688442211056,
+      0.6934673366834171,
+      0.6432160804020101
+    ],
+    "affine_fns": [
+      [
+        0.4786632273437336,
+        0.18441560392825862
+      ],
+      [
+        0.7478366499523321,
+        -0.018377243074334304
+      ],
+      [
+        0.4555857234381713,
+        0.199771804450731
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.19597989949748745,
+      0.21608040201005024,
+      0.31155778894472363
+    ],
+    "affine_fns": [
+      [
+        0.7667490322331082,
+        0.20002083518264716
+      ],
+      [
+        0.7701234931742852,
+        0.1813373752744459
+      ],
+      [
+        0.4158433992192777,
+        0.37514581891003385
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.02512562814070352,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6343054369281937,
+        0.302797466293096
+      ],
+      [
+        0.4914344373840692,
+        0.3436519206857228
+      ],
+      [
+        0.36044048188789557,
+        0.43712776544104237
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7487437185929648,
+      0.6984924623115578,
+      0.6080402010050251
+    ],
+    "affine_fns": [
+      [
+        0.4816595980105096,
+        0.19305849593812924
+      ],
+      [
+        0.7534153330570939,
+        -0.022471076576780213
+      ],
+      [
+        0.45936977160827297,
+        0.19672019460429563
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.9045226130653267,
+      0.8140703517587939,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.6007716189718957,
+        -0.09171138589617256
+      ],
+      [
+        0.8083769205509862,
+        -0.23484365254750406
+      ],
+      [
+        0.9948859889692432,
+        -0.3716348145501315
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.4170854271356784,
+      0.30150753768844224,
+      0.46733668341708545
+    ],
+    "affine_fns": [
+      [
+        0.7342269535920791,
+        0.1374016105660153
+      ],
+      [
+        0.815200326788664,
+        0.11261477745861886
+      ],
+      [
+        0.5809224071154002,
+        0.2415289579658414
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.04020100502512563,
+      0.035175879396984924,
+      0.04522613065326633
+    ],
+    "affine_fns": [
+      [
+        0.6331654667533417,
+        0.29905462738482325
+      ],
+      [
+        0.4869991478854724,
+        0.3442775056183189
+      ],
+      [
+        0.3700383828219175,
+        0.4324127298330932
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.9045226130653267,
+      0.8140703517587939,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.6009956090937282,
+        -0.09178514037991242
+      ],
+      [
+        0.8080253725377907,
+        -0.2344549453575705
+      ],
+      [
+        0.994107866441095,
+        -0.37085383080973444
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7788944723618091,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9320720349716015,
+        -0.2715611589154278
+      ],
+      [
+        0.7672435756559959,
+        -0.1700050265145978
+      ],
+      [
+        1.126181214244529,
+        -0.4885611504584857
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.03015075376884422,
+      0.035175879396984924,
+      0.06030150753768844
+    ],
+    "affine_fns": [
+      [
+        0.6428577091624118,
+        0.2970763004563423
+      ],
+      [
+        0.4991255769618334,
+        0.3415428903319788
+      ],
+      [
+        0.389591918588112,
+        0.424841410235375
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134005128775415,
+        0.31185489710851394
+      ],
+      [
+        0.4286551114848994,
+        0.3611460409894777
+      ],
+      [
+        0.33659328684209316,
+        0.44636489055624884
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_9: 'dino_layer_9'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7889447236180904,
+      0.7989949748743719,
+      0.9095477386934674
+    ],
+    "affine_fns": [
+      [
+        0.9323371604157638,
+        -0.27307252119414543
+      ],
+      [
+        0.7672587515102084,
+        -0.17043687791088935
+      ],
+      [
+        1.132037290994253,
+        -0.49446306700911713
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.829278821330541,
+        -0.18035674380935168
+      ],
+      [
+        0.8358172754792279,
+        -0.2230615802715875
+      ],
+      [
+        0.9906947131489192,
+        -0.3303506143646806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.035175879396984924,
+      0.05025125628140704,
+      0.08542713567839195
+    ],
+    "affine_fns": [
+      [
+        0.6456906715817259,
+        0.2921547938683789
+      ],
+      [
+        0.529292059265403,
+        0.33136727509347763
+      ],
+      [
+        0.4077656111728676,
+        0.41804089073755923
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6134833910655507,
+        0.31177096261048753
+      ],
+      [
+        0.42923350130098664,
+        0.36099940453409946
+      ],
+      [
+        0.3369773370691913,
+        0.446258152871219
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_LAYER_11: 'dino_layer_11'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7185929648241206,
+      0.7638190954773869,
+      0.8944723618090452
+    ],
+    "affine_fns": [
+      [
+        0.8311836373769006,
+        -0.1819120901529701
+      ],
+      [
+        0.8345663521942446,
+        -0.2224693092380855
+      ],
+      [
+        0.9892661619671824,
+        -0.3300335318100255
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.3969849246231156,
+      0.5527638190954774,
+      0.8090452261306533
+    ],
+    "affine_fns": [
+      [
+        0.7058371858724021,
+        0.11701809046135891
+      ],
+      [
+        0.7058054033708979,
+        -0.002729497092311739
+      ],
+      [
+        0.5378156865262426,
+        0.09910718013831488
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6152128465948875,
+        0.3107976404006527
+      ],
+      [
+        0.44464356271113603,
+        0.357888187446149
+      ],
+      [
+        0.3497112921115911,
+        0.4426252836070084
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130741384070783,
+        0.31199554953391545
+      ],
+      [
+        0.4285899857598237,
+        0.3612086620939729
+      ],
+      [
+        0.33661482175604024,
+        0.4464277067203685
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_FULL: 'dino_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.3969849246231156,
+      0.5527638190954774,
+      0.8090452261306533
+    ],
+    "affine_fns": [
+      [
+        0.7057824580118103,
+        0.11709021745170398
+      ],
+      [
+        0.705760502468932,
+        -0.0026875019134594558
+      ],
+      [
+        0.5377513359684732,
+        0.09917104125727427
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.4120603015075377,
+      0.47738693467336685,
+      0.5527638190954774
+    ],
+    "affine_fns": [
+      [
+        0.6153204142918868,
+        0.14419723268344012
+      ],
+      [
+        0.6791883934160662,
+        0.05272166164341707
+      ],
+      [
+        0.4765133040086248,
+        0.17059944384613795
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.010050251256281407,
+      0.005025125628140704,
+      0.010050251256281407
+    ],
+    "affine_fns": [
+      [
+        0.6158838926739502,
+        0.30997570862651774
+      ],
+      [
+        0.4494295383551933,
+        0.3566178765870553
+      ],
+      [
+        0.3502430033779622,
+        0.44195441224109216
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.0,
+      0.0
+    ],
+    "affine_fns": [
+      [
+        0.6130611648517792,
+        0.31198016870697054
+      ],
+      [
+        0.4284956393888376,
+        0.361217456883876
+      ],
+      [
+        0.3363559903305062,
+        0.4464747151209904
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DINO_2_FULL: 'dino_2_full'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.4120603015075377,
+      0.47738693467336685,
+      0.5527638190954774
+    ],
+    "affine_fns": [
+      [
+        0.6155843007226058,
+        0.14420729449498199
+      ],
+      [
+        0.6791408323422723,
+        0.05286736307334744
+      ],
+      [
+        0.47648997823139716,
+        0.17064184535369908
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.6030150753768845,
+      0.4120603015075377,
+      0.6884422110552764
+    ],
+    "affine_fns": [
+      [
+        0.6071027394907732,
+        0.16016347745349727
+      ],
+      [
+        0.7118939372642489,
+        0.10347114084484971
+      ],
+      [
+        0.49925562417491026,
+        0.20092010158814894
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.07035175879396985,
+      0.05025125628140704,
+      0.10552763819095477
+    ],
+    "affine_fns": [
+      [
+        0.6461998863530234,
+        0.29144529701316024
+      ],
+      [
+        0.5304726910327322,
+        0.33056447972513114
+      ],
+      [
+        0.436555965294559,
+        0.40813439618783454
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.005025125628140704,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.614995859768657,
+        0.31095587469223346
+      ],
+      [
+        0.43408314816224514,
+        0.3598849832737933
+      ],
+      [
+        0.3423733682332292,
+        0.44476057836470745
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT: 'vit'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5376884422110553,
+      0.4120603015075377,
+      0.6884422110552764
+    ],
+    "affine_fns": [
+      [
+        0.6072391635451334,
+        0.15995466749638376
+      ],
+      [
+        0.7120591297463638,
+        0.10342793125045469
+      ],
+      [
+        0.499204006796451,
+        0.20094288418110678
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.949748743718593,
+      0.8492462311557789,
+      0.9748743718592965
+    ],
+    "affine_fns": [
+      [
+        0.5858193705866016,
+        -0.13454756249770072
+      ],
+      [
+        0.6172865483304915,
+        -0.10476098336880302
+      ],
+      [
+        0.6985421917202215,
+        -0.1402700744835258
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.21105527638190955,
+      0.10050251256281408,
+      0.271356783919598
+    ],
+    "affine_fns": [
+      [
+        0.6747717732703397,
+        0.2377821828561193
+      ],
+      [
+        0.5700220429362592,
+        0.29413570415769347
+      ],
+      [
+        0.4735754868958782,
+        0.3708971312973885
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.01507537688442211,
+      0.005025125628140704,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6178578158319069,
+        0.30844376111766914
+      ],
+      [
+        0.4364371865069931,
+        0.35850755909560633
+      ],
+      [
+        0.3456127981174985,
+        0.4432918981259661
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.CONVNET: 'convnet'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.949748743718593,
+      0.8492462311557789,
+      0.9748743718592965
+    ],
+    "affine_fns": [
+      [
+        0.5858193705866018,
+        -0.1345475624977026
+      ],
+      [
+        0.6172865483304905,
+        -0.10476098336880318
+      ],
+      [
+        0.6985421917202277,
+        -0.1402700744835338
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.22613065326633167,
+      0.3065326633165829,
+      0.6683417085427136
+    ],
+    "affine_fns": [
+      [
+        0.5754322903420486,
+        0.20063921355849768
+      ],
+      [
+        0.5673356062866295,
+        0.12787498373311607
+      ],
+      [
+        0.4578295724859895,
+        0.21375012468329185
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.05527638190954774,
+      0.035175879396984924,
+      0.06532663316582915
+    ],
+    "affine_fns": [
+      [
+        0.6167741399269772,
+        0.2948464557016927
+      ],
+      [
+        0.5128527975747287,
+        0.33469085754125205
+      ],
+      [
+        0.3844828523102881,
+        0.42748934114097403
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.005025125628140704,
+      0.005025125628140704
+    ],
+    "affine_fns": [
+      [
+        0.6135345806530711,
+        0.31117187786739564
+      ],
+      [
+        0.4322911951593436,
+        0.36019491847077556
+      ],
+      [
+        0.33838431305136096,
+        0.44578588305105893
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.SWIN: 'swin'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.22613065326633167,
+      0.3065326633165829,
+      0.6683417085427136
+    ],
+    "affine_fns": [
+      [
+        0.578049350046113,
+        0.19935834293120994
+      ],
+      [
+        0.5681492632996544,
+        0.12694531485834942
+      ],
+      [
+        0.4584848241633709,
+        0.21290323718923387
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.7939698492462312,
+      0.7939698492462312,
+      0.7788944723618091
+    ],
+    "affine_fns": [
+      [
+        0.748381532415987,
+        -0.10418137528762983
+      ],
+      [
+        0.9922181372880524,
+        -0.31670392367409017
+      ],
+      [
+        0.816158989673869,
+        -0.17326256756090963
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.15577889447236182,
+      0.16080402010050251,
+      0.1407035175879397
+    ],
+    "affine_fns": [
+      [
+        0.6821658050581012,
+        0.25562917952600583
+      ],
+      [
+        0.688499817329701,
+        0.26032238358926063
+      ],
+      [
+        0.4940512286634496,
+        0.36093940620132214
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.010050251256281407,
+      0.01507537688442211
+    ],
+    "affine_fns": [
+      [
+        0.6193733674342088,
+        0.30808062035471045
+      ],
+      [
+        0.4549421585104209,
+        0.3548347768960617
+      ],
+      [
+        0.3536131769012054,
+        0.4406341194883791
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VIT_MSN: 'vit_msn'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.7939698492462312,
+      0.7939698492462312,
+      0.7788944723618091
+    ],
+    "affine_fns": [
+      [
+        0.7485118731062018,
+        -0.10429574770910893
+      ],
+      [
+        0.9921386146799168,
+        -0.3166480537964974
+      ],
+      [
+        0.8161405454941529,
+        -0.17325567079297077
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.5477386934673367,
+      0.5728643216080402,
+      0.8391959798994975
+    ],
+    "affine_fns": [
+      [
+        0.5178958944817796,
+        0.1702920003939652
+      ],
+      [
+        0.7152122956777455,
+        -0.012825567551611017
+      ],
+      [
+        0.39374823708319917,
+        0.2207387417340806
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.1457286432160804,
+      0.25125628140703515,
+      0.24120603015075376
+    ],
+    "affine_fns": [
+      [
+        0.776402213475962,
+        0.1940206549861338
+      ],
+      [
+        0.7561860339585735,
+        0.16370051042625441
+      ],
+      [
+        0.3933097036140249,
+        0.36856413541060506
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.020100502512562814,
+      0.035175879396984924,
+      0.05527638190954774
+    ],
+    "affine_fns": [
+      [
+        0.6385783299834321,
+        0.30171288837848376
+      ],
+      [
+        0.4990621040507224,
+        0.3395747665428748
+      ],
+      [
+        0.361142212140206,
+        0.4356349095089915
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.DOBBE: 'dobbe'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.5276381909547738,
+      0.5628140703517588,
+      0.8291457286432161
+    ],
+    "affine_fns": [
+      [
+        0.4990329427930124,
+        0.19234260138794107
+      ],
+      [
+        0.7125400807066625,
+        -0.006997584785162603
+      ],
+      [
+        0.3916037789826451,
+        0.22593438060054377
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.COSINE: 'cosine'>}": {
+    "thresholds": [
+      0.8140703517587939,
+      0.7035175879396985,
+      0.6834170854271356
+    ],
+    "affine_fns": [
+      [
+        0.5356113327059976,
+        0.025961614152046175
+      ],
+      [
+        0.8028239657015157,
+        -0.15763511272770125
+      ],
+      [
+        0.5183574044762467,
+        0.09683216869775568
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.EUCLIDEAN: 'euclidean'>}": {
+    "thresholds": [
+      0.32663316582914576,
+      0.2562814070351759,
+      0.22613065326633167
+    ],
+    "affine_fns": [
+      [
+        0.7005901419391324,
+        0.18731887138549516
+      ],
+      [
+        0.7266875348147395,
+        0.18130827971564176
+      ],
+      [
+        0.4906150173462309,
+        0.3179795379986075
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.MANHATTAN: 'manhattan'>}": {
+    "thresholds": [
+      0.04020100502512563,
+      0.020100502512562814,
+      0.05527638190954774
+    ],
+    "affine_fns": [
+      [
+        0.6283308751862656,
+        0.302147249169371
+      ],
+      [
+        0.4667612784701378,
+        0.34926746904272904
+      ],
+      [
+        0.35853738877726427,
+        0.43691711455549875
+      ]
+    ]
+  },
+  "Config: {'OBJ_NUM': 51, 'IMAGE_PREPROCESSING': [<ImagePreprocessing.CROPPING: 'cropping'>, <ImagePreprocessing.BACKGROUND_REM: 'background_rem'>, <ImagePreprocessing.GREYSCALE: 'greyscale'>], 'IMAGE_EMBEDDINGS': <ImageEmbeddings.VC: 'vc'>, 'SIMILARITY_MEASURE': <SimilarityMeasure.PEARSON: 'pearson'>}": {
+    "thresholds": [
+      0.8140703517587939,
+      0.7035175879396985,
+      0.6834170854271356
+    ],
+    "affine_fns": [
+      [
+        0.5358234397369542,
+        0.025803034158400906
+      ],
+      [
+        0.8028916802588797,
+        -0.15769347566453773
+      ],
+      [
+        0.5184554827462452,
+        0.09675414302329244
+      ]
+    ]
+  }
+}
