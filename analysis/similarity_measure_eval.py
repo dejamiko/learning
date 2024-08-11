@@ -1,4 +1,5 @@
 import json
+import os.path
 import time
 from functools import cmp_to_key
 from pprint import pprint
@@ -410,24 +411,25 @@ def compare_weighted_sum(scores_1, scores_2):
 
 def run_and_save(config, filename, n=10):
     all_scores = {}
-    # for emb in ImageEmbeddings:
-    #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in SimilarityMeasure:
-    #         config.SIMILARITY_MEASURE = sim
-    #         scores, scores_b = run_eval_one_config(config, n)
-    #         all_scores[str(config)] = [scores, scores_b]
+    for emb in ImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in SimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
     for emb in ContourImageEmbeddings:
         config.IMAGE_EMBEDDINGS = emb
         for sim in ContourSimilarityMeasure:
             config.SIMILARITY_MEASURE = sim
             scores, scores_b = run_eval_one_config(config, n)
             all_scores[str(config)] = [scores, scores_b]
-    with open(filename, "r") as f:
-        previous = json.load(f)
-        for k, v in all_scores.items():
-            previous[k] = v
+    if os.path.exists(filename):
+        with open(filename, "r") as f:
+            previous = json.load(f)
+            for k, v in previous.items():
+                all_scores[k] = v
     with open(filename, "w") as f:
-        json.dump(previous, f)
+        json.dump(all_scores, f)
 
 
 def load_results(filename):
@@ -461,21 +463,21 @@ if __name__ == "__main__":
     for ps in processing_steps_to_try:
         start = time.time()
         config = Config()
-        config.OBJ_NUM = 51
+        config.OBJ_NUM = 40
         config.IMAGE_PREPROCESSING = ps
         run_and_save(
             config,
             f"analysis/results_one_image_{config.OBJ_NUM}_{ps}.json",
-            1,
+            10,
         )
         config = Config()
-        config.OBJ_NUM = 51
+        config.OBJ_NUM = 40
         config.IMAGE_PREPROCESSING = ps
         config.USE_ALL_IMAGES = True
         run_and_save(
             config,
             f"analysis/results_all_images_{config.OBJ_NUM}_{ps}.json",
-            1,
+            10,
         )
         print(f"Finished with {ps} in {time.time() - start}")
 
