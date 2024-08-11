@@ -403,6 +403,9 @@ class Extractor:
             contour_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
         )
 
+        if len(contours) == 0:
+            return []
+
         return np.vstack(contours).squeeze().tolist()
 
     # @staticmethod

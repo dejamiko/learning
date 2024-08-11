@@ -410,20 +410,24 @@ def compare_weighted_sum(scores_1, scores_2):
 
 def run_and_save(config, filename, n=10):
     all_scores = {}
-    for emb in ImageEmbeddings:
-        config.IMAGE_EMBEDDINGS = emb
-        for sim in SimilarityMeasure:
-            config.SIMILARITY_MEASURE = sim
-            scores, scores_b = run_eval_one_config(config, n)
-            all_scores[str(config)] = [scores, scores_b]
-    # for emb in ContourImageEmbeddings:
+    # for emb in ImageEmbeddings:
     #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in ContourSimilarityMeasure:
+    #     for sim in SimilarityMeasure:
     #         config.SIMILARITY_MEASURE = sim
     #         scores, scores_b = run_eval_one_config(config, n)
     #         all_scores[str(config)] = [scores, scores_b]
+    for emb in ContourImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in ContourSimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    with open(filename, "r") as f:
+        previous = json.load(f)
+        for k, v in all_scores.items():
+            previous[k] = v
     with open(filename, "w") as f:
-        json.dump(all_scores, f)
+        json.dump(previous, f)
 
 
 def load_results(filename):

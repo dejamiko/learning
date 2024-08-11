@@ -3,7 +3,7 @@ import os
 import time
 
 from config import Config
-from playground.environment import Environment
+from playground.storage import ObjectStorage
 from tm_utils import ImageEmbeddings, ImagePreprocessing
 
 
@@ -57,7 +57,8 @@ def calculate_all_embeddings():
         for m in ImageEmbeddings:
             start_time = time.time()
             config.IMAGE_EMBEDDINGS = m
-            _ = Environment(config)
+            storage = ObjectStorage(config)
+            storage.generate_objects()
             print(f"Method {m.value} done in {time.time() - start_time} s")
         print(f"Preprocessing steps done {ps}")
 
