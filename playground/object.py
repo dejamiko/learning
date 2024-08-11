@@ -182,33 +182,3 @@ class Object(ABC):
             for i in lst
         ):
             return lst
-
-    # @staticmethod
-    # def _get_own_trained(a, b):
-    #     return Object._get_nn_sim(
-    #         a, b, {"frozen": False, "backbone": False}, "siamese_network_train.pth"
-    #     )
-    #
-    # @staticmethod
-    # def _get_fine_tuned(a, b):
-    #     return Object._get_nn_sim(
-    #         a, b, {"frozen": True, "backbone": True}, "siamese_network_fine_tuning.pth"
-    #     )
-    #
-    # @staticmethod
-    # def _get_linearly_probed(a, b):
-    #     return Object._get_nn_sim(
-    #         a,
-    #         b,
-    #         {"frozen": False, "backbone": True},
-    #         "siamese_network_linear_probing.pth",
-    #     )
-    #
-    # @staticmethod
-    # def _get_nn_sim(a, b, config, model_path):
-    #     a = torch.from_numpy(a).float().reshape(1, 3, 256, 256)
-    #     b = torch.from_numpy(b).float().reshape(1, 3, 256, 256)
-    #     model = SiameseNetwork(**config)
-    #     model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
-    #     model.eval()
-    #     return float(model(a, b).squeeze().detach().numpy())

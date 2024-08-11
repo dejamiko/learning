@@ -64,9 +64,7 @@ class SiameseNetwork(nn.Module):
                 nn.Conv2d(32, 16, kernel_size=3, stride=2, padding=1),
                 nn.ReLU(inplace=True),
             )
-            self.head = nn.Sequential(
-                nn.LazyLinear(128)
-            )
+            self.head = nn.Sequential(nn.LazyLinear(128))
 
         if frozen:
             for param in self.feature_extractor.parameters():

@@ -2,9 +2,17 @@ import json
 import os
 import time
 
+import cv2
+import pandas as pd
+import torch
+from PIL import Image
+from torchvision import transforms
+
 from config import Config
+from optim.model_training import SiameseNetwork
+from playground.extractor import Extractor
 from playground.storage import ObjectStorage
-from tm_utils import ImageEmbeddings, ImagePreprocessing
+from tm_utils import ImageEmbeddings, ImagePreprocessing, NNSimilarityMeasure
 
 
 def remove_embeddings():
@@ -63,5 +71,108 @@ def calculate_all_embeddings():
         print(f"Preprocessing steps done {ps}")
 
 
+def get_own_trained(a, b, config):
+    return get_nn_sim(
+        a, b, {"frozen": False, "backbone": False}, "siamese_network_train.pth", config
+    )
+
+
+def get_fine_tuned(a, b, config):
+    return get_nn_sim(
+        a,
+        b,
+        {"frozen": True, "backbone": True},
+        "siamese_network_fine_tuning.pth",
+        config,
+    )
+
+
+def get_linearly_probed(a, b, config):
+    return get_nn_sim(
+        a,
+        b,
+        {"frozen": False, "backbone": True},
+        "siamese_network_linear_probing.pth",
+        config,
+    )
+
+
+def get_nn_sim(a, b, model_config, model_path, config):
+    transform = transforms.Compose(
+        [
+            transforms.Resize((256, 256)),
+            transforms.CenterCrop((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ]
+    )
+    a = transform(a).unsqueeze(0).to(config.DEVICE)
+    b = transform(b).unsqueeze(0).to(config.DEVICE)
+    model = SiameseNetwork(**model_config)
+    model.load_state_dict(
+        torch.load(
+            os.path.join("optim", model_path), map_location=torch.device(config.DEVICE)
+        )
+    )
+    model.eval()
+    res = float(model(a, b).squeeze().detach().cpu().numpy())
+    return min(max(res, 0.0), 1.0)
+
+
+def calculate_own_models_sim():
+    config = Config()
+    config.OBJ_NUM = 51
+    processing_steps_to_try = [
+        [],
+        [ImagePreprocessing.GREYSCALE],
+        [ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING],
+        [ImagePreprocessing.SEGMENTATION],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE],
+        [
+            ImagePreprocessing.CROPPING,
+            ImagePreprocessing.BACKGROUND_REM,
+            ImagePreprocessing.GREYSCALE,
+        ],
+    ]
+    df = pd.read_csv("_data/similarity_df.csv")
+    for ps in processing_steps_to_try:
+        config.IMAGE_PREPROCESSING = ps
+        for sm in NNSimilarityMeasure:
+            start = time.time()
+            similarities = {}
+            for row in df.itertuples():
+                path_1 = row.image1_path
+                path_2 = row.image2_path
+
+                a = cv2.imread(os.path.join(path_1, "image_0.png"))
+                a = cv2.cvtColor(a, cv2.COLOR_BGR2RGB)
+                a = Extractor._apply_preprocessing(
+                    config, a, os.path.join(path_1, "image_0.png")
+                )
+                a = Image.fromarray(a)
+
+                b = cv2.imread(os.path.join(path_2, "image_0.png"))
+                b = cv2.cvtColor(b, cv2.COLOR_BGR2RGB)
+                b = Extractor._apply_preprocessing(
+                    config, b, os.path.join(path_2, "image_0.png")
+                )
+                b = Image.fromarray(b)
+
+                if sm == NNSimilarityMeasure.TRAINED:
+                    sim = get_own_trained(a, b, config)
+                elif sm == NNSimilarityMeasure.FINE_TUNED:
+                    sim = get_fine_tuned(a, b, config)
+                elif sm == NNSimilarityMeasure.LINEARLY_PROBED:
+                    sim = get_linearly_probed(a, b, config)
+
+                similarities[f"{path_1},{path_2}"] = sim
+            print("Done", sm, time.time() - start)
+
+            with open(os.path.join("_data", f"similarities_{sm.value}.json"), "w") as f:
+                json.dump(similarities, f)
+
+
 if __name__ == "__main__":
-    pass
+    calculate_own_models_sim()

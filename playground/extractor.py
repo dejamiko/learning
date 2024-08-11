@@ -123,8 +123,8 @@ class Extractor:
                     image, config.CASCADE_MASK_RCNN_THRESHOLD
                 )
             # own trained models
-            # case ImageEmbeddings.OWN_TRAINED:
-            #     return self._extract_own_trained(image)
+            case ImageEmbeddings.OWN_TRAINED:
+                return []
         raise ValueError(f"The method provided {config.IMAGE_EMBEDDINGS} is unknown.")
 
     @staticmethod
@@ -410,20 +410,6 @@ class Extractor:
             return []
 
         return np.vstack(contours).squeeze().tolist()
-
-    # @staticmethod
-    # def _extract_own_trained(image):
-    #     transform = transforms.Compose(
-    #         [
-    #             transforms.Resize((256, 256)),
-    #             transforms.ToTensor(),
-    #             transforms.Normalize(
-    #                 mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
-    #             ),
-    #         ]
-    #     )
-    #     image = Image.fromarray(image)
-    #     return transform(image).detach().flatten().numpy().tolist()
 
     @staticmethod
     def _preprocess_background_rem(image):
