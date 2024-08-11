@@ -9,4 +9,4 @@ source /vol/bitbucket/md1823/taskmaster/learning/venv/bin/activate
 
 export PYTHONUNBUFFERED=TRUE
 
-python3 -m playground.model_training
+python3 -m optim.model_training

@@ -46,22 +46,27 @@ class SiameseNetwork(nn.Module):
             resnet = models.resnet18(pretrained=True)
             self.feature_extractor = nn.Sequential(*list(resnet.children())[:-1])
             self.head = nn.Sequential(
-                nn.Linear(512, 16), nn.ReLU(inplace=True), nn.Linear(16, 1)
+                nn.Linear(512, 256),
+                nn.ReLU(inplace=True),
+                nn.Linear(256, 128),
             )
         else:
-            conv = nn.Sequential(
-                nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),
+            self.feature_extractor = nn.Sequential(
+                nn.Conv2d(3, 16, kernel_size=3, stride=2, padding=1),
+                nn.BatchNorm2d(16),
+                nn.ReLU(inplace=True),
+                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.Conv2d(16, 32, kernel_size=3, stride=2, padding=1),
                 nn.BatchNorm2d(32),
                 nn.ReLU(inplace=True),
                 nn.MaxPool2d(kernel_size=2, stride=2),
-                nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1),
-                nn.BatchNorm2d(64),
                 nn.ReLU(inplace=True),
-                nn.MaxPool2d(kernel_size=2, stride=2),
+                nn.Conv2d(32, 16, kernel_size=3, stride=2, padding=1),
+                nn.ReLU(inplace=True),
             )
-            global_avg_pool = nn.AdaptiveAvgPool2d((1, 1))
-            self.feature_extractor = nn.Sequential(conv, global_avg_pool)
-            self.head = None
+            self.head = nn.Sequential(
+                nn.LazyLinear(128)
+            )
 
         if frozen:
             for param in self.feature_extractor.parameters():
@@ -112,10 +117,10 @@ def prepare_data():
     transform = transforms.Compose(
         [
             transforms.Resize((256, 256)),
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomRotation(10),
+            transforms.CenterCrop((256, 256)),
+            transforms.RandomRotation(5),
             transforms.ColorJitter(
-                brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1
+                brightness=0.1, contrast=0.1, saturation=0.1, hue=0.05
             ),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
@@ -143,7 +148,7 @@ def training_loop(train_loader, val_loader, frozen, backbone):
         model.head.parameters() if frozen and backbone else model.parameters(), lr=0.01
     )
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
-    early_stopping = EarlyStopping(patience=20, delta=0.01)
+    early_stopping = EarlyStopping(patience=20, delta=0.0001)
 
     for epoch in range(num_epochs):
         model.train()

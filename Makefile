@@ -18,6 +18,10 @@ a_solver:
 	@python3 -m optim.affine_approx_solver
 
 
+model_training:
+	@python3 -m optim.model_training
+
+
 sim:
 	@python3 -m analysis.similarity_measure_eval
 

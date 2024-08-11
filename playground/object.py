@@ -1,17 +1,14 @@
 from abc import ABC, abstractmethod
 
 import numpy as np
-import torch
 from scipy.spatial.distance import directed_hausdorff, cdist
 
-from playground.model_training import SiameseNetwork
 from tm_utils import (
     Task,
     SimilarityMeasure,
     ContourSimilarityMeasure,
     ContourImageEmbeddings,
     ImageEmbeddings,
-    NNSimilarityMeasure,
 )
 
 
