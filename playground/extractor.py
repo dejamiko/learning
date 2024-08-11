@@ -178,6 +178,9 @@ class Extractor:
             raise KeyError(
                 f"Not all embeddings are present, found {len(all_image_embeddings)}"
             )
+        if config.IMAGE_EMBEDDINGS in ContourImageEmbeddings:
+            return all_image_embeddings
+
         try:
             return np.array(all_image_embeddings)
         except ValueError as e:

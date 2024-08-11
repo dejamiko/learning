@@ -136,15 +136,14 @@ class Object(ABC):
 
     @staticmethod
     def _get_hausdorff(a, b):
-        if len(a) == 0 or len(b) == 0:
+        if len(a) == 0 or len(b) == 0 or len(a[0]) == 0 or len(b[0]) == 0:
             return 0
-
         hausdorff_dist = max(directed_hausdorff(a, b)[0], directed_hausdorff(b, a)[0])
         return 1 / (1 + hausdorff_dist)
 
     @staticmethod
     def _get_asd(a, b):
-        if len(a) == 0 or len(b) == 0:
+        if len(a) == 0 or len(b) == 0 or len(a[0]) == 0 or len(b[0]) == 0:
             return 0
 
         dist_matrix = cdist(a, b)
@@ -165,6 +164,9 @@ class Object(ABC):
     def _ensure_3d(lst):
         if not isinstance(lst, list):
             return lst
+
+        if all(not isinstance(i, list) for i in lst):
+            return [[lst]]
 
         if all(
             isinstance(i, list) and all(not isinstance(j, list) for j in i) for i in lst
