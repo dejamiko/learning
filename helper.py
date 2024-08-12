@@ -111,9 +111,10 @@ def get_nn_sim(a, b, model_config, model_path, config):
     model = SiameseNetwork(**model_config)
     model.load_state_dict(
         torch.load(
-            os.path.join("optim", model_path), map_location=torch.device(config.DEVICE)
+            os.path.join("optim", model_path), map_location=torch.device("cpu")
         )
     )
+    model.to(config.DEVICE)
     model.eval()
     res = float(model(a, b).squeeze().detach().cpu().numpy())
     return min(max(res, 0.0), 1.0)
@@ -170,7 +171,7 @@ def calculate_own_models_sim():
                 similarities[f"{path_1},{path_2}"] = sim
             print("Done", sm, time.time() - start)
 
-            with open(os.path.join("_data", f"similarities_{sm.value}.json"), "w") as f:
+            with open(os.path.join("_data", f"similarities_{sm.value}_{ps}.json"), "w") as f:
                 json.dump(similarities, f)
 
 

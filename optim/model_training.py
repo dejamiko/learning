@@ -1,4 +1,3 @@
-# WRITE IN THE REPORT THAT I HAVE TOO LITTLE DATA TO TRAIN SOMETHING GOOD
 import os
 
 import pandas as pd
