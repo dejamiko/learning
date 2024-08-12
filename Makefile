@@ -36,3 +36,7 @@ vis_mh:
 
 approx:
 	@python3 -m analysis.approximation_calculations
+
+
+train:
+	@python3 -m optim.model_training

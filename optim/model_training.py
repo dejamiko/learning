@@ -1,4 +1,5 @@
 import os
+import shutil
 
 import cv2
 import pandas as pd
@@ -128,15 +129,15 @@ def generate_training_images(preprocessing_steps):
     new_parent = "training_data"
     os.makedirs(new_parent)
     for d in os.listdir(parent):
-        if not os.path.isdir(d):
+        if not os.path.isdir(os.path.join(parent, d)):
             continue
         if d == "siamese_similarities":
             continue
-        ims = [im for im, _ in Extractor._load_images(os.path.join(parent, d), config)]
-        os.makedirs(new_parent)
-        for im in ims:
+        ims = Extractor._load_images(os.path.join(parent, d), config)
+        os.makedirs(os.path.join(new_parent, d))
+        for im, fn in ims:
             im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
-            cv2.imwrite(os.path.join(new_parent, d), im)
+            cv2.imwrite(os.path.join(new_parent, d, fn), im)
 
 
 def prepare_data(preprocessing_steps):
@@ -242,4 +243,4 @@ if __name__ == "__main__":
         model = training_loop(train_loader, val_loader, **model_config)
         torch.save(model.state_dict(), f"optim/models/siamese_net_fine_tuned_{ps}.pth")
 
-        os.removedirs("training_data")
+        shutil.rmtree("training_data")
