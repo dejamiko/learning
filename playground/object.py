@@ -172,9 +172,12 @@ class Object(ABC):
             return lst
 
     def _get_siamese(self, other):
-        if self.c.USE_ALL_IMAGES:
-            sims = []
-            for i in range(5):
-                sims.append(self.visible_repr[i][self.c.SIMILARITY_MEASURE.value][other.image_path])
-            return sum(sims) / len(sims)
-        return self.visible_repr[self.c.SIMILARITY_MEASURE.value][other.image_path]
+        try:
+            if self.c.USE_ALL_IMAGES:
+                sims = []
+                for i in range(5):
+                    sims.append(self.visible_repr[i][self.c.SIMILARITY_MEASURE.value][other.image_path])
+                return sum(sims) / len(sims)
+            return self.visible_repr[self.c.SIMILARITY_MEASURE.value][other.image_path]
+        except KeyError:
+            return 0.0
