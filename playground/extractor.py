@@ -20,7 +20,12 @@ from transformers import (
     ViTMSNModel,
 )
 
-from tm_utils import ImageEmbeddings, ContourImageEmbeddings, ImagePreprocessing
+from tm_utils import (
+    ImageEmbeddings,
+    ContourImageEmbeddings,
+    ImagePreprocessing,
+    NNSimilarityMeasure,
+)
 from vc_models.models.vit import model_utils
 
 
@@ -29,14 +34,12 @@ class Extractor:
         try:
             return self._load_embeddings(img_path, config)
         except FileNotFoundError:
-            images = self._load_images(img_path, config)
-            self._extract_and_save_embeddings(images, img_path, config)
-            return self._load_embeddings(img_path, config)
+            num_found = 0
         except KeyError as e:
             num_found = int(str(e)[-2])
-            images = self._load_images(img_path, config, num_found)
-            self._extract_and_save_embeddings(images, img_path, config, num_found)
-            return self._load_embeddings(img_path, config)
+        images = self._load_images(img_path, config, num_found)
+        self._extract_and_save_embeddings(images, img_path, config, num_found)
+        return self._load_embeddings(img_path, config)
 
     @staticmethod
     def _load_images(img_dir, config, num_found=0):
@@ -123,8 +126,8 @@ class Extractor:
                     image, config.CASCADE_MASK_RCNN_THRESHOLD
                 )
             # own trained models
-            case ImageEmbeddings.OWN_TRAINED:
-                return []
+            case ImageEmbeddings.SIAMESE:
+                return self._extract_siamese(img_path, config)
         raise ValueError(f"The method provided {config.IMAGE_EMBEDDINGS} is unknown.")
 
     @staticmethod
@@ -525,3 +528,24 @@ class Extractor:
         if obj_and_task.find("pushing") != -1:
             return crop_top(image)
         return crop_mid(image)
+
+    @staticmethod
+    def _extract_siamese(img_path, config):
+        all_sims = {}
+        for sm in NNSimilarityMeasure:
+            sims_sm = {}
+            with open(
+                os.path.join(
+                    "_data/siamese_similarities",
+                    f"similarities_{sm.value}_{config.IMAGE_PREPROCESSING}.json",
+                ),
+                "r",
+            ) as f:
+                data = json.load(f)
+
+            for k, v in data.items():
+                if img_path.startswith(k.split(",")[0]):
+                    sims_sm[k.split(",")[1][:-1]] = v
+            all_sims[sm.value] = sims_sm
+
+        return all_sims

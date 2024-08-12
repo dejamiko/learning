@@ -7,7 +7,12 @@ from pytest import fixture, raises
 
 from config import Config
 from playground.extractor import Extractor
-from tm_utils import ImageEmbeddings, ContourImageEmbeddings, ImagePreprocessing
+from tm_utils import (
+    ImageEmbeddings,
+    ContourImageEmbeddings,
+    ImagePreprocessing,
+    NNSimilarityMeasure,
+)
 
 
 @fixture
@@ -24,6 +29,16 @@ def empty_dir_and_config():
         if not d.endswith(".json"):
             continue
         os.remove(os.path.join(emb_dir, d))
+
+
+@fixture
+def siamese_dir_and_config():
+    config = Config()
+    config.LOAD_SIZE = 16
+    config.IMAGE_EMBEDDINGS = ImageEmbeddings.SIAMESE
+    emb_dir = "_data/000_hammering"
+    yield emb_dir, config
+    os.remove(os.path.join(emb_dir, "embeddings_siamese, [].json"))
 
 
 def test_extractor_some_embeddings_works(empty_dir_and_config):
@@ -321,13 +336,49 @@ def test_extractor_no_embeddings_vc_works(empty_dir_and_config):
     assert np.allclose(embeddings[0][2:10], expected)
 
 
-def test_extractor_no_embeddings_own_models_works(empty_dir_and_config):
-    emb_dir, config = empty_dir_and_config
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.OWN_TRAINED
-    embeddings = Extractor()(emb_dir, config)
+def test_extractor_no_embeddings_siamese_trained_works(siamese_dir_and_config):
+    emb_dir, config = siamese_dir_and_config
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+    embeddings = Extractor()("_data/000_hammering", config)
     assert len(embeddings) == 5
-    for i in range(len(embeddings)):
-        assert len(embeddings[i]) == 0
+    assert len(embeddings[0]) == 3
+    assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
+    assert (
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering"]
+        == 0.9999999403953552
+    )
+    assert (
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering"]
+        == 0.4545803666114807
+    )
+
+
+def test_extractor_no_embeddings_siamese_fine_tuned_works(siamese_dir_and_config):
+    emb_dir, config = siamese_dir_and_config
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
+    embeddings = Extractor()("_data/000_hammering", config)
+    assert len(embeddings) == 5
+    assert len(embeddings[0]) == 3
+    assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
+    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering"] == 1.0
+    assert (
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering"]
+        == 0.9963110685348511
+    )
+
+
+def test_extractor_no_embeddings_siamese_linearly_probed_works(siamese_dir_and_config):
+    emb_dir, config = siamese_dir_and_config
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
+    embeddings = Extractor()("_data/000_hammering", config)
+    assert len(embeddings) == 5
+    assert len(embeddings[0]) == 3
+    assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
+    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering"] == 1.0
+    assert (
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering"]
+        == 0.87115079164505
+    )
 
 
 def test_extractor_wrong_method_fails(empty_dir_and_config):

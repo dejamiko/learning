@@ -86,7 +86,7 @@ class ImageEmbeddings(AutoName):
     VIT_MSN = auto()
     DOBBE = auto()
     VC = auto()
-    OWN_TRAINED = auto()
+    SIAMESE = auto()
 
 
 class ContourImageEmbeddings(AutoName):

@@ -32,6 +32,9 @@ class Object(ABC):
         self.visible_repr = None
 
     def get_visual_similarity(self, other):
+        if self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.SIAMESE:
+            return self._get_siamese(other)
+
         this_vis_repr = self.visible_repr
         other_vis_repr = other.visible_repr
 
@@ -89,21 +92,6 @@ class Object(ABC):
                     f"do not work with contour similarity measures."
                 )
                 return self._get_asd(a, b)
-            # case NNSimilarityMeasure.TRAINED:
-            #     assert (
-            #         self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
-            #     ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
-            #     return self._get_own_trained(a, b)
-            # case NNSimilarityMeasure.FINE_TUNED:
-            #     assert (
-            #         self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
-            #     ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
-            #     return self._get_fine_tuned(a, b)
-            # case NNSimilarityMeasure.LINEARLY_PROBED:
-            #     assert (
-            #         self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.OWN_TRAINED
-            #     ), f"The ImageEmbeddings provided `{self.c.IMAGE_EMBEDDINGS}` do not work with own models."
-            #     return self._get_linearly_probed(a, b)
         raise ValueError(
             f"Unknown similarity measure provided `{self.c.SIMILARITY_MEASURE}`."
         )
@@ -182,3 +170,6 @@ class Object(ABC):
             for i in lst
         ):
             return lst
+
+    def _get_siamese(self, other):
+        return self.visible_repr[0][self.c.SIMILARITY_MEASURE.value][other.image_path]
