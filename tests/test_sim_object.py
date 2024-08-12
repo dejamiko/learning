@@ -144,14 +144,14 @@ def siamese_obj_fixture():
         config,
         Task.HAMMERING,
         "object_0",
-        "_data/000_hammering",
+        "_data/000_hammering/",
     )
     obj_1 = SimObject(
         1,
         config,
         Task.HAMMERING,
         "object_1",
-        "_data/090_hammering",
+        "_data/090_hammering/",
     )
     yield obj_0, obj_1, config
     os.remove(os.path.join("_data/000_hammering", "embeddings_siamese, [].json"))

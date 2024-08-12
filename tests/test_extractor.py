@@ -344,11 +344,11 @@ def test_extractor_no_embeddings_siamese_trained_works(siamese_dir_and_config):
     assert len(embeddings[0]) == 3
     assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
     assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering"]
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"]
         == 0.9999999403953552
     )
     assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering"]
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"]
         == 0.4545803666114807
     )
 
@@ -360,9 +360,9 @@ def test_extractor_no_embeddings_siamese_fine_tuned_works(siamese_dir_and_config
     assert len(embeddings) == 5
     assert len(embeddings[0]) == 3
     assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
-    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering"] == 1.0
+    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"] == 1.0
     assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering"]
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"]
         == 0.9963110685348511
     )
 
@@ -374,9 +374,9 @@ def test_extractor_no_embeddings_siamese_linearly_probed_works(siamese_dir_and_c
     assert len(embeddings) == 5
     assert len(embeddings[0]) == 3
     assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
-    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering"] == 1.0
+    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"] == 1.0
     assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering"]
+        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"]
         == 0.87115079164505
     )
 

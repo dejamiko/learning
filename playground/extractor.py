@@ -545,7 +545,7 @@ class Extractor:
 
             for k, v in data.items():
                 if img_path.startswith(k.split(",")[0]):
-                    sims_sm[k.split(",")[1][:-1]] = v
+                    sims_sm[k.split(",")[1]] = v
             all_sims[sm.value] = sims_sm
 
         return all_sims
