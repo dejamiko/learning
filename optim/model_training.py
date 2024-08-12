@@ -1,5 +1,6 @@
 import os
 
+import cv2
 import pandas as pd
 import torch
 import torch.nn as nn
@@ -10,26 +11,35 @@ from torch import optim
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, models
 
+from config import Config
+from playground.extractor import Extractor
+from tm_utils import ImagePreprocessing
+
 
 class ImagePairDataset(Dataset):
     def __init__(self, dataframe, base_dir, transform=None):
         self.dataframe = dataframe
         self.base_dir = base_dir
         self.transform = transform
+        self.counter = 0
 
     def __len__(self):
-        return len(self.dataframe)
+        return len(self.dataframe) * 5
 
     def __getitem__(self, idx):
         img_name1 = os.path.join(
-            self.base_dir, self.dataframe.iloc[idx, 1], "image_0.png"
+            self.base_dir, self.dataframe.iloc[idx // 5, 1], f"image_{self.counter}.png"
         )
         img_name2 = os.path.join(
-            self.base_dir, self.dataframe.iloc[idx, 2], "image_0.png"
+            self.base_dir, self.dataframe.iloc[idx // 5, 2], f"image_{self.counter}.png"
         )
         image1 = Image.open(img_name1).convert("RGB")
         image2 = Image.open(img_name2).convert("RGB")
-        similarity = self.dataframe.iloc[idx, 3]
+        similarity = self.dataframe.iloc[idx // 5, 3]
+
+        self.counter += 1
+        if self.counter == 5:
+            self.counter = 0
 
         if self.transform:
             image1 = self.transform(image1)
@@ -110,7 +120,26 @@ class EarlyStopping:
         self.best_loss = val_loss
 
 
-def prepare_data():
+def generate_training_images(preprocessing_steps):
+    # create a training_data directory and populate it with preprocessed images
+    config = Config()
+    config.IMAGE_PREPROCESSING = preprocessing_steps
+    parent = "_data"
+    new_parent = "training_data"
+    os.makedirs(new_parent)
+    for d in os.listdir(parent):
+        if not os.path.isdir(d):
+            continue
+        if d == "siamese_similarities":
+            continue
+        ims = [im for im, _ in Extractor._load_images(os.path.join(parent, d), config)]
+        os.makedirs(new_parent)
+        for im in ims:
+            im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
+            cv2.imwrite(os.path.join(new_parent, d), im)
+
+
+def prepare_data(preprocessing_steps):
     transform = transforms.Compose(
         [
             transforms.ToTensor(),
@@ -119,6 +148,7 @@ def prepare_data():
     )
     base_dir = os.getcwd()
     df = pd.read_csv(os.path.join(base_dir, "_data/similarity_df.csv"))
+    generate_training_images(preprocessing_steps)
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
     train_dataset = ImagePairDataset(
         dataframe=train_df, base_dir=base_dir, transform=transform
@@ -177,24 +207,39 @@ def training_loop(train_loader, val_loader, frozen, backbone):
             break
 
     model.load_state_dict(torch.load("checkpoint.pt"))
+    os.remove("checkpoint.pt")
     return model
 
 
 if __name__ == "__main__":
-    config = {"frozen": False, "backbone": False}
-    train_loader, val_loader = prepare_data()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = training_loop(train_loader, val_loader, **config)
-    torch.save(model.state_dict(), "siamese_network_train.pth")
+    processing_steps_to_try = [
+        [],
+        [ImagePreprocessing.GREYSCALE],
+        [ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING],
+        [ImagePreprocessing.SEGMENTATION],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE],
+        [
+            ImagePreprocessing.CROPPING,
+            ImagePreprocessing.BACKGROUND_REM,
+            ImagePreprocessing.GREYSCALE,
+        ],
+    ]
+    for ps in processing_steps_to_try:
+        train_loader, val_loader = prepare_data(ps)
 
-    config = {"frozen": True, "backbone": True}
-    train_loader, val_loader = prepare_data()
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = training_loop(train_loader, val_loader, **config)
-    torch.save(model.state_dict(), "siamese_network_linear_probing.pth")
+        model_config = {"frozen": False, "backbone": False}
+        model = training_loop(train_loader, val_loader, **model_config)
+        torch.save(model.state_dict(), f"optim/models/siamese_net_trained_{ps}.pth")
 
-    config = {"frozen": False, "backbone": True}
-    train_loader, val_loader = prepare_data()
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = training_loop(train_loader, val_loader, **config)
-    torch.save(model.state_dict(), "siamese_network_fine_tuning.pth")
+        model_config = {"frozen": True, "backbone": True}
+        model = training_loop(train_loader, val_loader, **model_config)
+        torch.save(model.state_dict(), f"optim/models/siamese_net_linearly_probed_{ps}.pth")
+
+        model_config = {"frozen": False, "backbone": True}
+        model = training_loop(train_loader, val_loader, **model_config)
+        torch.save(model.state_dict(), f"optim/models/siamese_net_fine_tuned_{ps}.pth")
+
+        os.removedirs("training_data")
