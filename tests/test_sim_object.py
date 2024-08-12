@@ -138,6 +138,29 @@ def test_actual_embeddings_all_images_sim_works():
 def siamese_obj_fixture():
     config = Config()
     config.IMAGE_EMBEDDINGS = ImageEmbeddings.SIAMESE
+    obj_0 = SimObject(
+        0,
+        config,
+        Task.HAMMERING,
+        "object_0",
+        "_data/000_hammering/",
+    )
+    obj_1 = SimObject(
+        1,
+        config,
+        Task.HAMMERING,
+        "object_1",
+        "_data/090_hammering/",
+    )
+    yield obj_0, obj_1, config
+    os.remove(os.path.join("_data/000_hammering", "embeddings_siamese, [].json"))
+    os.remove(os.path.join("_data/090_hammering", "embeddings_siamese, [].json"))
+
+
+@fixture
+def siamese_obj_fixture_all():
+    config = Config()
+    config.IMAGE_EMBEDDINGS = ImageEmbeddings.SIAMESE
     config.USE_ALL_IMAGES = True
     obj_0 = SimObject(
         0,
@@ -162,8 +185,8 @@ def test_actual_siamese_trained_similarity_works(siamese_obj_fixture):
     obj_0, obj_1, config = siamese_obj_fixture
     config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
 
-    assert len(obj_0.visible_repr) == 5
-    assert len(obj_1.visible_repr) == 5
+    assert len(obj_0.visible_repr) == 3
+    assert len(obj_1.visible_repr) == 3
 
     assert obj_0.get_visual_similarity(obj_1) == 0.4545803666114807
     assert obj_0.get_visual_similarity(obj_0) == 0.9999999403953552
@@ -174,8 +197,8 @@ def test_actual_siamese_fine_tuned_similarity_works(siamese_obj_fixture):
     obj_0, obj_1, config = siamese_obj_fixture
     config.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
 
-    assert len(obj_0.visible_repr) == 5
-    assert len(obj_1.visible_repr) == 5
+    assert len(obj_0.visible_repr) == 3
+    assert len(obj_1.visible_repr) == 3
 
     assert obj_0.get_visual_similarity(obj_1) == 0.9963110685348511
     assert obj_0.get_visual_similarity(obj_0) == 1
@@ -184,6 +207,42 @@ def test_actual_siamese_fine_tuned_similarity_works(siamese_obj_fixture):
 
 def test_actual_siamese_linearly_probed_similarity_works(siamese_obj_fixture):
     obj_0, obj_1, config = siamese_obj_fixture
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
+
+    assert len(obj_0.visible_repr) == 3
+    assert len(obj_1.visible_repr) == 3
+
+    assert obj_0.get_visual_similarity(obj_1) == 0.87115079164505
+    assert obj_0.get_visual_similarity(obj_0) == 1
+    assert obj_1.get_visual_similarity(obj_1) == 1
+
+
+def test_actual_siamese_trained_similarity_all_works(siamese_obj_fixture_all):
+    obj_0, obj_1, config = siamese_obj_fixture_all
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+
+    assert len(obj_0.visible_repr) == 5
+    assert len(obj_1.visible_repr) == 5
+
+    assert obj_0.get_visual_similarity(obj_1) == 0.4545803666114807
+    assert obj_0.get_visual_similarity(obj_0) == 0.9999999403953552
+    assert obj_1.get_visual_similarity(obj_1) == 1
+
+
+def test_actual_siamese_fine_tuned_similarity_all_works(siamese_obj_fixture_all):
+    obj_0, obj_1, config = siamese_obj_fixture_all
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
+
+    assert len(obj_0.visible_repr) == 5
+    assert len(obj_1.visible_repr) == 5
+
+    assert obj_0.get_visual_similarity(obj_1) == 0.9963110685348511
+    assert obj_0.get_visual_similarity(obj_0) == 1
+    assert obj_1.get_visual_similarity(obj_1) == 1
+
+
+def test_actual_siamese_linearly_probed_similarity_all_works(siamese_obj_fixture_all):
+    obj_0, obj_1, config = siamese_obj_fixture_all
     config.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
 
     assert len(obj_0.visible_repr) == 5
