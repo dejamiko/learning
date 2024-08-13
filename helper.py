@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import shutil
 import time
 
@@ -174,11 +175,49 @@ def calculate_own_models_sim():
             print("Done", sm, time.time() - start)
 
             with open(
-                os.path.join("_data", f"similarities_{sm.value}_{ps}.json"), "w"
+                    os.path.join("_data", f"similarities_{sm.value}_{ps}.json"), "w"
             ) as f:
                 json.dump(similarities, f)
         shutil.rmtree("training_data")
 
 
+def read_training_results():
+    processing_steps_to_try = [
+        [],
+        [ImagePreprocessing.GREYSCALE.value],
+        [ImagePreprocessing.BACKGROUND_REM.value],
+        [ImagePreprocessing.CROPPING.value],
+        [ImagePreprocessing.SEGMENTATION.value],
+        [ImagePreprocessing.CROPPING.value, ImagePreprocessing.BACKGROUND_REM.value],
+        [ImagePreprocessing.CROPPING.value, ImagePreprocessing.GREYSCALE.value],
+        [
+            ImagePreprocessing.CROPPING.value,
+            ImagePreprocessing.BACKGROUND_REM.value,
+            ImagePreprocessing.GREYSCALE.value,
+        ],
+    ]
+    with open("optim/training_res.txt", "r") as f:
+        all_lines = f.readlines()
+    all_lines = [a.strip() for a in all_lines]
+    line_ind = 0
+    pattern = r"Epoch \[\d*\/200\], Train Loss: (\d*.\d*), Val Loss: (\d*.\d*)"
+    losses = {}
+    for ps in processing_steps_to_try:
+        losses[",".join(ps)] = {}
+        for m in NNSimilarityMeasure:
+            validation_loss = []
+            training_loss = []
+            # read until early stopping
+            while all_lines[line_ind] != "Early stopping":
+                match = re.match(pattern, all_lines[line_ind])
+                training_loss.append(float(match.group(1)))
+                validation_loss.append(float(match.group(2)))
+                line_ind += 1
+            line_ind += 1
+            losses[",".join(ps)][m.value] = {"training": training_loss, "validation": validation_loss}
+    with open("optim/training_res.json", "w") as f:
+        json.dump(losses, f)
+
+
 if __name__ == "__main__":
-    calculate_own_models_sim()
+    pass
