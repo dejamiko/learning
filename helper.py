@@ -4,7 +4,6 @@ import re
 import shutil
 import time
 
-import cv2
 import pandas as pd
 import torch
 from PIL import Image
@@ -12,7 +11,6 @@ from torchvision import transforms
 
 from config import Config
 from optim.model_training import SiameseNetwork, generate_training_images
-from playground.extractor import Extractor
 from playground.storage import ObjectStorage
 from tm_utils import ImageEmbeddings, ImagePreprocessing, NNSimilarityMeasure
 
@@ -139,10 +137,13 @@ def calculate_own_models_sim():
             ImagePreprocessing.GREYSCALE,
         ],
     ]
+    training_data_dir = "training_data"
+    if os.path.exists(training_data_dir):
+        shutil.rmtree(training_data_dir)
     df = pd.read_csv("_data/similarity_df.csv")
     for ps in processing_steps_to_try:
         config.IMAGE_PREPROCESSING = ps
-        generate_training_images(ps)
+        generate_training_images(ps, training_data_dir)
         for sm in NNSimilarityMeasure:
             start = time.time()
             similarities = {}
@@ -150,35 +151,28 @@ def calculate_own_models_sim():
                 path_1 = row.image1_path
                 path_2 = row.image2_path
 
-                a = cv2.imread(os.path.join(path_1, "image_0.png"))
-                a = cv2.cvtColor(a, cv2.COLOR_BGR2RGB)
-                a = Extractor._apply_preprocessing(
-                    config, a, os.path.join(path_1, "image_0.png")
-                )
-                a = Image.fromarray(a)
+                similarities[f"{path_1},{path_2}"] = []
 
-                b = cv2.imread(os.path.join(path_2, "image_0.png"))
-                b = cv2.cvtColor(b, cv2.COLOR_BGR2RGB)
-                b = Extractor._apply_preprocessing(
-                    config, b, os.path.join(path_2, "image_0.png")
-                )
-                b = Image.fromarray(b)
+                for i in range(5):
+                    a = Image.open(os.path.join(training_data_dir, path_1, f"image_{i}.png"))
+                    b = Image.open(os.path.join(training_data_dir, path_2, f"image_{i}.png"))
 
-                if sm == NNSimilarityMeasure.TRAINED:
-                    sim = get_own_trained(a, b, config, ps)
-                elif sm == NNSimilarityMeasure.FINE_TUNED:
-                    sim = get_fine_tuned(a, b, config, ps)
-                elif sm == NNSimilarityMeasure.LINEARLY_PROBED:
-                    sim = get_linearly_probed(a, b, config, ps)
+                    if sm == NNSimilarityMeasure.TRAINED:
+                        sim = get_own_trained(a, b, config, ps)
+                    elif sm == NNSimilarityMeasure.FINE_TUNED:
+                        sim = get_fine_tuned(a, b, config, ps)
+                    elif sm == NNSimilarityMeasure.LINEARLY_PROBED:
+                        sim = get_linearly_probed(a, b, config, ps)
 
-                similarities[f"{path_1},{path_2}"] = sim
+                    similarities[f"{path_1},{path_2}"].append(sim)
+
             print("Done", sm, time.time() - start)
 
             with open(
-                    os.path.join("_data", f"similarities_{sm.value}_{ps}.json"), "w"
+                    os.path.join("_data/siamese_similarities", f"similarities_{sm.value}_{ps}.json"), "w"
             ) as f:
                 json.dump(similarities, f)
-        shutil.rmtree("training_data")
+        shutil.rmtree(training_data_dir)
 
 
 def read_training_results():
@@ -220,4 +214,4 @@ def read_training_results():
 
 
 if __name__ == "__main__":
-    pass
+    calculate_own_models_sim()

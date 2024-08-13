@@ -545,8 +545,8 @@ class Extractor:
                 data = json.load(f)
 
             for k, v in data.items():
-                if img_path.startswith(k.split(",")[0]):
-                    sims_sm[k.split(",")[1]] = v
+                if img_path.find(k.split(",")[0]) != -1:
+                    sims_sm[os.path.join("_data", k.split(",")[1])] = v
             all_sims[sm.value] = sims_sm
 
         return all_sims

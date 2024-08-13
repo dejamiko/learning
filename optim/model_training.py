@@ -121,26 +121,25 @@ class EarlyStopping:
         self.best_loss = val_loss
 
 
-def generate_training_images(preprocessing_steps):
+def generate_training_images(preprocessing_steps, training_data_dir):
     # create a training_data directory and populate it with preprocessed images
     config = Config()
     config.IMAGE_PREPROCESSING = preprocessing_steps
     parent = "_data"
-    new_parent = "training_data"
-    os.makedirs(new_parent)
+    os.makedirs(training_data_dir)
     for d in os.listdir(parent):
         if not os.path.isdir(os.path.join(parent, d)):
             continue
         if d == "siamese_similarities":
             continue
         ims = Extractor._load_images(os.path.join(parent, d), config)
-        os.makedirs(os.path.join(new_parent, d))
+        os.makedirs(os.path.join(training_data_dir, d))
         for im, fn in ims:
             im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
-            cv2.imwrite(os.path.join(new_parent, d, fn), im)
+            cv2.imwrite(os.path.join(training_data_dir, d, fn), im)
 
 
-def prepare_data(preprocessing_steps):
+def prepare_data(preprocessing_steps, training_data_dir):
     transform = transforms.Compose(
         [
             transforms.ToTensor(),
@@ -149,7 +148,7 @@ def prepare_data(preprocessing_steps):
     )
     base_dir = os.getcwd()
     df = pd.read_csv(os.path.join(base_dir, "_data/similarity_df.csv"))
-    generate_training_images(preprocessing_steps)
+    generate_training_images(preprocessing_steps, training_data_dir)
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
     train_dataset = ImagePairDataset(
         dataframe=train_df, base_dir=base_dir, transform=transform
@@ -228,8 +227,11 @@ if __name__ == "__main__":
             ImagePreprocessing.GREYSCALE,
         ],
     ]
+    training_data_dir = "training_data"
+    if os.path.exists(training_data_dir):
+        shutil.rmtree(training_data_dir)
     for ps in processing_steps_to_try:
-        train_loader, val_loader = prepare_data(ps)
+        train_loader, val_loader = prepare_data(ps, training_data_dir)
 
         model_config = {"frozen": False, "backbone": False}
         model = training_loop(train_loader, val_loader, **model_config)
@@ -245,4 +247,4 @@ if __name__ == "__main__":
         model = training_loop(train_loader, val_loader, **model_config)
         torch.save(model.state_dict(), f"optim/models/siamese_net_fine_tuned_{ps}.pth")
 
-        shutil.rmtree("training_data")
+        shutil.rmtree(training_data_dir)
