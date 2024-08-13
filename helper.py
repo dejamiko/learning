@@ -71,28 +71,32 @@ def calculate_all_embeddings():
         print(f"Preprocessing steps done {ps}")
 
 
-def get_own_trained(a, b, config):
-    return get_nn_sim(
-        a, b, {"frozen": False, "backbone": False}, "siamese_network_train.pth", config
-    )
-
-
-def get_fine_tuned(a, b, config):
+def get_own_trained(a, b, config, ps):
     return get_nn_sim(
         a,
         b,
-        {"frozen": True, "backbone": True},
-        "siamese_network_fine_tuning.pth",
+        {"frozen": False, "backbone": False},
+        f"optim/models/siamese_net_trained_{ps}.pth",
         config,
     )
 
 
-def get_linearly_probed(a, b, config):
+def get_fine_tuned(a, b, config, ps):
+    return get_nn_sim(
+        a,
+        b,
+        {"frozen": True, "backbone": True},
+        f"optim/models/siamese_net_fine_tuned_{ps}.pth",
+        config,
+    )
+
+
+def get_linearly_probed(a, b, config, ps):
     return get_nn_sim(
         a,
         b,
         {"frozen": False, "backbone": True},
-        "siamese_network_linear_probing.pth",
+        f"optim/models/siamese_net_linearly_probed_{ps}.pth",
         config,
     )
 
@@ -160,11 +164,11 @@ def calculate_own_models_sim():
                 b = Image.fromarray(b)
 
                 if sm == NNSimilarityMeasure.TRAINED:
-                    sim = get_own_trained(a, b, config)
+                    sim = get_own_trained(a, b, config, ps)
                 elif sm == NNSimilarityMeasure.FINE_TUNED:
-                    sim = get_fine_tuned(a, b, config)
+                    sim = get_fine_tuned(a, b, config, ps)
                 elif sm == NNSimilarityMeasure.LINEARLY_PROBED:
-                    sim = get_linearly_probed(a, b, config)
+                    sim = get_linearly_probed(a, b, config, ps)
 
                 similarities[f"{path_1},{path_2}"] = sim
             print("Done", sm, time.time() - start)
@@ -176,4 +180,4 @@ def calculate_own_models_sim():
 
 
 if __name__ == "__main__":
-    pass
+    calculate_own_models_sim()

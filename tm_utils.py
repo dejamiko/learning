@@ -86,13 +86,16 @@ class ImageEmbeddings(AutoName):
     VIT_MSN = auto()
     DOBBE = auto()
     VC = auto()
-    SIAMESE = auto()
 
 
 class ContourImageEmbeddings(AutoName):
     MASK_RCNN = auto()
     PANOPTIC_FPN = auto()
     CASCADE_MASK_RCNN = auto()
+
+
+class NNImageEmbeddings(AutoName):
+    SIAMESE = auto()
 
 
 class ImagePreprocessing(AutoName):

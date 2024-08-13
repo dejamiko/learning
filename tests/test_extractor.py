@@ -11,7 +11,7 @@ from tm_utils import (
     ImageEmbeddings,
     ContourImageEmbeddings,
     ImagePreprocessing,
-    NNSimilarityMeasure,
+    NNSimilarityMeasure, NNImageEmbeddings,
 )
 
 
@@ -35,7 +35,7 @@ def empty_dir_and_config():
 def siamese_dir_and_config():
     config = Config()
     config.LOAD_SIZE = 16
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.SIAMESE
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     emb_dir = "_data/000_hammering"
     yield emb_dir, config
     os.remove(os.path.join(emb_dir, "embeddings_siamese, [].json"))

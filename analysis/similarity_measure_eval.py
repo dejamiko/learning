@@ -27,7 +27,7 @@ from tm_utils import (
     ContourImageEmbeddings,
     ContourSimilarityMeasure,
     ImagePreprocessing,
-    NNSimilarityMeasure,
+    NNSimilarityMeasure, NNImageEmbeddings,
 )
 
 metrics_is_larger_better = {
@@ -410,19 +410,19 @@ def compare_weighted_sum(scores_1, scores_2):
 
 def run_and_save(config, filename, n=10):
     all_scores = {}
-    # for emb in ImageEmbeddings:
-    #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in SimilarityMeasure:
-    #         config.SIMILARITY_MEASURE = sim
-    #         scores, scores_b = run_eval_one_config(config, n)
-    #         all_scores[str(config)] = [scores, scores_b]
-    # for emb in ContourImageEmbeddings:
-    #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in ContourSimilarityMeasure:
-    #         config.SIMILARITY_MEASURE = sim
-    #         scores, scores_b = run_eval_one_config(config, n)
-    #         all_scores[str(config)] = [scores, scores_b]
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.SIAMESE
+    for emb in ImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in SimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    for emb in ContourImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in ContourSimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     for sim in NNSimilarityMeasure:
         config.SIMILARITY_MEASURE = sim
         scores, scores_b = run_eval_one_config(config, n)

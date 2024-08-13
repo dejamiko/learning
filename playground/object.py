@@ -8,7 +8,7 @@ from tm_utils import (
     SimilarityMeasure,
     ContourSimilarityMeasure,
     ContourImageEmbeddings,
-    ImageEmbeddings,
+    ImageEmbeddings, NNImageEmbeddings,
 )
 
 
@@ -32,7 +32,7 @@ class Object(ABC):
         self.visible_repr = None
 
     def get_visual_similarity(self, other):
-        if self.c.IMAGE_EMBEDDINGS == ImageEmbeddings.SIAMESE:
+        if self.c.IMAGE_EMBEDDINGS == NNImageEmbeddings.SIAMESE:
             return self._get_siamese(other)
 
         this_vis_repr = self.visible_repr
@@ -176,7 +176,11 @@ class Object(ABC):
             if self.c.USE_ALL_IMAGES:
                 sims = []
                 for i in range(5):
-                    sims.append(self.visible_repr[i][self.c.SIMILARITY_MEASURE.value][other.image_path])
+                    sims.append(
+                        self.visible_repr[i][self.c.SIMILARITY_MEASURE.value][
+                            other.image_path
+                        ]
+                    )
                 return sum(sims) / len(sims)
             return self.visible_repr[self.c.SIMILARITY_MEASURE.value][other.image_path]
         except KeyError:

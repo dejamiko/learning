@@ -237,7 +237,9 @@ if __name__ == "__main__":
 
         model_config = {"frozen": True, "backbone": True}
         model = training_loop(train_loader, val_loader, **model_config)
-        torch.save(model.state_dict(), f"optim/models/siamese_net_linearly_probed_{ps}.pth")
+        torch.save(
+            model.state_dict(), f"optim/models/siamese_net_linearly_probed_{ps}.pth"
+        )
 
         model_config = {"frozen": False, "backbone": True}
         model = training_loop(train_loader, val_loader, **model_config)

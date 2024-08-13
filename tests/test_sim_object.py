@@ -5,7 +5,7 @@ from pytest import fixture
 
 from config import Config
 from playground.sim_object import SimObject
-from tm_utils import Task, NNSimilarityMeasure, ImageEmbeddings
+from tm_utils import Task, NNSimilarityMeasure, ImageEmbeddings, NNImageEmbeddings
 
 
 def test_object_init_works():
@@ -137,7 +137,7 @@ def test_actual_embeddings_all_images_sim_works():
 @fixture
 def siamese_obj_fixture():
     config = Config()
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.SIAMESE
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     obj_0 = SimObject(
         0,
         config,
@@ -160,7 +160,7 @@ def siamese_obj_fixture():
 @fixture
 def siamese_obj_fixture_all():
     config = Config()
-    config.IMAGE_EMBEDDINGS = ImageEmbeddings.SIAMESE
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     config.USE_ALL_IMAGES = True
     obj_0 = SimObject(
         0,

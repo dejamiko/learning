@@ -25,6 +25,7 @@ from tm_utils import (
     ContourImageEmbeddings,
     ImagePreprocessing,
     NNSimilarityMeasure,
+    NNImageEmbeddings,
 )
 from vc_models.models.vit import model_utils
 
@@ -126,7 +127,7 @@ class Extractor:
                     image, config.CASCADE_MASK_RCNN_THRESHOLD
                 )
             # own trained models
-            case ImageEmbeddings.SIAMESE:
+            case NNImageEmbeddings.SIAMESE:
                 return self._extract_siamese(img_path, config)
         raise ValueError(f"The method provided {config.IMAGE_EMBEDDINGS} is unknown.")
 
