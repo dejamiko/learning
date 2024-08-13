@@ -465,24 +465,26 @@ if __name__ == "__main__":
             ImagePreprocessing.GREYSCALE,
         ],
     ]
+    obj_num = 30
+    run_num = 10
     for ps in processing_steps_to_try:
         start = time.time()
         config = Config()
-        config.OBJ_NUM = 40
+        config.OBJ_NUM = obj_num
         config.IMAGE_PREPROCESSING = ps
         run_and_save(
             config,
             f"analysis/results/results_one_image_{config.OBJ_NUM}_{ps}.json",
-            10,
+            run_num,
         )
         config = Config()
-        config.OBJ_NUM = 40
+        config.OBJ_NUM = obj_num
         config.IMAGE_PREPROCESSING = ps
         config.USE_ALL_IMAGES = True
         run_and_save(
             config,
             f"analysis/results/results_all_images_{config.OBJ_NUM}_{ps}.json",
-            10,
+            run_num,
         )
         print(f"Finished with {ps} in {time.time() - start}")
 
