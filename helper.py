@@ -77,7 +77,7 @@ def get_own_trained(a, b, config, ps):
         a,
         b,
         {"frozen": False, "backbone": False},
-        f"optim/models/siamese_net_trained_{ps}.pth",
+        f"models/siamese_net_trained_{ps}.pth",
         config,
     )
 
@@ -87,7 +87,7 @@ def get_fine_tuned(a, b, config, ps):
         a,
         b,
         {"frozen": True, "backbone": True},
-        f"optim/models/siamese_net_fine_tuned_{ps}.pth",
+        f"models/siamese_net_fine_tuned_{ps}.pth",
         config,
     )
 
@@ -97,7 +97,7 @@ def get_linearly_probed(a, b, config, ps):
         a,
         b,
         {"frozen": False, "backbone": True},
-        f"optim/models/siamese_net_linearly_probed_{ps}.pth",
+        f"models/siamese_net_linearly_probed_{ps}.pth",
         config,
     )
 
