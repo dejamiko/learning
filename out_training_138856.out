@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/vol/bitbucket/md1823/taskmaster/learning/optim/model_training.py", line 232, in <module>
+    train_loader, val_loader = prepare_data(ps)
+  File "/vol/bitbucket/md1823/taskmaster/learning/optim/model_training.py", line 152, in prepare_data
+    generate_training_images(preprocessing_steps)
+  File "/vol/bitbucket/md1823/taskmaster/learning/optim/model_training.py", line 130, in generate_training_images
+    os.makedirs(new_parent)
+  File "/usr/lib/python3.10/os.py", line 225, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: 'training_data'
