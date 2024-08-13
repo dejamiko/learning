@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import time
 
 import cv2
@@ -9,7 +10,7 @@ from PIL import Image
 from torchvision import transforms
 
 from config import Config
-from optim.model_training import SiameseNetwork
+from optim.model_training import SiameseNetwork, generate_training_images
 from playground.extractor import Extractor
 from playground.storage import ObjectStorage
 from tm_utils import ImageEmbeddings, ImagePreprocessing, NNSimilarityMeasure
@@ -142,6 +143,7 @@ def calculate_own_models_sim():
     df = pd.read_csv("_data/similarity_df.csv")
     for ps in processing_steps_to_try:
         config.IMAGE_PREPROCESSING = ps
+        generate_training_images(ps)
         for sm in NNSimilarityMeasure:
             start = time.time()
             similarities = {}
@@ -177,6 +179,7 @@ def calculate_own_models_sim():
                 os.path.join("_data", f"similarities_{sm.value}_{ps}.json"), "w"
             ) as f:
                 json.dump(similarities, f)
+        shutil.rmtree("training_data")
 
 
 if __name__ == "__main__":
