@@ -431,7 +431,8 @@ def run_and_save(config, filename, n=10):
         with open(filename, "r") as f:
             previous = json.load(f)
             for k, v in previous.items():
-                all_scores[k] = v
+                if k not in all_scores:
+                    all_scores[k] = v
     with open(filename, "w") as f:
         json.dump(all_scores, f)
 
