@@ -20,8 +20,8 @@ def remove_embeddings():
     for d in os.listdir(parent):
         if not os.path.isdir(os.path.join(parent, d)):
             continue
-        if os.path.exists(os.path.join(parent, d, "embeddings.json")):
-            os.remove(os.path.join(parent, d, "embeddings.json"))
+        if os.path.exists(os.path.join(parent, d, "embeddings_siamese, [].json")):
+            os.remove(os.path.join(parent, d, "embeddings_siamese, [].json"))
 
 
 def embedding_change():
@@ -214,4 +214,4 @@ def read_training_results():
 
 
 if __name__ == "__main__":
-    calculate_own_models_sim()
+    pass

@@ -533,6 +533,7 @@ class Extractor:
     @staticmethod
     def _extract_siamese(img_path, config):
         all_sims = {}
+        image_num = int(img_path[-5])
         for sm in NNSimilarityMeasure:
             sims_sm = {}
             with open(
@@ -546,7 +547,7 @@ class Extractor:
 
             for k, v in data.items():
                 if img_path.find(k.split(",")[0]) != -1:
-                    sims_sm[os.path.join("_data", k.split(",")[1])] = v
+                    sims_sm[os.path.join("_data", k.split(",")[1])] = v[image_num]
             all_sims[sm.value] = sims_sm
 
         return all_sims

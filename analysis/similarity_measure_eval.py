@@ -416,20 +416,17 @@ def run_and_save(config, filename, n=10):
             config.SIMILARITY_MEASURE = sim
             scores, scores_b = run_eval_one_config(config, n)
             all_scores[str(config)] = [scores, scores_b]
-            print(emb.value, sim.value, config.IMAGE_PREPROCESSING)
     for emb in ContourImageEmbeddings:
         config.IMAGE_EMBEDDINGS = emb
         for sim in ContourSimilarityMeasure:
             config.SIMILARITY_MEASURE = sim
             scores, scores_b = run_eval_one_config(config, n)
             all_scores[str(config)] = [scores, scores_b]
-            print(emb.value, sim.value, config.IMAGE_PREPROCESSING)
     config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     for sim in NNSimilarityMeasure:
         config.SIMILARITY_MEASURE = sim
         scores, scores_b = run_eval_one_config(config, n)
         all_scores[str(config)] = [scores, scores_b]
-        print(config.IMAGE_EMBEDDINGS.value, sim.value, config.IMAGE_PREPROCESSING)
     if os.path.exists(filename):
         with open(filename, "r") as f:
             previous = json.load(f)
@@ -468,7 +465,7 @@ if __name__ == "__main__":
             ImagePreprocessing.GREYSCALE,
         ],
     ]
-    obj_num = 30
+    obj_num = 20
     run_num = 10
     for ps in processing_steps_to_try:
         start = time.time()

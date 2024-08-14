@@ -188,9 +188,9 @@ def test_actual_siamese_trained_similarity_works(siamese_obj_fixture):
     assert len(obj_0.visible_repr) == 3
     assert len(obj_1.visible_repr) == 3
 
-    assert obj_0.get_visual_similarity(obj_1) == 0.370555579662323
-    assert obj_0.get_visual_similarity(obj_0) == 0.9999999403953552
-    assert obj_1.get_visual_similarity(obj_1) == 1
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.370555579662323)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_actual_siamese_fine_tuned_similarity_works(siamese_obj_fixture):
@@ -200,9 +200,9 @@ def test_actual_siamese_fine_tuned_similarity_works(siamese_obj_fixture):
     assert len(obj_0.visible_repr) == 3
     assert len(obj_1.visible_repr) == 3
 
-    assert obj_0.get_visual_similarity(obj_1) == 0.13046027719974518
-    assert obj_0.get_visual_similarity(obj_0) == 1
-    assert obj_1.get_visual_similarity(obj_1) == 1
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.13046035170555115)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_actual_siamese_linearly_probed_similarity_works(siamese_obj_fixture):
@@ -212,9 +212,9 @@ def test_actual_siamese_linearly_probed_similarity_works(siamese_obj_fixture):
     assert len(obj_0.visible_repr) == 3
     assert len(obj_1.visible_repr) == 3
 
-    assert obj_0.get_visual_similarity(obj_1) == 0.4808250069618225
-    assert obj_0.get_visual_similarity(obj_0) == 1
-    assert obj_1.get_visual_similarity(obj_1) == 1
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.4808250069618225)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_actual_siamese_trained_similarity_all_works(siamese_obj_fixture_all):
@@ -224,9 +224,9 @@ def test_actual_siamese_trained_similarity_all_works(siamese_obj_fixture_all):
     assert len(obj_0.visible_repr) == 5
     assert len(obj_1.visible_repr) == 5
 
-    assert obj_0.get_visual_similarity(obj_1) == 0.370555579662323
-    assert obj_0.get_visual_similarity(obj_0) == 0.9999999403953552
-    assert obj_1.get_visual_similarity(obj_1) == 1
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.3892437398433685)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_actual_siamese_fine_tuned_similarity_all_works(siamese_obj_fixture_all):
@@ -236,9 +236,9 @@ def test_actual_siamese_fine_tuned_similarity_all_works(siamese_obj_fixture_all)
     assert len(obj_0.visible_repr) == 5
     assert len(obj_1.visible_repr) == 5
 
-    assert obj_0.get_visual_similarity(obj_1) == 0.13046027719974518
-    assert obj_0.get_visual_similarity(obj_0) == 1
-    assert obj_1.get_visual_similarity(obj_1) == 1
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.1938179165124893)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
 
 def test_actual_siamese_linearly_probed_similarity_all_works(siamese_obj_fixture_all):
@@ -248,6 +248,6 @@ def test_actual_siamese_linearly_probed_similarity_all_works(siamese_obj_fixture
     assert len(obj_0.visible_repr) == 5
     assert len(obj_1.visible_repr) == 5
 
-    assert obj_0.get_visual_similarity(obj_1) == 0.4808250069618225
-    assert obj_0.get_visual_similarity(obj_0) == 1
-    assert obj_1.get_visual_similarity(obj_1) == 1
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.4469761669635773)
+    assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
+    assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)

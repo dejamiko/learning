@@ -37,8 +37,42 @@ def siamese_dir_and_config():
     config.LOAD_SIZE = 16
     config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     emb_dir = "_data/000_hammering"
+    emb_path = f"embeddings_{config.get_embedding_spec()}.json"
+    print(os.path.join(emb_dir, emb_path))
+    if os.path.exists(os.path.join(emb_dir, emb_path)):
+        print("The previous one exists")
+        with open(os.path.join(emb_dir, emb_path), "r") as f:
+            prev_emb = json.load(f)
+        os.remove(os.path.join(emb_dir, emb_path))
+    else:
+        prev_emb = None
     yield emb_dir, config
-    os.remove(os.path.join(emb_dir, "embeddings_siamese, [].json"))
+    if prev_emb is not None:
+        os.remove(os.path.join(emb_dir, emb_path))
+        with open(os.path.join(emb_dir, emb_path), "w") as f:
+            json.dump(prev_emb, f)
+
+
+@fixture
+def siamese_dir_and_config_preprocessing():
+    config = Config()
+    config.LOAD_SIZE = 16
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
+    config.IMAGE_PREPROCESSING = [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE]
+    emb_dir = "_data/000_hammering"
+    emb_path = f"embeddings_{config.get_embedding_spec()}.json"
+    if os.path.exists(os.path.join(emb_dir, emb_path)):
+        print("The previous one exists")
+        with open(os.path.join(emb_dir, emb_path), "r") as f:
+            prev_emb = json.load(f)
+        os.remove(os.path.join(emb_dir, emb_path))
+    else:
+        prev_emb = None
+    yield emb_dir, config
+    os.remove(os.path.join(emb_dir, emb_path))
+    if prev_emb is not None:
+        with open(os.path.join(emb_dir, emb_path), "w") as f:
+            json.dump(prev_emb, f)
 
 
 def test_extractor_some_embeddings_works(empty_dir_and_config):
@@ -343,14 +377,15 @@ def test_extractor_no_embeddings_siamese_trained_works(siamese_dir_and_config):
     assert len(embeddings) == 5
     assert len(embeddings[0]) == 3
     assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
-    assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"]
-        == 1.0
-    )
-    assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"]
-        == 0.370555579662323
-    )
+    expected = [1.0, 1.0, 1.0, 1.0, 1.0]
+    expected_1 = [0.370555579662323, 0.5343199968338013, 0.34343603253364563, 0.3743048310279846, 0.32360225915908813]
+    for i in range(5):
+        assert np.allclose(
+                embeddings[i][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"], expected[i]
+        )
+        assert np.allclose(
+                embeddings[i][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"], expected_1[i]
+        )
 
 
 def test_extractor_no_embeddings_siamese_fine_tuned_works(siamese_dir_and_config):
@@ -360,11 +395,15 @@ def test_extractor_no_embeddings_siamese_fine_tuned_works(siamese_dir_and_config
     assert len(embeddings) == 5
     assert len(embeddings[0]) == 3
     assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
-    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"] == 1.0
-    assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"]
-        == 0.13046027719974518
-    )
+    expected = [1.0, 1.0, 1.0, 1.0, 1.0]
+    expected_1 = [0.13046035170555115, 0.2671222984790802, 0.24834923446178436, 0.15465876460075378, 0.1684989333152771]
+    for i in range(5):
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"], expected[i]
+        )
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"], expected_1[i]
+        )
 
 
 def test_extractor_no_embeddings_siamese_linearly_probed_works(siamese_dir_and_config):
@@ -374,12 +413,69 @@ def test_extractor_no_embeddings_siamese_linearly_probed_works(siamese_dir_and_c
     assert len(embeddings) == 5
     assert len(embeddings[0]) == 3
     assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
-    assert embeddings[0][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"] == 1.0
-    assert (
-        embeddings[0][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"]
-        == 0.4808250069618225
-    )
+    expected = [1.0, 1.0, 1.0, 1.0, 1.0]
+    expected_1 = [0.4808250069618225, 0.5893111228942871, 0.41497740149497986, 0.34713155031204224, 0.40263575315475464]
+    for i in range(5):
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"], expected[i]
+        )
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"], expected_1[i]
+        )
 
+
+def test_extractor_no_embeddings_siamese_trained_preprocessing_works(siamese_dir_and_config_preprocessing):
+    emb_dir, config = siamese_dir_and_config_preprocessing
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+    embeddings = Extractor()("_data/000_hammering", config)
+    assert len(embeddings) == 5
+    assert len(embeddings[0]) == 3
+    assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
+    expected = [1.0, 1.0, 1.0, 1.0, 1.0]
+    expected_1 = [0.7181892395019531, 0.7952680587768555, 0.5921361446380615, 0.5850789546966553, 0.46279099583625793]
+    for i in range(5):
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"], expected[i]
+        )
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"], expected_1[i]
+        )
+
+
+def test_extractor_no_embeddings_siamese_fine_tuned_preprocessing_works(siamese_dir_and_config_preprocessing):
+    emb_dir, config = siamese_dir_and_config_preprocessing
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.FINE_TUNED
+    embeddings = Extractor()("_data/000_hammering", config)
+    assert len(embeddings) == 5
+    assert len(embeddings[0]) == 3
+    assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
+    expected = [1.0, 1.0, 1.0, 1.0, 1.0]
+    expected_1 = [0.7874946594238281, 0.6229400634765625, 0.624358057975769, 0.11103858053684235, 0.15282553434371948]
+    for i in range(5):
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"], expected[i]
+        )
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"], expected_1[i]
+        )
+
+
+def test_extractor_no_embeddings_siamese_linearly_probed_preprocessing_works(siamese_dir_and_config_preprocessing):
+    emb_dir, config = siamese_dir_and_config_preprocessing
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.LINEARLY_PROBED
+    embeddings = Extractor()("_data/000_hammering", config)
+    assert len(embeddings) == 5
+    assert len(embeddings[0]) == 3
+    assert len(embeddings[0][config.SIMILARITY_MEASURE.value]) == 17
+    expected = [1.0, 1.0, 1.0, 1.0, 1.0]
+    expected_1 = [0.616875171661377, 0.5759090185165405, 0.5799190998077393, 0.5931128263473511, 0.6601518392562866]
+    for i in range(5):
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/000_hammering/"], expected[i]
+        )
+        assert np.allclose(
+            embeddings[i][config.SIMILARITY_MEASURE.value]["_data/090_hammering/"], expected_1[i]
+        )
 
 def test_extractor_wrong_method_fails(empty_dir_and_config):
     emb_dir, config = empty_dir_and_config
