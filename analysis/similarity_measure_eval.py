@@ -465,7 +465,7 @@ if __name__ == "__main__":
             ImagePreprocessing.GREYSCALE,
         ],
     ]
-    obj_num = 20
+    obj_num = 40
     run_num = 10
     for ps in processing_steps_to_try:
         start = time.time()
