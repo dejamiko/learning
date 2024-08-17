@@ -17,7 +17,7 @@ class RandomisedHillClimbing(MetaHeuristic):
             while self.count < self.c.MH_BUDGET:
                 next_selection = None
                 next_score = 0
-                for neighbour in NeighbourGenerator(
+                for neighbour, _ in NeighbourGenerator(
                     selected, self.locked_subsolution, self._rng
                 ):
                     if self.count >= self.c.MH_BUDGET:

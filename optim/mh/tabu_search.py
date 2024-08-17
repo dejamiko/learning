@@ -4,6 +4,7 @@ from config import Config
 from optim.mh.metaheuristic import MetaHeuristic
 from optim.utils import NeighbourGenerator
 from playground.environment import Environment
+from tm_utils import get_object_indices
 
 
 class TabuList:
@@ -32,32 +33,38 @@ class TabuSearch(MetaHeuristic):
         self.best_selection = None
 
     def strategy(self):
-        selected = self.get_random_selection()
-        g_best = self.evaluate_selection(selected)
-        self.best_selection = selected
-        g_s = g_best
+        initial = self.get_random_selection()
+        self.best_selection = initial
+        g_best = self.evaluate_selection(initial)
+
+        candidate = initial
+        candidate_swap = None
 
         while self.count < self.c.MH_BUDGET:
             neighbour_gen = NeighbourGenerator(
-                selected, self.locked_subsolution, self._rng
+                candidate, self.locked_subsolution, self._rng
             )
-            current = None
-            g_n = 0
-            for neighbour in neighbour_gen:
+            best_neighbour_fitness = -float("inf")
+            for neighbour, swap in neighbour_gen:
                 if self.count >= self.c.MH_BUDGET:
                     break
-                current = neighbour
-                g_n = self.evaluate_selection(neighbour)
-                delta = g_n - g_s
-                if (
-                    delta > -self.c.TS_GAMMA and not self.tabu_list.is_tabu(neighbour)
-                ) or g_n > g_best:
-                    break
-            selected = current
-            self.tabu_list.add(selected)
-            if g_n > g_best:
-                g_best = g_n
-                self.best_selection = selected
+                neighbour_fitness = self.evaluate_selection(neighbour)
+                if not self.tabu_list.is_tabu(swap):
+                    if neighbour_fitness > best_neighbour_fitness:
+                        candidate = neighbour
+                        best_neighbour_fitness = neighbour_fitness
+                        candidate_swap = swap
+                elif neighbour_fitness > g_best:  # Aspiration criteria
+                    candidate = neighbour
+                    best_neighbour_fitness = neighbour_fitness
+                    candidate_swap = swap
+            if best_neighbour_fitness == -float('inf'):  # No valid move found
+                break
+            if best_neighbour_fitness > g_best:
+                g_best = best_neighbour_fitness
+                self.best_selection = candidate
+
+            self.tabu_list.add(candidate_swap)
         return self.best_selection
 
     def get_best_solution(self):
@@ -65,9 +72,14 @@ class TabuSearch(MetaHeuristic):
 
 
 if __name__ == "__main__":
-    config = Config()
-    env = Environment(config)
-    ts = TabuSearch(config, env, [])
+    for t_size in [1, 10, 100, 1000, 10000]:
+        config = Config()
+        config.TS_L = t_size
+        env = Environment(config)
+        ts = TabuSearch(config, env, [])
 
-    selected = ts.strategy()
-    print(ts.evaluate_selection(selected))
+        selected = ts.strategy()
+        print("+" * 25)
+        print(ts.evaluate_selection(selected))
+        print(get_object_indices(selected))
+        print("+" * 25)
