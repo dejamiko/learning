@@ -26,11 +26,12 @@ class ClusteringSearch(MetaHeuristic):
                 if i == j:
                     distances[i, j] = 0
                 else:
-                    distances[i, j] = 1 - self.environment.storage.get_visual_similarity(i, j)
+                    distances[i, j] = (
+                        1 - self.environment.storage.get_visual_similarity(i, j)
+                    )
 
         model = AgglomerativeClustering(
-            n_clusters=self.c.DEMONSTRATION_BUDGET,
-            linkage='complete'
+            n_clusters=self.c.DEMONSTRATION_BUDGET, linkage="complete"
         ).fit(distances)
 
         clusters = {}
@@ -45,7 +46,10 @@ class ClusteringSearch(MetaHeuristic):
             for o in members:
                 _, sim = self.environment.similarity_dict[o]
                 ind = np.searchsorted(
-                    sim, self.c.SIMILARITY_THRESHOLDS[Task.get_ind(self.environment.get_objects()[o].task)]
+                    sim,
+                    self.c.SIMILARITY_THRESHOLDS[
+                        Task.get_ind(self.environment.get_objects()[o].task)
+                    ],
                 )
                 if ind > max_reachable_count:
                     max_reachable_count = ind

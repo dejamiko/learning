@@ -58,7 +58,7 @@ class TabuSearch(MetaHeuristic):
                     candidate = neighbour
                     best_neighbour_fitness = neighbour_fitness
                     candidate_swap = swap
-            if best_neighbour_fitness == -float('inf'):  # No valid move found
+            if best_neighbour_fitness == -float("inf"):  # No valid move found
                 break
             if best_neighbour_fitness > g_best:
                 g_best = best_neighbour_fitness

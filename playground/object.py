@@ -8,7 +8,8 @@ from tm_utils import (
     SimilarityMeasure,
     ContourSimilarityMeasure,
     ContourImageEmbeddings,
-    ImageEmbeddings, NNImageEmbeddings,
+    ImageEmbeddings,
+    NNImageEmbeddings,
 )
 
 
@@ -183,5 +184,5 @@ class Object(ABC):
                     )
                 return sum(sims) / len(sims)
             return self.visible_repr[self.c.SIMILARITY_MEASURE.value][other.image_path]
-        except KeyError:
+        except KeyError:  # pragma: no cover
             return 0.0

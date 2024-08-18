@@ -84,8 +84,10 @@ class ImageEmbeddings(AutoName):
     CONVNET = auto()
     SWIN = auto()
     VIT_MSN = auto()
+    CLIP = auto()
     DOBBE = auto()
     VC = auto()
+    R3M = auto()
 
 
 class ContourImageEmbeddings(AutoName):

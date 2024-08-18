@@ -154,8 +154,12 @@ def calculate_own_models_sim():
                 similarities[f"{path_1},{path_2}"] = []
 
                 for i in range(5):
-                    a = Image.open(os.path.join(training_data_dir, path_1, f"image_{i}.png"))
-                    b = Image.open(os.path.join(training_data_dir, path_2, f"image_{i}.png"))
+                    a = Image.open(
+                        os.path.join(training_data_dir, path_1, f"image_{i}.png")
+                    )
+                    b = Image.open(
+                        os.path.join(training_data_dir, path_2, f"image_{i}.png")
+                    )
 
                     if sm == NNSimilarityMeasure.TRAINED:
                         sim = get_own_trained(a, b, config, ps)
@@ -169,7 +173,10 @@ def calculate_own_models_sim():
             print("Done", sm, time.time() - start)
 
             with open(
-                    os.path.join("_data/siamese_similarities", f"similarities_{sm.value}_{ps}.json"), "w"
+                os.path.join(
+                    "_data/siamese_similarities", f"similarities_{sm.value}_{ps}.json"
+                ),
+                "w",
             ) as f:
                 json.dump(similarities, f)
         shutil.rmtree(training_data_dir)
@@ -208,10 +215,13 @@ def read_training_results():
                 validation_loss.append(float(match.group(2)))
                 line_ind += 1
             line_ind += 1
-            losses[",".join(ps)][m.value] = {"training": training_loss, "validation": validation_loss}
+            losses[",".join(ps)][m.value] = {
+                "training": training_loss,
+                "validation": validation_loss,
+            }
     with open("optim/training_res.json", "w") as f:
         json.dump(losses, f)
 
 
 if __name__ == "__main__":
-    pass
+    calculate_all_embeddings()

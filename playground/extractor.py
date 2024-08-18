@@ -9,6 +9,7 @@ import torchvision.transforms as T
 from PIL import Image
 from dino_vit_features.extractor import ViTExtractor
 from huggingface_hub import hf_hub_download
+from r3m import load_r3m
 from segment_anything import sam_model_registry, SamPredictor
 from timm.data.transforms_factory import create_transform
 from transformers import (
@@ -18,6 +19,8 @@ from transformers import (
     ViTModel,
     SwinModel,
     ViTMSNModel,
+    CLIPVisionModel,
+    AutoProcessor,
 )
 
 from tm_utils import (
@@ -112,11 +115,15 @@ class Extractor:
                 return self._extract_swin(image, config)
             case ImageEmbeddings.VIT_MSN:
                 return self._extract_vit_msn(image, config)
+            case ImageEmbeddings.CLIP:
+                return self._extract_clip(image, config)
             # robotics specific models
             case ImageEmbeddings.DOBBE:
                 return self._extract_dobbe(image, config)
             case ImageEmbeddings.VC:
                 return self._extract_vc(image, config)
+            case ImageEmbeddings.R3M:
+                return self._extract_r3m(image, config)
             # contour models
             case ContourImageEmbeddings.MASK_RCNN:  # pragma: no cover
                 return self._extract_mask_rcnn(image, config.MASK_RCNN_THRESHOLD)
@@ -316,6 +323,22 @@ class Extractor:
         )
 
     @staticmethod
+    def _extract_clip(image, config):
+        image_processor = AutoProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        model = CLIPVisionModel.from_pretrained("openai/clip-vit-base-patch32").to(
+            config.DEVICE
+        )
+
+        inputs = image_processor(images=image, return_tensors="pt").to(config.DEVICE)
+
+        with torch.no_grad():
+            outputs = model(**inputs)
+
+        return (
+            outputs.last_hidden_state.detach().cpu().numpy().squeeze().mean(0).tolist()
+        )
+
+    @staticmethod
     def _extract_dobbe(image, config):
         model = timm.create_model("hf_hub:notmahi/dobb-e", pretrained=True).to(
             config.DEVICE
@@ -352,6 +375,27 @@ class Extractor:
             .numpy()
             .tolist()
         )
+
+    @staticmethod
+    def _extract_r3m(image, config):
+        r3m = load_r3m("resnet50")  # resnet18, resnet34
+        r3m.eval()
+        r3m.to(config.DEVICE)
+
+        image_transforms = T.Compose(
+            [
+                T.Resize(config.LOAD_SIZE, interpolation=T.InterpolationMode.BICUBIC),
+                T.ToTensor(),
+            ]
+        )
+
+        preprocessed_image = image_transforms(Image.fromarray(image)).unsqueeze(0)
+        preprocessed_image.to(config.DEVICE)
+
+        with torch.no_grad():
+            outputs = r3m(preprocessed_image * 255.0)
+
+        return outputs.detach().cpu().numpy().squeeze().tolist()
 
     def _extract_mask_rcnn(self, image, threshold):  # pragma: no cover
         return self._extract_detectron(

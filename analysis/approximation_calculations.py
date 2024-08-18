@@ -8,8 +8,15 @@ from sklearn.metrics import f1_score
 from analysis.similarity_measure_eval import extract_features
 from config import Config
 from playground.environment import Environment
-from tm_utils import ImagePreprocessing, ImageEmbeddings, SimilarityMeasure, ContourImageEmbeddings, \
-    ContourSimilarityMeasure, NNImageEmbeddings, NNSimilarityMeasure
+from tm_utils import (
+    ImagePreprocessing,
+    ImageEmbeddings,
+    SimilarityMeasure,
+    ContourImageEmbeddings,
+    ContourSimilarityMeasure,
+    NNImageEmbeddings,
+    NNSimilarityMeasure,
+)
 
 
 def convert_binary(arr, threshold):

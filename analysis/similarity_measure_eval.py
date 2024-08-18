@@ -27,7 +27,8 @@ from tm_utils import (
     ContourImageEmbeddings,
     ContourSimilarityMeasure,
     ImagePreprocessing,
-    NNSimilarityMeasure, NNImageEmbeddings,
+    NNSimilarityMeasure,
+    NNImageEmbeddings,
 )
 
 metrics_is_larger_better = {
