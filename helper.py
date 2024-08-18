@@ -140,7 +140,7 @@ def calculate_own_models_sim():
     training_data_dir = "training_data"
     if os.path.exists(training_data_dir):
         shutil.rmtree(training_data_dir)
-    df = pd.read_csv("_data/similarity_df.csv")
+    df = pd.read_csv("_data/training_data/similarity_df.csv")
     for ps in processing_steps_to_try:
         config.IMAGE_PREPROCESSING = ps
         generate_training_images(ps, training_data_dir)
@@ -223,5 +223,33 @@ def read_training_results():
         json.dump(losses, f)
 
 
+def generate_df():
+    image1_paths = []
+    image2_paths = []
+    similarities = []
+
+    with open("_data/training_data/training_objects.json", "r") as f:
+        objects = json.load(f)
+
+    with open("_data/training_data/training_transfers.json", "r") as f:
+        transforms = json.load(f)
+
+    for obj_names, sim in transforms.items():
+        obj1, obj2 = obj_names.split("-")
+        image1_paths.append(objects[obj1])
+        image2_paths.append(objects[obj2])
+        similarities.append(sim)
+
+    df = pd.DataFrame(
+        {
+            "image1_path": image1_paths,
+            "image2_path": image2_paths,
+            "similarity": similarities,
+        }
+    )
+
+    df.to_csv("_data/training_data/similarity_df.csv")
+
+
 if __name__ == "__main__":
-    calculate_all_embeddings()
+    pass
