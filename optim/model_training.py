@@ -146,8 +146,8 @@ def prepare_data(preprocessing_steps, training_data_dir):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
     )
-    base_dir = os.getcwd()
-    df = pd.read_csv(os.path.join(base_dir, "_data/training_data/similarity_df.csv"))
+    base_dir = os.path.join(os.getcwd(), "_data/training_data/")
+    df = pd.read_csv(os.path.join(base_dir, "similarity_df.csv"))
     generate_training_images(preprocessing_steps, training_data_dir)
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
     train_dataset = ImagePairDataset(
