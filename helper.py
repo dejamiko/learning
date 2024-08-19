@@ -20,8 +20,19 @@ def remove_embeddings():
     for d in os.listdir(parent):
         if not os.path.isdir(os.path.join(parent, d)):
             continue
-        if os.path.exists(os.path.join(parent, d, "embeddings_siamese, [].json")):
-            os.remove(os.path.join(parent, d, "embeddings_siamese, [].json"))
+        for name in [
+            "background_rem",
+            "cropping, background_rem, greyscale",
+            "cropping, background_rem",
+            "cropping, greyscale",
+            "cropping",
+            "greyscale",
+            "segmentation",
+        ]:
+            if os.path.exists(
+                os.path.join(parent, d, f"embeddings_siamese, [{name}].json")
+            ):
+                os.remove(os.path.join(parent, d, f"embeddings_siamese, [{name}].json"))
 
 
 def embedding_change():
@@ -252,4 +263,4 @@ def generate_df():
 
 
 if __name__ == "__main__":
-    pass
+    calculate_all_embeddings()
