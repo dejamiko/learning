@@ -43,23 +43,21 @@ metrics_is_larger_better = {
     "Concordance correlation coefficient": True,
     "Mean absolute error": False,
     "Root mean squared error": False,
-    "Symmetric mean absolute percentage error": False,
     "DINOBot NN score": True,
 }
 
 metrics_scale_0_1 = {
-    "Linear regression R^2": lambda x: (x + 1) / 2,
-    "Pearson's correlation": lambda x: (x + 1) / 2,
-    "Random forest regression R^2": lambda x: (x + 1) / 2,
-    "Support vector regression R^2": lambda x: (x + 1) / 2,
-    "MLP regression R^2": lambda x: (x + 1) / 2,
-    "Spearman's correlation": lambda x: (x + 1) / 2,
-    "Kendall's Tau": lambda x: (x + 1) / 2,
+    "Linear regression R^2": lambda x: max(0, (1 + x) / 2),
+    "Pearson's correlation": lambda x: x,
+    "Random forest regression R^2": lambda x: max(0, (1 + x) / 2),
+    "Support vector regression R^2": lambda x: max(0, (1 + x) / 2),
+    "MLP regression R^2": lambda x: max(0, (1 + x) / 2),
+    "Spearman's correlation": lambda x: x,
+    "Kendall's Tau": lambda x: x,
     "Explained variance score": lambda x: max(0, (1 + x) / 2),
     "Concordance correlation coefficient": lambda x: (x + 1) / 2,
-    "Mean absolute error": lambda x: 1 - x / 2,
-    "Root mean squared error": lambda x: 1 - x / 2,
-    "Symmetric mean absolute percentage error": lambda x: 1 - x / 200,
+    "Mean absolute error": lambda x: 1 - x,
+    "Root mean squared error": lambda x: 1 - x,
     "DINOBot NN score": lambda x: x,
 }
 
@@ -69,14 +67,13 @@ metrics_weights = {
     "Explained variance score": 0.12,
     "Concordance correlation coefficient": 0.12,
     "DINOBot NN score": 0.12,
+    "Spearman's correlation": 0.05,
+    "Kendall's Tau": 0.05,
+    "Mean absolute error": 0.05,
+    "Root mean squared error": 0.05,
     "Random forest regression R^2": 0.04,
     "Support vector regression R^2": 0.04,
     "MLP regression R^2": 0.04,
-    "Spearman's correlation": 0.04,
-    "Kendall's Tau": 0.04,
-    "Mean absolute error": 0.04,
-    "Root mean squared error": 0.04,
-    "Symmetric mean absolute percentage error": 0.04,
 }
 
 
@@ -129,14 +126,14 @@ def get_pearsons_correlation_coefficient(df):
     c = pearsonr(df["vs"], df["ls"])[0]
     if np.isnan(c):  # handle the nan case
         c = 0.0
-    return float(c)
+    return abs(float(c))
 
 
 def get_spearmans_correlation_coefficient(df):
     c = spearmanr(df["vs"], df["ls"])[0]
     if np.isnan(c):  # handle the nan case
         c = 0.0
-    return float(c)
+    return abs(float(c))
 
 
 def get_f1_score(df):
@@ -171,20 +168,11 @@ def get_rmse(df):
     return float(np.sqrt(mean_squared_error(df["ls"], df["vs"])))
 
 
-def get_smape(df):
-    return float(
-        np.mean(
-            2.0 * np.abs(df["vs"] - df["ls"]) / (np.abs(df["vs"]) + np.abs(df["ls"]))
-        )
-        * 100
-    )
-
-
 def get_kendalls_tau(df):
     c = kendalltau(df["ls"], df["vs"])[0]
     if np.isnan(c):  # handle the nan case
         c = 0.0
-    return float(c)
+    return abs(float(c))
 
 
 def get_dinobot_nn_metric(df):
@@ -257,7 +245,7 @@ def run_full_suite(df):
         "Random forest regression R^2": get_cv_r2(df, RandomForestRegressor()),
         "Support vector regression R^2": get_cv_r2(df, SVR()),
         "MLP regression R^2": get_cv_r2(
-            df, MLPRegressor(hidden_layer_sizes=(100, 50), max_iter=1000)
+            df, MLPRegressor(hidden_layer_sizes=(128, 64), max_iter=1000)
         ),
         "Spearman's correlation": get_spearmans_correlation_coefficient(df),
         "Kendall's Tau": get_kendalls_tau(df),
@@ -268,7 +256,6 @@ def run_full_suite(df):
         # metrics that compare the scores directly
         "Mean absolute error": get_mae(df),
         "Root mean squared error": get_rmse(df),
-        "Symmetric mean absolute percentage error": get_smape(df),
         # application specific (arguably most important)
         "DINOBot NN score": get_dinobot_nn_metric(df),
     }
@@ -417,17 +404,17 @@ def run_and_save(config, filename, n=10):
             config.SIMILARITY_MEASURE = sim
             scores, scores_b = run_eval_one_config(config, n)
             all_scores[str(config)] = [scores, scores_b]
-    # for emb in ContourImageEmbeddings:
-    #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in ContourSimilarityMeasure:
-    #         config.SIMILARITY_MEASURE = sim
-    #         scores, scores_b = run_eval_one_config(config, n)
-    #         all_scores[str(config)] = [scores, scores_b]
-    # config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
-    # for sim in NNSimilarityMeasure:
-    #     config.SIMILARITY_MEASURE = sim
-    #     scores, scores_b = run_eval_one_config(config, n)
-    #     all_scores[str(config)] = [scores, scores_b]
+    for emb in ContourImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in ContourSimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
+    for sim in NNSimilarityMeasure:
+        config.SIMILARITY_MEASURE = sim
+        scores, scores_b = run_eval_one_config(config, n)
+        all_scores[str(config)] = [scores, scores_b]
     if os.path.exists(filename):
         with open(filename, "r") as f:
             previous = json.load(f)
