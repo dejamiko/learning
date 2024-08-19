@@ -21,6 +21,7 @@ def remove_embeddings():
         if not os.path.isdir(os.path.join(parent, d)):
             continue
         for name in [
+            "",
             "background_rem",
             "cropping, background_rem, greyscale",
             "cropping, background_rem",
@@ -269,4 +270,5 @@ def generate_df():
 
 
 if __name__ == "__main__":
+    remove_embeddings()
     calculate_all_embeddings()
