@@ -104,5 +104,4 @@ class ImagePreprocessing(AutoName):
     BACKGROUND_REM = auto()
     SEGMENTATION = auto()
     GREYSCALE = auto()
-    # BINARY = auto()  # TODO fix this
     CROPPING = auto()

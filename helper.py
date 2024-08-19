@@ -12,7 +12,7 @@ from torchvision import transforms
 from config import Config
 from optim.model_training import SiameseNetwork, generate_training_images
 from playground.storage import ObjectStorage
-from tm_utils import ImageEmbeddings, ImagePreprocessing, NNSimilarityMeasure
+from tm_utils import ImageEmbeddings, ImagePreprocessing, NNSimilarityMeasure, NNImageEmbeddings
 
 
 def remove_embeddings():
@@ -74,6 +74,12 @@ def calculate_all_embeddings():
     for ps in processing_steps_to_try:
         config.IMAGE_PREPROCESSING = ps
         for m in ImageEmbeddings:
+            start_time = time.time()
+            config.IMAGE_EMBEDDINGS = m
+            storage = ObjectStorage(config)
+            storage.generate_objects()
+            print(f"Method {m.value} done in {time.time() - start_time} s")
+        for m in NNImageEmbeddings:
             start_time = time.time()
             config.IMAGE_EMBEDDINGS = m
             storage = ObjectStorage(config)
