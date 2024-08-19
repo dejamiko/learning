@@ -61,7 +61,7 @@ def test_object_fields_work(object_fixture):
 def test_get_visual_similarity_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     obj_0.visible_repr = np.zeros_like(obj_0.visible_repr)
-    obj_0.visible_repr[-1] = 1
+    obj_0.visible_repr[0] = -1
     obj_1.visible_repr = np.zeros_like(obj_1.visible_repr)
     obj_1.visible_repr[0] = 1
     assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.0)
@@ -103,7 +103,7 @@ def test_actual_embeddings_sim_works():
     assert obj_0.visible_repr.shape == (768,)
     assert obj_1.visible_repr.shape == (768,)
 
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.706240539207901)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.8531202696039505)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
@@ -129,7 +129,7 @@ def test_actual_embeddings_all_images_sim_works():
     assert obj_0.visible_repr.shape == (5, 768)
     assert obj_1.visible_repr.shape == (5, 768)
 
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.7295830412191917)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.864791520609596)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 

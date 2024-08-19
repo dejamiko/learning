@@ -109,7 +109,7 @@ class Object(ABC):
 
     @staticmethod
     def _get_cos_sim(a, b, eps=1e-8):
-        return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + eps)
+        return (np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + eps) + 1) / 2
 
     @staticmethod
     def _get_euclidean(a, b):
@@ -121,7 +121,7 @@ class Object(ABC):
 
     @staticmethod
     def _get_pearson(a, b):
-        return np.corrcoef(a, b)[0, 1]
+        return (np.corrcoef(a, b)[0, 1] + 1) / 2
 
     @staticmethod
     def _get_hausdorff(a, b):

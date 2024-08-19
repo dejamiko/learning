@@ -93,7 +93,7 @@ def test_object_fields_work(object_fixture):
 def test_get_latent_similarity_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     obj_0.latent_repr = np.zeros_like(obj_0.latent_repr)
-    obj_0.latent_repr[-1] = 1
+    obj_0.latent_repr[0] = -1
     obj_1.latent_repr = np.zeros_like(obj_1.latent_repr)
     obj_1.latent_repr[0] = 1
     assert np.allclose(obj_0.get_latent_similarity(obj_1), 0)
@@ -134,7 +134,7 @@ def test_repr_works(object_fixture):
 def test_get_visual_similarity_cosine_works(object_fixture):
     obj_0, obj_1, c = object_fixture
     c.SIMILARITY_MEASURE = SimilarityMeasure.COSINE
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.18602748506878572)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.5930137425343929)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
@@ -163,7 +163,7 @@ def test_get_visual_similarity_pearson_works(object_fixture):
     obj_0.visible_repr[-2] = 1
     obj_1.visible_repr = np.zeros_like(obj_1.visible_repr)
     obj_1.visible_repr[-1] = 1
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6666666666666666)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.8333333333333333)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
@@ -298,7 +298,7 @@ def object_fixture_multi_dim():
 
 def test_get_visual_similarity_multi_dim_works(object_fixture_multi_dim):
     obj_0, obj_1, c = object_fixture_multi_dim
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.17166119793794804)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.585830598968974)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
@@ -328,7 +328,7 @@ def test_get_visual_similarity_pearson_multi_dim_works(object_fixture_multi_dim)
     obj_1.visible_repr = np.zeros_like(obj_1.visible_repr)
     obj_1.visible_repr[:, -1] = np.ones_like(obj_1.visible_repr[:, -1])
     obj_1.visible_repr[:, -1] = np.ones_like(obj_1.visible_repr[:, -1])
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.6666666666666666)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.8333333333333333)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 

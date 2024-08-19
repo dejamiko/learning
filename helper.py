@@ -12,7 +12,12 @@ from torchvision import transforms
 from config import Config
 from optim.model_training import SiameseNetwork, generate_training_images
 from playground.storage import ObjectStorage
-from tm_utils import ImageEmbeddings, ImagePreprocessing, NNSimilarityMeasure, NNImageEmbeddings
+from tm_utils import (
+    ImageEmbeddings,
+    ImagePreprocessing,
+    NNSimilarityMeasure,
+    NNImageEmbeddings,
+)
 
 
 def remove_embeddings():

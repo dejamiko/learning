@@ -39,17 +39,15 @@ def siamese_dir_and_config():
     config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     emb_dir = "_data/000_hammering"
     emb_path = f"embeddings_{config.get_embedding_spec()}.json"
-    print(os.path.join(emb_dir, emb_path))
     if os.path.exists(os.path.join(emb_dir, emb_path)):
-        print("The previous one exists")
         with open(os.path.join(emb_dir, emb_path), "r") as f:
             prev_emb = json.load(f)
         os.remove(os.path.join(emb_dir, emb_path))
     else:
         prev_emb = None
     yield emb_dir, config
+    os.remove(os.path.join(emb_dir, emb_path))
     if prev_emb is not None:
-        os.remove(os.path.join(emb_dir, emb_path))
         with open(os.path.join(emb_dir, emb_path), "w") as f:
             json.dump(prev_emb, f)
 
@@ -66,7 +64,6 @@ def siamese_dir_and_config_preprocessing():
     emb_dir = "_data/000_hammering"
     emb_path = f"embeddings_{config.get_embedding_spec()}.json"
     if os.path.exists(os.path.join(emb_dir, emb_path)):
-        print("The previous one exists")
         with open(os.path.join(emb_dir, emb_path), "r") as f:
             prev_emb = json.load(f)
         os.remove(os.path.join(emb_dir, emb_path))

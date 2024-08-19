@@ -70,9 +70,13 @@ def test_get_true_success_probability_boolean_works(storage_fixture_random):
 def test_get_true_success_probability_real_works(storage_fixture_random):
     storage, c = storage_fixture_random
     c.SUCCESS_RATE_BOOLEAN = False
-    assert storage.get_true_success_probability(0, 1, 0.4) == 0.0
-    assert storage.get_true_success_probability(0, 2, 0.4) == 0.6162264663089067
-    assert storage.get_true_success_probability(0, 2, 0.7) == 0.6162264663089067
+    assert np.allclose(storage.get_true_success_probability(0, 1, 0.4), 0.0)
+    assert np.allclose(
+        storage.get_true_success_probability(0, 2, 0.4), 0.6162264663089067
+    )
+    assert np.allclose(
+        storage.get_true_success_probability(0, 2, 0.7), 0.6162264663089067
+    )
 
 
 def test_get_objects_works(storage_fixture_random):
