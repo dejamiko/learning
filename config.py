@@ -1,3 +1,5 @@
+import json
+
 import torch.cuda
 
 from tm_utils import (
@@ -87,7 +89,7 @@ class Config:
         pass
 
     def __str__(self):  # pragma: no cover
-        return f"Config: {self.__dict__}"
+        return f"Config: {json.dumps(self.__dict__)}"
 
     def get_embedding_spec(self):
         return f"{self.IMAGE_EMBEDDINGS.value}, [{', '.join([a.value for a in self.IMAGE_PREPROCESSING])}]"

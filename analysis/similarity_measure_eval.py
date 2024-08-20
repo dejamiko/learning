@@ -1,6 +1,7 @@
 import json
 import os.path
 import time
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -400,21 +401,21 @@ def run_and_save(config, filename, n=10):
     all_scores = {}
     for emb in ImageEmbeddings:
         config.IMAGE_EMBEDDINGS = emb
-        for sim in [SimilarityMeasure.COSINE, SimilarityMeasure.PEARSON]:
+        for sim in SimilarityMeasure:
             config.SIMILARITY_MEASURE = sim
             scores, scores_b = run_eval_one_config(config, n)
             all_scores[str(config)] = [scores, scores_b]
-    # for emb in ContourImageEmbeddings:
-    #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in ContourSimilarityMeasure:
-    #         config.SIMILARITY_MEASURE = sim
-    #         scores, scores_b = run_eval_one_config(config, n)
-    #         all_scores[str(config)] = [scores, scores_b]
-    # config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
-    # for sim in NNSimilarityMeasure:
-    #     config.SIMILARITY_MEASURE = sim
-    #     scores, scores_b = run_eval_one_config(config, n)
-    #     all_scores[str(config)] = [scores, scores_b]
+    for emb in ContourImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in ContourSimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
+    for sim in NNSimilarityMeasure:
+        config.SIMILARITY_MEASURE = sim
+        scores, scores_b = run_eval_one_config(config, n)
+        all_scores[str(config)] = [scores, scores_b]
     if os.path.exists(filename):
         with open(filename, "r") as f:
             previous = json.load(f)
@@ -438,7 +439,7 @@ def load_results(filename):
     return all_results, all_results_b
 
 
-if __name__ == "__main__":
+def get_all_results():
     processing_steps_to_try = [
         [],
         [ImagePreprocessing.GREYSCALE],
@@ -453,7 +454,10 @@ if __name__ == "__main__":
             ImagePreprocessing.GREYSCALE,
         ],
     ]
-    for obj_num, run_num in [(20, 10), (30, 10), (40, 10), (51, 1)]:
+    for obj_num, run_num in [
+        (30, 10),
+        # (40, 10), (51, 1)
+    ]:
         for ps in processing_steps_to_try:
             start = time.time()
             config = Config()
@@ -475,44 +479,64 @@ if __name__ == "__main__":
             )
             print(f"Finished with {ps} in {time.time() - start}")
 
-    # results, results_b = load_results("analysis/results_one_image_51.json")
-    # results, results_b = load_results("analysis/results_all_images_51.json")
-    #
-    # results_sorted = sorted(results, key=cmp_to_key(compare_counts), reverse=True)
-    # pprint(results_sorted[:4])
-    #
-    # print("=" * 50)
-    # print("=" * 50)
-    # print("Compare sums")
-    # print("=" * 50)
-    # print("=" * 50)
-    #
-    # results_sorted = sorted(results, key=cmp_to_key(compare_sums), reverse=True)
-    # pprint(results_sorted[:4])
-    #
-    # print("=" * 50)
-    # print("=" * 50)
-    # print("Compare sums scaled")
-    # print("=" * 50)
-    # print("=" * 50)
-    #
-    # results_sorted = sorted(results, key=cmp_to_key(compare_sums_scaled), reverse=True)
-    # pprint(results_sorted[:4])
-    #
-    # print("=" * 50)
-    # print("=" * 50)
-    # print("Compare weighted sum")
-    # print("=" * 50)
-    # print("=" * 50)
-    #
-    # results_sorted = sorted(results, key=cmp_to_key(compare_weighted_sum), reverse=True)
-    # pprint(results_sorted[:4])
-    #
-    # print("=" * 50)
-    # print("=" * 50)
-    # print("Compare DINOBot NN")
-    # print("=" * 50)
-    # print("=" * 50)
-    #
-    # results_sorted = sorted(results, key=cmp_to_key(compare_dinobot_nn), reverse=True)
-    # pprint(results_sorted[:4])
+
+class ResultStorage:
+    def __init__(self, res_path):
+        self.all_res = self._load_res(res_path)
+
+    @staticmethod
+    def _load_res(path):
+        all_res = []
+        for res in os.listdir(path):
+            if not res.endswith(".json"):
+                continue
+            with open(os.path.join(path, res), "r") as f:
+                data = json.load(f)
+            for k, v in data.items():
+                all_res.append((k, *v))
+        return all_res
+
+    @staticmethod
+    def _add_res(a, b):
+        new_res = {}
+        for k in a.keys():
+            new_res[k] = a[k] + b[k]
+        return new_res
+
+    @staticmethod
+    def _divide(a, b, num):
+        new_a = {}
+        new_b = {}
+        for k in a.keys():
+            new_a[k] = a[k] / num
+        for k in b.keys():
+            new_b[k] = b[k] / num
+        return new_a, new_b
+
+    def get_avg_by_img_num(self):
+        results_sums = {"all": [], "one": []}
+        counts = {"all": 0, "one": 0}
+        for c, r, b in self.all_res:
+            if "USE_ALL_IMAGES" in c and c["USE_ALL_IMAGES"]:
+                selector = "all"
+            else:
+                selector = "one"
+            prev_r, prev_b = results_sums[selector]
+            new_r = self._add_res(prev_r, r)
+            new_b = self._add_res(prev_b, b)
+            results_sums[selector] = (new_r, new_b)
+            counts[selector] += 1
+        results_all = self._divide(*results_sums["all"], num=counts["all"])
+        results_one = self._divide(*results_sums["one"], num=counts["one"])
+        return results_all, results_one
+
+
+def get_best_results():
+    st = ResultStorage("analysis/results")
+    pprint(st.all_res)
+    pprint(st.get_avg_by_img_num())
+
+
+if __name__ == "__main__":
+    get_all_results()
+    # get_best_results()
