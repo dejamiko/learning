@@ -93,7 +93,7 @@ class AffineApproximationSolver(ApproximationSolver):
         best_r = None
         for ind in to_search:
             _, _, _, r = self._get_linregress_for_ind(ind)
-            if best_r is None or r < best_r:
+            if best_r is None or r > best_r:
                 best_r = r
                 best_ind = ind
         return best_ind

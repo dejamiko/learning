@@ -16,7 +16,6 @@ class ApproximationSolver(Solver, ABC):
             obj_to_try = self._select_object_to_try(heuristic_selected)
             assert heuristic_selected[obj_to_try] == 1
             selected.append(obj_to_try)
-            # update the lower and upper bounds based on the interactions of the selected object
             self._update_state(obj_to_try)
         count = self.env.evaluate_selection_transfer_based(
             get_bin_representation(selected, self.config.OBJ_NUM)
