@@ -4,6 +4,7 @@ import re
 import shutil
 import time
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import torch
 from PIL import Image
@@ -274,6 +275,20 @@ def generate_df():
     df.to_csv("_data/training_data/similarity_df.csv")
 
 
+def generate_training_plots():
+    with open("optim/training_res.json", "r") as f:
+        data = json.load(f)
+    for emb, losses_by_model in data.items():
+        for model_type, losses in losses_by_model.items():
+            training = losses["training"]
+            validation = losses["validation"]
+            plt.close()
+            plt.plot(training, label="training")
+            plt.plot(validation, label="validation")
+            plt.legend()
+            plt.title(f"Preprocessing [{emb}] and model type `{model_type}`")
+            plt.savefig(f"{emb}-{model_type}")
+
+
 if __name__ == "__main__":
-    remove_embeddings()
-    calculate_all_embeddings()
+    pass
