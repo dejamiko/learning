@@ -89,7 +89,20 @@ class Config:
         pass
 
     def __str__(self):  # pragma: no cover
-        return f"Config: {json.dumps(self.__dict__)}"
+        data = self.__dict__.copy()
+        if "VISUALISATION_METHOD" in data:
+            data["VISUALISATION_METHOD"] = data["VISUALISATION_METHOD"].value
+        if "SIMILARITY_MEASURE" in data:
+            data["SIMILARITY_MEASURE"] = data["SIMILARITY_MEASURE"].value
+        if "IMAGE_EMBEDDINGS" in data:
+            data["IMAGE_EMBEDDINGS"] = data["IMAGE_EMBEDDINGS"].value
+        if "OBJECT_SELECTION_STRATEGY_T" in data:
+            data["OBJECT_SELECTION_STRATEGY_T"] = data["OBJECT_SELECTION_STRATEGY_T"].value
+        if "OBJECT_SELECTION_STRATEGY_A" in data:
+            data["OBJECT_SELECTION_STRATEGY_A"] = data["OBJECT_SELECTION_STRATEGY_A"].value
+        if "IMAGE_PREPROCESSING" in data:
+            data["IMAGE_PREPROCESSING"] = [a.value for a in data["IMAGE_PREPROCESSING"]]
+        return f"Config: {json.dumps(data)}"
 
     def get_embedding_spec(self):
         return f"{self.IMAGE_EMBEDDINGS.value}, [{', '.join([a.value for a in self.IMAGE_PREPROCESSING])}]"

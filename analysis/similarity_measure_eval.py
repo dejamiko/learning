@@ -493,7 +493,8 @@ class ResultStorage:
             with open(os.path.join(path, res), "r") as f:
                 data = json.load(f)
             for k, v in data.items():
-                all_res.append((k, *v))
+                k = k[8:]
+                all_res.append((json.loads(k), *v))
         return all_res
 
     @staticmethod
@@ -521,10 +522,11 @@ class ResultStorage:
                 selector = "all"
             else:
                 selector = "one"
-            prev_r, prev_b = results_sums[selector]
-            new_r = self._add_res(prev_r, r)
-            new_b = self._add_res(prev_b, b)
-            results_sums[selector] = (new_r, new_b)
+            if len(results_sums[selector]) > 0:
+                prev_r, prev_b = results_sums[selector]
+                r = self._add_res(prev_r, r)
+                b = self._add_res(prev_b, b)
+            results_sums[selector] = (r, b)
             counts[selector] += 1
         results_all = self._divide(*results_sums["all"], num=counts["all"])
         results_one = self._divide(*results_sums["one"], num=counts["one"])
@@ -533,10 +535,9 @@ class ResultStorage:
 
 def get_best_results():
     st = ResultStorage("analysis/results")
-    pprint(st.all_res)
     pprint(st.get_avg_by_img_num())
 
 
 if __name__ == "__main__":
-    get_all_results()
-    # get_best_results()
+    # get_all_results()
+    get_best_results()
