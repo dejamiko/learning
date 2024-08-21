@@ -97,9 +97,13 @@ class Config:
         if "IMAGE_EMBEDDINGS" in data:
             data["IMAGE_EMBEDDINGS"] = data["IMAGE_EMBEDDINGS"].value
         if "OBJECT_SELECTION_STRATEGY_T" in data:
-            data["OBJECT_SELECTION_STRATEGY_T"] = data["OBJECT_SELECTION_STRATEGY_T"].value
+            data["OBJECT_SELECTION_STRATEGY_T"] = data[
+                "OBJECT_SELECTION_STRATEGY_T"
+            ].value
         if "OBJECT_SELECTION_STRATEGY_A" in data:
-            data["OBJECT_SELECTION_STRATEGY_A"] = data["OBJECT_SELECTION_STRATEGY_A"].value
+            data["OBJECT_SELECTION_STRATEGY_A"] = data[
+                "OBJECT_SELECTION_STRATEGY_A"
+            ].value
         if "IMAGE_PREPROCESSING" in data:
             data["IMAGE_PREPROCESSING"] = [a.value for a in data["IMAGE_PREPROCESSING"]]
         return f"Config: {json.dumps(data)}"

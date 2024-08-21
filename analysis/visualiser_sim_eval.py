@@ -9,11 +9,19 @@ from dash.dependencies import Input, Output
 
 from config import Config
 from playground.environment import Environment
+from tm_utils import NNImageEmbeddings, NNSimilarityMeasure, ImagePreprocessing
 
 
 def prepare_data():
     config = Config()
     config.OBJ_NUM = 51
+    config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
+    config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+    config.IMAGE_PREPROCESSING = [
+        ImagePreprocessing.CROPPING,
+        ImagePreprocessing.BACKGROUND_REM,
+        ImagePreprocessing.GREYSCALE,
+    ]
     env = Environment(config)
     vis_sims = []
     latent_sims = []
@@ -85,7 +93,7 @@ def create_fig(df):
 if __name__ == "__main__":
     df, image_folder = prepare_data()
 
-    df = get_dist_from_mean(df)
+    # df = get_dist_from_mean(df)
 
     # Initialize the Dash app with a Flask server
     app = dash.Dash(__name__)

@@ -121,25 +121,22 @@ class EarlyStopping:
         self.best_loss = val_loss
 
 
-def generate_training_images(preprocessing_steps, training_data_dir):
+def generate_training_images(preprocessing_steps, temp_training_data_dir, base_dir):
     # create a training_data directory and populate it with preprocessed images
     config = Config()
     config.IMAGE_PREPROCESSING = preprocessing_steps
-    parent = "_data/training_data"
-    os.makedirs(training_data_dir)
-    for d in os.listdir(parent):
-        if not os.path.isdir(os.path.join(parent, d)):
+    os.makedirs(temp_training_data_dir)
+    for d in os.listdir(base_dir):
+        if not os.path.isdir(os.path.join(base_dir, d)):
             continue
-        if d == "siamese_similarities":
-            continue
-        ims = Extractor._load_images(os.path.join(parent, d), config)
-        os.makedirs(os.path.join(training_data_dir, d))
-        for im, fn in ims:
+        ims_with_names = Extractor._load_images(os.path.join(base_dir, d), config)
+        os.makedirs(os.path.join(temp_training_data_dir, d))
+        for im, name in ims_with_names:
             im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)
-            cv2.imwrite(os.path.join(training_data_dir, d, fn), im)
+            cv2.imwrite(os.path.join(temp_training_data_dir, d, name), im)
 
 
-def prepare_data(preprocessing_steps, training_data_dir):
+def prepare_data(preprocessing_steps, temp_training_data_dir):
     transform = transforms.Compose(
         [
             transforms.ToTensor(),
@@ -148,13 +145,13 @@ def prepare_data(preprocessing_steps, training_data_dir):
     )
     base_dir = os.path.join(os.getcwd(), "_data/training_data/")
     df = pd.read_csv(os.path.join(base_dir, "similarity_df.csv"))
-    generate_training_images(preprocessing_steps, training_data_dir)
+    generate_training_images(preprocessing_steps, temp_training_data_dir, base_dir)
     train_df, val_df = train_test_split(df, test_size=0.2, random_state=42)
     train_dataset = ImagePairDataset(
-        dataframe=train_df, base_dir=base_dir, transform=transform
+        dataframe=train_df, base_dir=temp_training_data_dir, transform=transform
     )
     val_dataset = ImagePairDataset(
-        dataframe=val_df, base_dir=base_dir, transform=transform
+        dataframe=val_df, base_dir=temp_training_data_dir, transform=transform
     )
     train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
@@ -227,11 +224,11 @@ if __name__ == "__main__":
             ImagePreprocessing.GREYSCALE,
         ],
     ]
-    training_data_dir = "_training_data"
-    if os.path.exists(training_data_dir):
-        shutil.rmtree(training_data_dir)
+    temp_training_data_dir = "_training_data"
+    if os.path.exists(temp_training_data_dir):
+        shutil.rmtree(temp_training_data_dir)
     for ps in processing_steps_to_try:
-        train_loader, val_loader = prepare_data(ps, training_data_dir)
+        train_loader, val_loader = prepare_data(ps, temp_training_data_dir)
 
         model_config = {"frozen": False, "backbone": False}
         model = training_loop(train_loader, val_loader, **model_config)
@@ -247,4 +244,4 @@ if __name__ == "__main__":
         model = training_loop(train_loader, val_loader, **model_config)
         torch.save(model.state_dict(), f"optim/models/siamese_net_fine_tuned_{ps}.pth")
 
-        shutil.rmtree(training_data_dir)
+        shutil.rmtree(temp_training_data_dir)

@@ -526,7 +526,12 @@ class ResultStorage:
                         full_data_counts[k] = 1
 
             for k in full_data_sums.keys():
-                all_res.append((json.loads(k), *self._divide(*full_data_sums[k], num=full_data_counts[k])))
+                all_res.append(
+                    (
+                        json.loads(k),
+                        *self._divide(*full_data_sums[k], num=full_data_counts[k]),
+                    )
+                )
         return all_res
 
     @staticmethod
@@ -534,6 +539,7 @@ class ResultStorage:
         k = k[8:]
         k_dict = json.loads(k)
         k_dict.pop("OBJ_NUM")
+        k_dict.pop("SEED")
         k = json.dumps(k_dict)
         return k
 
@@ -572,9 +578,9 @@ class ResultStorage:
                 v = self._add(results_sums[selector], v)
             results_sums[selector] = v
             counts[selector] += 1
-        avg_results = {}
+        avg_results = []
         for k in results_sums.keys():
-            avg_results[k] = self._divide(*results_sums[k], num=counts[k])
+            avg_results.append((k, self._divide(*results_sums[k], num=counts[k])))
         return avg_results
 
     def get_avg_by_img_emb(self):
@@ -603,30 +609,36 @@ class ResultStorage:
                 v = self._add(results_sums[selector], v)
             results_sums[selector] = v
             counts[selector] += 1
-        avg_results = {}
+        avg_results = []
         for k in results_sums.keys():
-            avg_results[k] = self._divide(*results_sums[k], num=counts[k])
+            avg_results.append((k, self._divide(*results_sums[k], num=counts[k])))
         return avg_results
 
     @staticmethod
     def sort_results(results, key):
-        # create a list of tuples which can be sorted
-        # figure out what to do with the real and boolean res
-        results_list = []
-        for k, v in results.items():
-            results_list.append((k, v))
-        return sorted(results_list, key=lambda x: cmp_to_key(key)(x[1]), reverse=True)
+        if len(results[0]) != 2:
+            return sorted(
+                results, key=lambda x: cmp_to_key(key)((x[1], x[2])), reverse=True
+            )
+        return sorted(results, key=lambda x: cmp_to_key(key)(x[1]), reverse=True)
+
+
+def get_print(results):
+    only_configs = [r[0] for r in results]
+    pprint(only_configs[:10])
 
 
 def get_best_results():
     st = ResultStorage("analysis/results")
-    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_counts)[:5])
+    get_print(st.sort_results(st.all_res, compare_counts))
     print("-" * 30)
-    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_sums)[:5])
+    get_print(st.sort_results(st.all_res, compare_sums))
     print("-" * 30)
-    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_sums_scaled)[:5])
+    get_print(st.sort_results(st.all_res, compare_sums_scaled))
     print("-" * 30)
-    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_weighted_sum)[:5])
+    get_print(st.sort_results(st.all_res, compare_weighted_sum))
+    print("-" * 30)
+    get_print(st.sort_results(st.all_res, compare_dinobot_nn))
 
 
 if __name__ == "__main__":
