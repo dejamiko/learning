@@ -455,8 +455,8 @@ def get_all_results():
         ],
     ]
     for obj_num, run_num in [
-        (30, 10),
-        # (40, 10), (51, 1)
+        # (30, 10),
+        (40, 10), (51, 1)
     ]:
         for ps in processing_steps_to_try:
             start = time.time()
@@ -539,5 +539,5 @@ def get_best_results():
 
 
 if __name__ == "__main__":
-    # get_all_results()
-    get_best_results()
+    get_all_results()
+    # get_best_results()
