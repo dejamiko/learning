@@ -1,6 +1,7 @@
 import json
 import os.path
 import time
+from functools import cmp_to_key
 from pprint import pprint
 
 import matplotlib.pyplot as plt
@@ -484,18 +485,57 @@ class ResultStorage:
     def __init__(self, res_path):
         self.all_res = self._load_res(res_path)
 
-    @staticmethod
-    def _load_res(path):
+    def _load_res(self, path):
         all_res = []
         for res in os.listdir(path):
             if not res.endswith(".json"):
                 continue
+            if res.find("51") == -1:
+                continue
+            full_data_sums = {}
+            full_data_counts = {}
             with open(os.path.join(path, res), "r") as f:
                 data = json.load(f)
             for k, v in data.items():
-                k = k[8:]
-                all_res.append((json.loads(k), *v))
+                k = self._get_cleaned_key(k)
+                full_data_sums[k] = v
+                full_data_counts[k] = 1
+
+            if os.path.exists(os.path.join(path, res.replace("51", "40"))):
+                with open(os.path.join(path, res.replace("51", "40")), "r") as f:
+                    other_data = json.load(f)
+                for k, v in other_data.items():
+                    k = self._get_cleaned_key(k)
+                    if k in full_data_sums:
+                        full_data_sums[k] = self._add(full_data_sums[k], v)
+                        full_data_counts[k] += 1
+                    else:
+                        full_data_sums[k] = v
+                        full_data_counts[k] = 1
+
+            if os.path.exists(os.path.join(path, res.replace("51", "30"))):
+                with open(os.path.join(path, res.replace("51", "30")), "r") as f:
+                    other_data = json.load(f)
+                for k, v in other_data.items():
+                    k = self._get_cleaned_key(k)
+                    if k in full_data_sums:
+                        full_data_sums[k] = self._add(full_data_sums[k], v)
+                        full_data_counts[k] += 1
+                    else:
+                        full_data_sums[k] = v
+                        full_data_counts[k] = 1
+
+            for k in full_data_sums.keys():
+                all_res.append((json.loads(k), *self._divide(*full_data_sums[k], num=full_data_counts[k])))
         return all_res
+
+    @staticmethod
+    def _get_cleaned_key(k):
+        k = k[8:]
+        k_dict = json.loads(k)
+        k_dict.pop("OBJ_NUM")
+        k = json.dumps(k_dict)
+        return k
 
     @staticmethod
     def _add_res(a, b):
@@ -503,6 +543,12 @@ class ResultStorage:
         for k in a.keys():
             new_res[k] = a[k] + b[k]
         return new_res
+
+    @staticmethod
+    def _add(old, new):
+        r, b = old
+        r_new, b_new = new
+        return ResultStorage._add_res(r, r_new), ResultStorage._add_res(b, b_new)
 
     @staticmethod
     def _divide(a, b, num):
@@ -517,27 +563,91 @@ class ResultStorage:
     def get_avg_by_img_num(self):
         results_sums = {"all": [], "one": []}
         counts = {"all": 0, "one": 0}
-        for c, r, b in self.all_res:
+        for c, v in self.all_res:
             if "USE_ALL_IMAGES" in c and c["USE_ALL_IMAGES"]:
                 selector = "all"
             else:
                 selector = "one"
             if len(results_sums[selector]) > 0:
-                prev_r, prev_b = results_sums[selector]
-                r = self._add_res(prev_r, r)
-                b = self._add_res(prev_b, b)
-            results_sums[selector] = (r, b)
+                v = self._add(results_sums[selector], v)
+            results_sums[selector] = v
             counts[selector] += 1
-        results_all = self._divide(*results_sums["all"], num=counts["all"])
-        results_one = self._divide(*results_sums["one"], num=counts["one"])
-        return results_all, results_one
+        avg_results = {}
+        for k in results_sums.keys():
+            avg_results[k] = self._divide(*results_sums[k], num=counts[k])
+        return avg_results
+
+    def get_avg_by_img_emb(self):
+        return self.get_avg_by_prop("IMAGE_EMBEDDINGS")
+
+    def get_avg_by_sim_measure(self):
+        return self.get_avg_by_prop("SIMILARITY_MEASURE")
+
+    def get_avg_by_preprocessing(self):
+        return self.get_avg_by_prop("IMAGE_PREPROCESSING")
+
+    def get_avg_by_prop(self, prop):
+        results_sums = {}
+        counts = {}
+        for c, r, b in self.all_res:
+            v = r, b
+            if prop not in c:
+                selector = "EMPTY"
+            else:
+                selector = c[prop]
+            if selector not in results_sums:
+                results_sums[selector] = []
+                counts[selector] = 0
+
+            if len(results_sums[selector]) > 0:
+                v = self._add(results_sums[selector], v)
+            results_sums[selector] = v
+            counts[selector] += 1
+        avg_results = {}
+        for k in results_sums.keys():
+            avg_results[k] = self._divide(*results_sums[k], num=counts[k])
+        return avg_results
+
+    @staticmethod
+    def sort_results(results, key):
+        # create a list of tuples which can be sorted
+        # figure out what to do with the real and boolean res
+        results_list = []
+        for k, v in results.items():
+            results_list.append((k, v))
+        return sorted(results_list, key=lambda x: cmp_to_key(key)(x[1]), reverse=True)
 
 
 def get_best_results():
     st = ResultStorage("analysis/results")
-    pprint(st.get_avg_by_img_num())
+    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_counts)[:5])
+    print("-" * 30)
+    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_sums)[:5])
+    print("-" * 30)
+    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_sums_scaled)[:5])
+    print("-" * 30)
+    pprint(st.sort_results(st.get_avg_by_sim_measure(), compare_weighted_sum)[:5])
 
 
 if __name__ == "__main__":
     # get_all_results()
     get_best_results()
+    # obj_num = 51
+    # run_num = 1
+    # config = Config()
+    # config.IMAGE_PREPROCESSING = [ImagePreprocessing.GREYSCALE]
+    # config.OBJ_NUM = obj_num
+    # run_and_save(
+    #     config,
+    #     f"analysis/results/results_one_image_{config.OBJ_NUM}_{config.IMAGE_PREPROCESSING}.json",
+    #     run_num,
+    # )
+    # config = Config()
+    # config.OBJ_NUM = obj_num
+    # config.USE_ALL_IMAGES = True
+    # config.IMAGE_PREPROCESSING = [ImagePreprocessing.GREYSCALE]
+    # run_and_save(
+    #     config,
+    #     f"analysis/results/results_all_images_{config.OBJ_NUM}_{config.IMAGE_PREPROCESSING}.json",
+    #     run_num,
+    # )
