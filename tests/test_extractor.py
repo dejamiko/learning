@@ -87,9 +87,9 @@ def test_extractor_some_embeddings_works(empty_dir_and_config):
     embeddings = Extractor()(emb_dir, config)
     expected_new = np.array(
         [
-            [3.10471344, 0.19727778, 1.66282141],
-            [2.66162062, 0.22787094, 2.07419348],
-            [2.78903913, -0.10260102, 2.68960094],
+            [-0.32059252,  1.10526419, -0.28103119],
+            [-1.17574918,  3.17810345, -1.80904448],
+            [-0.968876  ,  2.65542555, -1.1781348],
         ]
     )
     assert len(embeddings) == 5
@@ -106,16 +106,9 @@ def test_extractor_some_embeddings_but_wrong_metric_works(empty_dir_and_config):
         json.dump(other, f)
     embeddings = Extractor()(emb_dir, config)
     expected = [
-        3.064394,
-        -0.41076189,
-        1.71749401,
-        -1.14465475,
-        1.17028403,
-        -1.50916374,
-        2.06556773,
-        -0.6224308,
+        -0.71678388,  1.62074006,  0.09509128,  0.21747777,  3.27846622,-1.0529964 ,  1.07123089, -2.03937387
     ]
-    assert embeddings.shape == (5, 768)
+    assert embeddings.shape == (5, 384)
     assert np.allclose(embeddings[0][2:10], expected)
 
 

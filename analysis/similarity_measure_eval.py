@@ -400,18 +400,18 @@ def compare_weighted_sum(scores_1, scores_2):
 
 def run_and_save(config, filename, n=10):
     all_scores = {}
-    # for emb in ImageEmbeddings:
-    #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in SimilarityMeasure:
-    #         config.SIMILARITY_MEASURE = sim
-    #         scores, scores_b = run_eval_one_config(config, n)
-    #         all_scores[str(config)] = [scores, scores_b]
-    # for emb in ContourImageEmbeddings:
-    #     config.IMAGE_EMBEDDINGS = emb
-    #     for sim in ContourSimilarityMeasure:
-    #         config.SIMILARITY_MEASURE = sim
-    #         scores, scores_b = run_eval_one_config(config, n)
-    #         all_scores[str(config)] = [scores, scores_b]
+    for emb in ImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in SimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
+    for emb in ContourImageEmbeddings:
+        config.IMAGE_EMBEDDINGS = emb
+        for sim in ContourSimilarityMeasure:
+            config.SIMILARITY_MEASURE = sim
+            scores, scores_b = run_eval_one_config(config, n)
+            all_scores[str(config)] = [scores, scores_b]
     config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     for sim in NNSimilarityMeasure:
         config.SIMILARITY_MEASURE = sim
@@ -566,10 +566,11 @@ class ResultStorage:
             new_b[k] = b[k] / num
         return new_a, new_b
 
-    def get_avg_by_img_num(self):
+    def get_avg_by_img_num(self, all_res):
         results_sums = {"all": [], "one": []}
         counts = {"all": 0, "one": 0}
-        for c, v in self.all_res:
+        for c, r, b in all_res:
+            v = r, b
             if "USE_ALL_IMAGES" in c and c["USE_ALL_IMAGES"]:
                 selector = "all"
             else:
@@ -583,24 +584,26 @@ class ResultStorage:
             avg_results.append((k, self._divide(*results_sums[k], num=counts[k])))
         return avg_results
 
-    def get_avg_by_img_emb(self):
-        return self.get_avg_by_prop("IMAGE_EMBEDDINGS")
+    def get_avg_by_img_emb(self, all_res):
+        return self.get_avg_by_prop("IMAGE_EMBEDDINGS", all_res)
 
-    def get_avg_by_sim_measure(self):
-        return self.get_avg_by_prop("SIMILARITY_MEASURE")
+    def get_avg_by_sim_measure(self, all_res):
+        return self.get_avg_by_prop("SIMILARITY_MEASURE", all_res)
 
-    def get_avg_by_preprocessing(self):
-        return self.get_avg_by_prop("IMAGE_PREPROCESSING")
+    def get_avg_by_preprocessing(self, all_res):
+        return self.get_avg_by_prop("IMAGE_PREPROCESSING", all_res)
 
-    def get_avg_by_prop(self, prop):
+    def get_avg_by_prop(self, prop, all_res):
         results_sums = {}
         counts = {}
-        for c, r, b in self.all_res:
+        for c, r, b in all_res:
             v = r, b
             if prop not in c:
                 selector = "EMPTY"
             else:
                 selector = c[prop]
+            if isinstance(selector, list):
+                selector = tuple(selector)
             if selector not in results_sums:
                 results_sums[selector] = []
                 counts[selector] = 0
@@ -622,28 +625,50 @@ class ResultStorage:
             )
         return sorted(results, key=lambda x: cmp_to_key(key)(x[1]), reverse=True)
 
+    @staticmethod
+    def filter_out_siamese(results):
+        new_results = []
+        for c, r, b in results:
+            if c["IMAGE_EMBEDDINGS"] != NNImageEmbeddings.SIAMESE.value:
+                new_results.append((c, r, b))
+        return new_results
+
+    @staticmethod
+    def filter_out_contour(results):
+        new_results = []
+        for c, r, b in results:
+            if c["IMAGE_EMBEDDINGS"] not in [a.value for a in ContourImageEmbeddings]:
+                new_results.append((c, r, b))
+        return new_results
+
 
 def get_print(results):
-    only_configs = [r[0] for r in results]
-    pprint(only_configs[:10])
+    results = [r[0] for r in results]
+    pprint(results[:10])
 
 
 def get_best_results():
     st = ResultStorage("analysis/results")
-    get_print(st.sort_results(st.all_res, compare_counts))
+    # for c, r, b in st.all_res:
+    #     if c["SIMILARITY_MEASURE"] == "asd" and c["IMAGE_EMBEDDINGS"] == "mask_rcnn" and "USE_ALL_IMAGES" in c:
+    #         pprint(c)
+    #         pprint(b)
+    all_res = st.all_res
+    # all_res = st.filter_out_siamese(st.all_res)
+    # get_print(st.sort_results(st.all_res, compare_counts))
+    # print("-" * 30)
+    # get_print(st.sort_results(st.all_res, compare_sums))
+    # print("-" * 30)
+    # get_print(st.sort_results(st.all_res, compare_sums_scaled))
+    # print("-" * 30)
+    get_print(st.sort_results(all_res, compare_weighted_sum))
     print("-" * 30)
-    get_print(st.sort_results(st.all_res, compare_sums))
-    print("-" * 30)
-    get_print(st.sort_results(st.all_res, compare_sums_scaled))
-    print("-" * 30)
-    get_print(st.sort_results(st.all_res, compare_weighted_sum))
-    print("-" * 30)
-    get_print(st.sort_results(st.all_res, compare_dinobot_nn))
+    get_print(st.sort_results(all_res, compare_dinobot_nn))
 
 
 if __name__ == "__main__":
-    get_all_results()
-    # get_best_results()
+    # get_all_results()
+    get_best_results()
     # obj_num = 51
     # run_num = 1
     # config = Config()

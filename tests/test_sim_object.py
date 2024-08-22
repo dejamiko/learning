@@ -100,10 +100,10 @@ def test_actual_embeddings_sim_works():
         "tests/_test_assets/obj_2_img",
     )
 
-    assert obj_0.visible_repr.shape == (768,)
-    assert obj_1.visible_repr.shape == (768,)
+    assert obj_0.visible_repr.shape == (384,)
+    assert obj_1.visible_repr.shape == (384,)
 
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.8531202696039505)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.8838052296422203)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
@@ -126,10 +126,10 @@ def test_actual_embeddings_all_images_sim_works():
         "tests/_test_assets/obj_2_img",
     )
 
-    assert obj_0.visible_repr.shape == (5, 768)
-    assert obj_1.visible_repr.shape == (5, 768)
+    assert obj_0.visible_repr.shape == (5, 384)
+    assert obj_1.visible_repr.shape == (5, 384)
 
-    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.864791520609596)
+    assert np.allclose(obj_0.get_visual_similarity(obj_1), 0.8918171343701419)
     assert np.allclose(obj_0.get_visual_similarity(obj_0), 1)
     assert np.allclose(obj_1.get_visual_similarity(obj_1), 1)
 
