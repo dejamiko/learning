@@ -80,12 +80,12 @@ def calculate_all_embeddings():
     ]
     for ps in processing_steps_to_try:
         config.IMAGE_PREPROCESSING = ps
-        for m in ImageEmbeddings:
-            start_time = time.time()
-            config.IMAGE_EMBEDDINGS = m
-            storage = ObjectStorage(config)
-            storage.generate_objects()
-            print(f"Method {m.value} done in {time.time() - start_time} s")
+        # for m in ImageEmbeddings:
+        #     start_time = time.time()
+        #     config.IMAGE_EMBEDDINGS = m
+        #     storage = ObjectStorage(config)
+        #     storage.generate_objects()
+        #     print(f"Method {m.value} done in {time.time() - start_time} s")
         for m in NNImageEmbeddings:
             start_time = time.time()
             config.IMAGE_EMBEDDINGS = m
@@ -291,4 +291,4 @@ def generate_training_plots():
 
 
 if __name__ == "__main__":
-    pass
+    calculate_all_embeddings()
