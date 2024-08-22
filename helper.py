@@ -291,4 +291,4 @@ def generate_training_plots():
 
 
 if __name__ == "__main__":
-    calculate_all_embeddings()
+    pass
