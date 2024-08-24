@@ -27,7 +27,7 @@ class MetaHeuristic(ABC):
     def evaluate_selection(self, selected):
         self.count += 1
         if self.c.USE_TRANSFER_EVALUATION:
-            return self.environment.evaluate_selection_transfer_based(selected)
+            raise ValueError("This was run for some reason, remove this.")
         else:
             return self.environment.evaluate_selection_visual_similarity_based(selected)
 

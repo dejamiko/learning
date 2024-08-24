@@ -30,7 +30,6 @@ class Config:
     DEMONSTRATION_BUDGET = 5
 
     SIMILARITY_MEASURE = SimilarityMeasure.COSINE
-    SIM_MEASURE_SIGMA = 1.0
     IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_FULL
     USE_ALL_IMAGES = False
     IMAGE_PREPROCESSING = []
@@ -48,7 +47,6 @@ class Config:
 
     # Threshold approximation solver
     OBJECT_SELECTION_STRATEGY_T = ObjectSelectionStrategyThreshold.DENSITY
-    USE_REAL_THRESHOLD = False
     USE_TRANSFER_EVALUATION = False
 
     # Affine approximation solver

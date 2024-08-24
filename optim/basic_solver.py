@@ -7,7 +7,8 @@ from tm_utils import (
     ImageEmbeddings,
     SimilarityMeasure,
     ContourImageEmbeddings,
-    ContourSimilarityMeasure, Task,
+    ContourSimilarityMeasure,
+    Task,
 )
 
 
@@ -18,7 +19,8 @@ class BasicSolver(Solver):
 
     def _init_data(self, i):
         super()._init_data(i)
-        self.env.update_visual_similarities(self.config.AFFINE_FUNCTIONS)
+        if not self.config.SUCCESS_RATE_BOOLEAN:
+            self.env.update_visual_similarities(self.config.AFFINE_FUNCTIONS)
 
 
 def run_one_thresh(obj_num, run_num, bgt):
@@ -59,16 +61,23 @@ def run_one_thresh(obj_num, run_num, bgt):
         results = evaluate_all_heuristics(BasicSolver, c, n=run_num)
         print(f"For config {ps}, {emb}, {sim}, {use_all}")
         for name, mean, std, total_time in results:
-            # print(f"{name}: {mean} +/- {std}, time: {total_time}")
             print(f"{name}: {mean}")
 
 
 def run_one_affine(obj_num, run_num, bgt):
+    failures = 0
     c = Config()
     c.SUCCESS_RATE_BOOLEAN = False
     c.MH_TIME_BUDGET = 1
     c.MH_BUDGET = bgt
     c.OBJ_NUM = obj_num
+    baselines = [
+        "RandomSearch",
+        "ClusteringSearch",
+        "GreedyLocalSearch",
+        "RandomSearchIter",
+        "ExhaustiveSearch",
+    ]
     configs = [
         (
             [],
@@ -76,18 +85,9 @@ def run_one_affine(obj_num, run_num, bgt):
             SimilarityMeasure.COSINE,
             False,
             {
-                Task.GRASPING: (
-                    0.7181944867911111,
-                    0.1138801077232438
-                ),
-                Task.PUSHING: (
-                    0.7687713724858166,
-                    -0.04494050594772425
-                ),
-                Task.HAMMERING: (
-                    0.5604995163692343,
-                    0.09807984839240697
-                )
+                Task.GRASPING: (0.7181944867911111, 0.1138801077232438),
+                Task.PUSHING: (0.7687713724858166, -0.04494050594772425),
+                Task.HAMMERING: (0.5604995163692343, 0.09807984839240697),
             },
         ),
         (
@@ -96,42 +96,29 @@ def run_one_affine(obj_num, run_num, bgt):
             SimilarityMeasure.COSINE,
             True,
             {
-                Task.GRASPING: (
-                    0.7227911796537266,
-                    0.12563668556229102
-                ),
-                Task.PUSHING: (
-                    0.703188388050649,
-                    0.0025273010088077696
-                ),
-                Task.HAMMERING: (
-                    0.5229996181595288,
-                    0.11427449671574019
-                )
+                Task.GRASPING: (0.7227911796537266, 0.12563668556229102),
+                Task.PUSHING: (0.703188388050649, 0.0025273010088077696),
+                Task.HAMMERING: (0.5229996181595288, 0.11427449671574019),
             },
         ),
         (
-            [ImagePreprocessing.CROPPING, ImagePreprocessing.BACKGROUND_REM, ImagePreprocessing.GREYSCALE],
+            [
+                ImagePreprocessing.CROPPING,
+                ImagePreprocessing.BACKGROUND_REM,
+                ImagePreprocessing.GREYSCALE,
+            ],
             NNImageEmbeddings.SIAMESE,
             NNSimilarityMeasure.TRAINED,
             True,
             {
-                Task.GRASPING: (
-                    0.9498635218251053,
-                    0.018646840409686005
-                ),
-                Task.PUSHING: (
-                    0.87386853069105,
-                    0.03705817606803352
-                ),
-                Task.HAMMERING: (
-                    0.6954535244565685,
-                    0.13072154780451728
-                )
+                Task.GRASPING: (0.9498635218251053, 0.018646840409686005),
+                Task.PUSHING: (0.87386853069105, 0.03705817606803352),
+                Task.HAMMERING: (0.6954535244565685, 0.13072154780451728),
             },
         ),
     ]
     for ps, emb, sim, use_all, funs in configs:
+        count = 0
         c.IMAGE_PREPROCESSING = ps
         c.IMAGE_EMBEDDINGS = emb
         c.SIMILARITY_MEASURE = sim
@@ -139,18 +126,32 @@ def run_one_affine(obj_num, run_num, bgt):
         c.AFFINE_FUNCTIONS = funs
         results = evaluate_all_heuristics(BasicSolver, c, n=run_num)
         print(f"For config {ps}, {emb}, {sim}, {use_all}")
+        names_to_check = [
+            r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
+        ][:3]
+        for n in names_to_check:
+            if n in baselines:
+                count += 1
+        if count > 0:
+            failures += 1
+            # print(f"Failed with {count} baselines")
         for name, mean, std, total_time in results:
-            # print(f"{name}: {mean} +/- {std}, time: {total_time}")
             print(f"{name}: {mean}")
+    return failures
 
 
 if __name__ == "__main__":
-    for bgt in range(1000, 10000, 1000):
-        print(f"For budget {bgt}")
-        run_one_thresh(51, 100, bgt)
-        run_one_thresh(40, 100, bgt)
+    # for bgt in range(1000, 10000, 1000):
+    #     print(f"For budget {bgt}")
+    #     run_one_thresh(51, 100, bgt)
+    #     run_one_thresh(40, 100, bgt)
 
-    for bgt in range(1000, 10000, 1000):
-        print(f"For budget {bgt}")
-        run_one_affine(51, 100, bgt)
-        run_one_affine(40, 100, bgt)
+    # for bgt in range(1000, 10001, 1000):
+    #     print(f"For budget {bgt}")
+    #     f1 = run_one_affine(51, 10, bgt)
+    #     f2 = run_one_affine(40, 10, bgt)
+    #     print(f1 + f2, "failures")
+
+    f1 = run_one_affine(51, 100, 7000)
+    f2 = run_one_affine(40, 100, 7000)
+    print(f1 + f2)

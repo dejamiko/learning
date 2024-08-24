@@ -2,12 +2,20 @@ import numpy as np
 
 from config import Config
 from optim.approx_solver import ApproximationSolver
-from optim.mh import get_all_heuristics
-from optim.solver import evaluate_all_heuristics
+from optim.mh import EvolutionaryStrategy, RandomisedHillClimbing, TabuSearch
+from optim.solver import evaluate_provided_heuristics
 from tm_utils import (
     ObjectSelectionStrategyThreshold as EstStg,
     get_object_indices,
     Task,
+    ImageEmbeddings,
+    SimilarityMeasure,
+    ImagePreprocessing,
+    ContourImageEmbeddings,
+    ContourSimilarityMeasure,
+    NNImageEmbeddings,
+    NNSimilarityMeasure,
+    get_rng,
 )
 
 
@@ -16,10 +24,16 @@ class ThresholdApproximationSolver(ApproximationSolver):
         super().__init__(config, heuristic_class)
         # it only makes sense to use the boolean version here
         config.SUCCESS_RATE_BOOLEAN = True
-        # self.threshold_lower_bound = 0.0
-        # self.threshold_upper_bound = 1.0
-        self.threshold_upper_bounds = {t: 1.0 for t in Task}
-        self.threshold_lower_bounds = {t: 0.0 for t in Task}
+        if config.DO_NOT_ITER:
+            self.threshold_upper_bounds = {
+                t: config.SIMILARITY_THRESHOLDS[i] for i, t in enumerate(Task)
+            }
+            self.threshold_lower_bounds = {
+                t: config.SIMILARITY_THRESHOLDS[i] for i, t in enumerate(Task)
+            }
+        else:
+            self.threshold_upper_bounds = {t: 1.0 for t in Task}
+            self.threshold_lower_bounds = {t: 0.0 for t in Task}
 
     def _select_object_to_try(self, selected):
         selected = get_object_indices(selected)
@@ -39,18 +53,19 @@ class ThresholdApproximationSolver(ApproximationSolver):
         )
 
     def _update_state(self, obj_selected):
-        self._update_bounds(obj_selected)
-        self.env.update_visual_sim_thresholds(
-            {
-                t: (self.threshold_upper_bounds[t] + self.threshold_lower_bounds[t]) / 2
-                for t in Task
-            }
-        )
+        if not self.config.DO_NOT_ITER:
+            self._update_bounds(obj_selected)
+            self.env.update_visual_sim_thresholds(
+                {
+                    t: (self.threshold_upper_bounds[t] + self.threshold_lower_bounds[t])
+                    / 2
+                    for t in Task
+                }
+            )
 
     def _init_data(self, i):
         super()._init_data(i)
         self._reset_bounds()
-        self.config.SIMILARITY_THRESHOLDS = self._rng.uniform(0.3, 0.9, len(Task))
         self.env.update_visual_sim_thresholds(
             {
                 t: (self.threshold_upper_bounds[t] + self.threshold_lower_bounds[t]) / 2
@@ -59,7 +74,7 @@ class ThresholdApproximationSolver(ApproximationSolver):
         )
 
     def _reset_bounds(self):
-        if self.config.USE_REAL_THRESHOLD:
+        if self.config.DO_NOT_ITER:
             self.threshold_lower_bounds = {
                 t: self.config.SIMILARITY_THRESHOLDS[i] for i, t in enumerate(Task)
             }
@@ -165,52 +180,161 @@ class ThresholdApproximationSolver(ApproximationSolver):
             )
 
 
+def run_one_thresh(run_num, bgt_b, bgt_d):
+    c = Config()
+    c.MH_TIME_BUDGET = 1
+    c.MH_BUDGET = bgt_b
+    c.DEMONSTRATION_BUDGET = bgt_d
+    c.OBJ_NUM = 51
+    c.VERBOSITY = 0
+    rng = get_rng(1)
+    thresholds = [
+        [
+            rng.random(3).tolist(),
+            rng.random(3).tolist(),
+            rng.random(3).tolist(),
+        ],  # Random
+        [
+            [0.6214405360134004, 0.6214405360134004, 0.6214405360134004],
+            [0.09715242881072028, 0.09715242881072028, 0.09715242881072028],
+            [0.5460636515912897, 0.5460636515912897, 0.5460636515912897],
+        ],  # Reasonable
+        [
+            [0.48743718592964824, 0.6331658291457286, 0.7437185929648241],
+            [0.04522613065326633, 0.11055276381909548, 0.135678391959799],
+            [0.5376884422110553, 0.49246231155778897, 0.6080402010050251],
+        ],  # Good
+        [
+            [],
+            [],
+            [],
+        ],  # Iterative
+    ]
+    configs = [
+        (
+            [],
+            ImageEmbeddings.DINO_FULL,
+            SimilarityMeasure.COSINE,
+            False,
+        ),
+        (
+            [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE],
+            ContourImageEmbeddings.MASK_RCNN,
+            ContourSimilarityMeasure.ASD,
+            True,
+        ),
+        (
+            [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE],
+            NNImageEmbeddings.SIAMESE,
+            NNSimilarityMeasure.TRAINED,
+            True,
+        ),
+    ]
+    failures = 0
+    for ind, (ps, emb, sim, use_all) in enumerate(configs):
+        c.IMAGE_PREPROCESSING = ps
+        c.IMAGE_EMBEDDINGS = emb
+        c.SIMILARITY_MEASURE = sim
+        c.USE_ALL_IMAGES = use_all
+        for t in thresholds:
+            if len(t[ind]) > 0:
+                c.SIMILARITY_THRESHOLDS = t[ind]
+                c.DO_NOT_ITER = True
+                results = evaluate_provided_heuristics(
+                    ThresholdApproximationSolver,
+                    c,
+                    n=run_num,
+                    heuristics=(
+                        EvolutionaryStrategy,
+                        RandomisedHillClimbing,
+                        TabuSearch,
+                    ),
+                )
+                print(f"For config {c}")
+                for name, mean, std, total_time in results:
+                    print(f"{name}: {mean}")
+            else:
+                c.DO_NOT_ITER = False
+                other_scores_min = 51
+                for strat in EstStg:
+                    c.OBJECT_SELECTION_STRATEGY_T = strat
+                    results = evaluate_provided_heuristics(
+                        ThresholdApproximationSolver,
+                        c,
+                        n=run_num,
+                        heuristics=(
+                            EvolutionaryStrategy,
+                            RandomisedHillClimbing,
+                            TabuSearch,
+                        ),
+                    )
+                    max_mh = np.max([r[1] for r in results])
+                    if strat == EstStg.RANDOM:
+                        random_score = max_mh
+                    else:
+                        other_scores_min = min(other_scores_min, max_mh)
+                    print(f"For config {c}")
+                    for name, mean, std, total_time in results:
+                        print(f"{name}: {mean}")
+                if random_score > other_scores_min:
+                    failures += 1
+    return failures
+
+
 if __name__ == "__main__":
-    results = {}
-    results_threshold_known = {}
-
-    methods = [m for m in EstStg]
-    heuristics = get_all_heuristics()
-
-    for method in methods:
-        config = Config()
-        # config.MH_TIME_BUDGET = 0.1
-        config.MH_BUDGET = 5000
-        config.OBJECT_SELECTION_STRATEGY_T = method
-        config.VERBOSITY = 0
-        config.USE_REAL_THRESHOLD = False
-        single_results = evaluate_all_heuristics(
-            ThresholdApproximationSolver, config, n=1
-        )
-        for name, mean, std, time_taken in single_results:
-            results[(name, method)] = (mean, std, time_taken)
-        config.USE_REAL_THRESHOLD = True
-        single_results = evaluate_all_heuristics(
-            ThresholdApproximationSolver, config, n=1
-        )
-        for name, mean, std, time_taken in single_results:
-            results_threshold_known[(name, method)] = (mean, std, time_taken)
-
-    # report the average per heuristic
-    for heuristic in heuristics:
-        avg = np.mean([results[(heuristic.__name__, method)][0] for method in methods])
-        avg_known = np.mean(
-            [
-                results_threshold_known[(heuristic.__name__, method)][0]
-                for method in methods
-            ]
-        )
-        print(f"{heuristic.__name__}: {avg}, {avg_known}")
-
-    # report the average per method
-    for method in methods:
-        avg = np.mean(
-            [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
-        )
-        avg_known = np.mean(
-            [
-                results_threshold_known[(heuristic.__name__, method)][0]
-                for heuristic in heuristics
-            ]
-        )
-        print(f"{method.value}: {avg}, {avg_known}")
+    b_d = [
+        (500, 7),
+        (500, 9),
+        (1000, 8),
+        (1000, 10),
+        (1500, 5),
+    ]
+    for b, d in b_d:
+        f = run_one_thresh(10, b, d)
+        print("For", b, "and", d, "got", f)
+    # results = {}
+    # results_threshold_known = {}
+    #
+    # methods = [m for m in EstStg]
+    # heuristics = get_all_heuristics()
+    #
+    # for method in methods:
+    #     config = Config()
+    #     # config.MH_TIME_BUDGET = 0.1
+    #     config.MH_BUDGET = 5000
+    #     config.OBJECT_SELECTION_STRATEGY_T = method
+    #     config.VERBOSITY = 0
+    #     single_results = evaluate_all_heuristics(
+    #         ThresholdApproximationSolver, config, n=1
+    #     )
+    #     for name, mean, std, time_taken in single_results:
+    #         results[(name, method)] = (mean, std, time_taken)
+    #     single_results = evaluate_all_heuristics(
+    #         ThresholdApproximationSolver, config, n=1
+    #     )
+    #     for name, mean, std, time_taken in single_results:
+    #         results_threshold_known[(name, method)] = (mean, std, time_taken)
+    #
+    # # report the average per heuristic
+    # for heuristic in heuristics:
+    #     avg = np.mean([results[(heuristic.__name__, method)][0] for method in methods])
+    #     avg_known = np.mean(
+    #         [
+    #             results_threshold_known[(heuristic.__name__, method)][0]
+    #             for method in methods
+    #         ]
+    #     )
+    #     print(f"{heuristic.__name__}: {avg}, {avg_known}")
+    #
+    # # report the average per method
+    # for method in methods:
+    #     avg = np.mean(
+    #         [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
+    #     )
+    #     avg_known = np.mean(
+    #         [
+    #             results_threshold_known[(heuristic.__name__, method)][0]
+    #             for heuristic in heuristics
+    #         ]
+    #     )
+    #     print(f"{method.value}: {avg}, {avg_known}")

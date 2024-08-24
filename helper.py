@@ -4,17 +4,21 @@ import re
 import shutil
 import time
 
+import cv2
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import torch
 from PIL import Image
 from torchvision import transforms
 
+from analysis.similarity_measure_eval import extract_features
 from config import Config
 from optim.model_training import SiameseNetwork, generate_training_images
+from playground.environment import Environment
+from playground.extractor import Extractor
 from playground.storage import ObjectStorage
 from tm_utils import (
-    ImageEmbeddings,
     ImagePreprocessing,
     NNSimilarityMeasure,
     NNImageEmbeddings,
@@ -288,6 +292,190 @@ def generate_training_plots():
             plt.legend()
             plt.title(f"Preprocessing [{emb}] and model type `{model_type}`")
             plt.savefig(f"{emb}-{model_type}")
+
+
+def get_demo_images():
+    output_image = "combined_image_with_names.png"  # Final output image
+    rows, cols = 9, 6  # Grid size
+    font = cv2.FONT_HERSHEY_SIMPLEX  # Font for text
+    font_scale = 0.5  # Font scale
+    font_thickness = 1  # Font thickness
+    text_color = (0, 0, 0)
+
+    image_files = []
+    object_names = []
+
+    parent = "_data"
+    for d in sorted(os.listdir(parent)):
+        if not os.path.isdir(os.path.join(parent, d)):
+            continue
+        if d in ["siamese_similarities", "training_data"]:
+            continue
+        image_files.append(os.path.join(parent, d, "image_0.png"))
+        object_names.append(d)
+
+    # Ensure you have 51 images and names
+    print(len(image_files))
+
+    # Load images into a list
+    images = [cv2.imread(img) for img in image_files]
+
+    # Resize images if necessary (optional)
+    # You might want to resize to a consistent size, e.g., 100x100 pixels
+    resized_images = [cv2.resize(img, (250, 250)) for img in images]
+
+    # Create a blank canvas for the grid with space for names
+    image_height = 270  # 100 pixels for image + 20 pixels for name text
+    grid_height = rows * image_height
+    grid_width = cols * 250
+    canvas = np.ones((grid_height, grid_width, 3), dtype=np.uint8) * 255
+
+    # Place each image and its corresponding name on the canvas
+    for i, (img, name) in enumerate(zip(resized_images, object_names)):
+        row = i // cols
+        col = i % cols
+        start_y = row * image_height
+        start_x = col * 250
+
+        # Place the image
+        canvas[start_y : start_y + 250, start_x : start_x + 250] = img
+
+        # Calculate the position for the text
+        text_y = start_y + 264  # Slightly below the image
+        text_x = start_x + 10  # Some padding from the left
+
+        # Add the name below the image
+        cv2.putText(
+            canvas,
+            name,
+            (text_x, text_y),
+            font,
+            font_scale,
+            text_color,
+            font_thickness,
+            lineType=cv2.LINE_AA,
+        )
+
+    # Save the final image
+    cv2.imwrite(output_image, canvas)
+
+    # Optionally display the final image
+    cv2.imshow("Combined Image with Names", canvas)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+def numpy_to_latex_table(
+    array, row_names=None, col_names=None, column_format=None, caption=None, label=None
+):
+    """
+    Converts a NumPy array to a LaTeX tabular format with optional row and column names.
+
+    Parameters:
+    array (numpy.ndarray): The input NumPy array to be converted.
+    row_names (list of str): List of names for the rows.
+    col_names (list of str): List of names for the columns.
+    column_format (str): LaTeX column format (e.g., "c", "l", "r", or combinations like "ccc").
+                         If None, it defaults to centered columns.
+    caption (str): Optional caption for the table.
+    label (str): Optional label for referencing the table in LaTeX.
+
+    Returns:
+    str: The LaTeX string representing the table.
+    """
+    if not isinstance(array, np.ndarray):
+        raise ValueError("Input must be a numpy array.")
+
+    num_rows, num_cols = array.shape
+
+    # Validate row_names and col_names
+    if row_names and len(row_names) != num_rows:
+        raise ValueError(
+            "Length of row_names must match the number of rows in the array."
+        )
+    if col_names and len(col_names) != num_cols:
+        raise ValueError(
+            "Length of col_names must match the number of columns in the array."
+        )
+
+    # Set default column format if not provided
+    if column_format is None:
+        column_format = (
+            "|" + "|".join(["c"] * (num_cols + (1 if row_names else 0))) + "|"
+        )
+
+    # Initialize LaTeX table string
+    latex_str = (
+        "\\begin{table}[h]\n\\centering\n\\begin{tabular}{"
+        + column_format
+        + "}\n\\hline\n"
+    )
+
+    # Convert each row to a string and join them
+    rows = []
+    for i, row in enumerate(array):
+        row_str = " & ".join(map(str, row))
+        if row_names:
+            row_str = row_names[i] + " & " + row_str  # Prepend row name
+        rows.append(row_str)
+
+    # Join all rows with LaTeX new line and hline for row separation
+    latex_str += " \\\\\n\\hline\n".join(rows)
+
+    # End LaTeX tabular and add optional caption and label
+    latex_str += "\n\\end{tabular}\n"
+
+    if caption:
+        latex_str += f"\\caption{{{caption}}}\n"
+    if label:
+        latex_str += f"\\label{{{label}}}\n"
+
+    latex_str += "\\end{table}"
+
+    return latex_str
+
+
+def print_similarity_matrix():
+    c = Config()
+    c.OBJ_NUM = 51
+    env = Environment(c)
+    ls_all, _, tasks = extract_features(env, c)
+    objs = env.get_objects()
+    objs_all = []
+    for task in tasks:
+        obj = []
+        for o in objs:
+            if o.task == task:
+                obj.append(o.name)
+        objs_all.append(obj)
+    for ls, task, obj_names in zip(ls_all, tasks, objs_all):
+        print(task)
+        print("=" * 50)
+        print(numpy_to_latex_table(ls, row_names=obj_names, col_names=obj_names))
+        print("=" * 50)
+
+
+def get_preprocessed_images():
+    processing_steps_to_try = [
+        [],
+        [ImagePreprocessing.GREYSCALE],
+        [ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING],
+        [ImagePreprocessing.SEGMENTATION],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.BACKGROUND_REM],
+        [ImagePreprocessing.CROPPING, ImagePreprocessing.GREYSCALE],
+        [
+            ImagePreprocessing.CROPPING,
+            ImagePreprocessing.BACKGROUND_REM,
+            ImagePreprocessing.GREYSCALE,
+        ],
+    ]
+    for ps in processing_steps_to_try:
+        config = Config()
+        config.IMAGE_PREPROCESSING = ps
+        img = Extractor._load_images("_data/scissors_grasping", config)[0][0]
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        cv2.imwrite(f"img_{ps}.png", img)
 
 
 if __name__ == "__main__":

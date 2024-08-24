@@ -45,10 +45,10 @@ class VisualisationMethod(AutoName):
 
 
 class ObjectSelectionStrategyThreshold(AutoName):
-    DENSITY = auto()
     RANDOM = auto()
-    INTERVALS = auto()
     GREEDY = auto()
+    DENSITY = auto()
+    INTERVALS = auto()
 
 
 class ObjectSelectionStrategyAffine(AutoName):

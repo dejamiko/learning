@@ -27,6 +27,7 @@ class Environment:
         self._rng = get_rng(c.SEED)
         self.similarity_dict = None
         self.similarity_matrix = None
+        self.latent_sim_matrix = None
         self._generate_objects()
 
     def get_objects(self):
@@ -45,6 +46,16 @@ class Environment:
         :return: The visual similarity between objects
         """
         return apply_affine_fun(self.storage.get_visual_similarity(i, j), f)
+
+    def get_latent_similarity(self, i, j, f=(1, 0)):
+        """
+        Get the visual similarity between two objects.
+        :param i: The first object index
+        :param j: The second object index
+        :param f: An optional affine function applied to the similarity
+        :return: The visual similarity between objects
+        """
+        return apply_affine_fun(self.storage._latent_similarities[i, j], f)
 
     def get_reachable_object_indices(self, selected_indices, f=(1, 0)):
         """
@@ -122,7 +133,8 @@ class Environment:
         selected_rows = 1 - selected_rows
         # and the column product
         prod = selected_rows.prod(axis=0)
-        return prod.sum()
+        successes = 1 - prod
+        return successes.sum()
 
     def update_visual_sim_thresholds(self, thresholds):
         """
@@ -138,6 +150,7 @@ class Environment:
         self.storage.generate_objects()
         self.similarity_dict = self._get_obj_to_similarity_list_dict()
         self.similarity_matrix = self._get_visual_similarity_matrix()
+        self.latent_sim_matrix = self._get_latent_similarity_matrix()
 
     def _get_obj_to_similarity_list_dict(self, f_dict=None):
         """
@@ -175,6 +188,17 @@ class Environment:
                 )
         return visual_similarity
 
+    def _get_latent_similarity_matrix(self, f_dict=None):
+        if f_dict is None:
+            f_dict = {t: (1.0, 0.0) for t in Task}
+        latent_similarity = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
+        for i in range(self.c.OBJ_NUM):
+            for j in range(self.c.OBJ_NUM):
+                latent_similarity[i, j] = self.get_latent_similarity(
+                    i, j, f_dict[self.get_objects()[i].task]
+                )
+        return latent_similarity
+
     def get_real_transfer_probability(self, i, j):
         """
         Get the real transfer probability for two objects based on the underlying storage implementation.
@@ -188,3 +212,4 @@ class Environment:
     def update_visual_similarities(self, f_dict):
         self.similarity_dict = self._get_obj_to_similarity_list_dict(f_dict)
         self.similarity_matrix = self._get_visual_similarity_matrix(f_dict)
+        self.latent_sim_matrix = self._get_latent_similarity_matrix(f_dict)

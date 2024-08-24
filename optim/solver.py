@@ -55,3 +55,11 @@ def evaluate_all_heuristics(solver, config, n=1):
         mean, std, total_time = evaluate_heuristic(solver, config, h, n)
         results.append((h.__name__, mean, std, total_time))
     return results
+
+
+def evaluate_provided_heuristics(solver, config, n=1, heuristics=()):
+    results = []
+    for h in heuristics:
+        mean, std, total_time = evaluate_heuristic(solver, config, h, n)
+        results.append((h.__name__, mean, std, total_time))
+    return results
