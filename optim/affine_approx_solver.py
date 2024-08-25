@@ -209,7 +209,7 @@ def run_one_affine(run_num, bgt_b, bgt_d):
         c.IMAGE_EMBEDDINGS = emb
         c.SIMILARITY_MEASURE = sim
         c.USE_ALL_IMAGES = use_all
-        first_score = None
+        max_scores = []
         for f in affine_fns:
             c.AFFINE_FNS = f[ind]
             c.DO_NOT_ITER = True
@@ -223,14 +223,13 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                     TabuSearch,
                 ),
             )
-            if first_score is None:
-                first_score = max([r[1] for r in results])
-            else:
-                if first_score > max([r[1] for r in results]):
-                    failures_1 += 1
+            max_scores.append(max([r[1] for r in results]))
             # print(f"For config {c}")
             # for name, mean, std, total_time in results:
             #     print(f"{name}: {mean}")
+        for i in range(len(max_scores) - 1):
+            if max_scores[i + 1] < max_scores[i]:
+                failures_1 += 1
         c.DO_NOT_ITER = False
         other_scores_min = 51
         for strat in EstStg:
