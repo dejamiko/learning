@@ -3,8 +3,12 @@ from scipy.stats import linregress
 
 from config import Config
 from optim.approx_solver import ApproximationSolver
-from optim.mh import EvolutionaryStrategy, RandomisedHillClimbing, TabuSearch
-from optim.solver import evaluate_provided_heuristics
+from optim.mh import (
+    EvolutionaryStrategy,
+    RandomisedHillClimbing,
+    TabuSearch,
+)
+from optim.solver import evaluate_provided_heuristics, evaluate_heuristic
 from tm_utils import (
     ObjectSelectionStrategyAffine as EstStg,
     get_object_indices,
@@ -224,9 +228,9 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                 ),
             )
             max_scores.append(max([r[1] for r in results]))
-            print(f"For config {c}")
-            for name, mean, std, total_time in results:
-                print(f"{name}: {mean}")
+            # print(f"For config {c}")
+            # for name, mean, std, total_time in results:
+            #     print(f"{name}: {mean}")
         for i in range(len(max_scores) - 1):
             if max_scores[i + 1] < max_scores[i]:
                 failures_1 += 1
@@ -249,12 +253,43 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                 random_score = max_mh
             else:
                 other_scores_min = min(other_scores_min, max_mh)
-            print(f"For config {c}")
-            for name, mean, std, total_time in results:
-                print(f"{name}: {mean}")
+            # print(f"For config {c}")
+            # for name, mean, std, total_time in results:
+            #     print(f"{name}: {mean}")
         if random_score > other_scores_min:
             failures_2 += 1
     return failures_1, failures_2
+
+
+def run_one(solver, heuristic, binary):
+    config = Config()
+    config.SEED = 5308
+    config.OBJ_NUM = 51
+    config.DEMONSTRATION_BUDGET = 5
+    config.MH_BUDGET = 1000
+    config.VERBOSITY = 0
+    if binary:
+        config.SUCCESS_RATE_BOOLEAN = True
+        config.IMAGE_PREPROCESSING = [
+            ImagePreprocessing.CROPPING,
+            ImagePreprocessing.GREYSCALE,
+        ]
+        config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
+        config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+        config.USE_ALL_IMAGES = True
+        r = evaluate_heuristic(solver, config, heuristic)[0]
+    else:
+        config.SUCCESS_RATE_BOOLEAN = False
+        config.IMAGE_PREPROCESSING = [
+            ImagePreprocessing.CROPPING,
+            ImagePreprocessing.BACKGROUND_REM,
+            ImagePreprocessing.GREYSCALE,
+        ]
+        config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
+        config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+        config.USE_ALL_IMAGES = True
+        r = evaluate_heuristic(solver, config, heuristic)[0]
+    print(r)
 
 
 if __name__ == "__main__":
@@ -289,3 +324,15 @@ if __name__ == "__main__":
     #         [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
     #     )
     #     print(f"{method.value}: {avg}")
+    #
+    # print("Random")
+    # run_one(BasicSolver, RandomSearch, True)
+    # run_one(BasicSolver, RandomSearch, False)
+    #
+    # print("Greedy")
+    # run_one(BasicSolver, GreedyLocalSearch, True)
+    # run_one(BasicSolver, GreedyLocalSearch, False)
+    #
+    # print("Iterative")
+    # run_one(ThresholdApproximationSolver, EvolutionaryStrategy, True)
+    # run_one(AffineApproximationSolver, EvolutionaryStrategy, False)

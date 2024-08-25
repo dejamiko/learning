@@ -9,12 +9,17 @@ from tm_utils import (
     ContourImageEmbeddings,
     ContourSimilarityMeasure,
     Task,
+    get_object_indices,
 )
 
 
 class BasicSolver(Solver):
     def solve_one(self):
         selected = self.heuristic.solve()
+        # objects = self.env.get_objects()
+        # sel = get_object_indices(selected)
+        # for s in sel:
+        #     print(objects[s].name, objects[s].task)
         return self.env.evaluate_selection_transfer_based(selected)
 
     def _init_data(self, i):
@@ -127,8 +132,8 @@ def run_one_affine(obj_num, run_num, bgt):
         results = evaluate_all_heuristics(BasicSolver, c, n=run_num)
         print(f"For config {ps}, {emb}, {sim}, {use_all}")
         names_to_check = [
-            r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
-        ][:3]
+                             r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
+                         ][:3]
         for n in names_to_check:
             if n in baselines:
                 count += 1

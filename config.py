@@ -53,6 +53,8 @@ class Config:
     MERGING_FACTOR = 0.5
     OBJECT_SELECTION_STRATEGY_A = ObjectSelectionStrategyAffine.RANDOM
 
+    DO_NOT_ITER = False
+
     # Random object
     OBJ_NUM = 40
     LATENT_DIM = 10

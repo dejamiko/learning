@@ -69,7 +69,7 @@ class Environment:
         for o in self.get_objects():
             reachable_indices_to_selected[o.index] = set()
             for s in selected_indices:
-                if self.get_transfer_success(o.index, s):
+                if self.get_transfer_success(s, o.index):
                     reachable_indices_to_selected[o.index].add(
                         (s, self.get_visual_similarity(o.index, s, f))
                     )
@@ -97,11 +97,15 @@ class Environment:
         count = 0
         selected = get_object_indices(selected_bin)
         selected_obj = self.get_objects()[selected]
+        # print("transferred")
         for o in self.get_objects():
             for s in selected_obj:
-                if self.get_transfer_success(o.index, s.index):
+                if self.get_transfer_success(s.index, o.index):
+                    # n = o.name.replace('_', '\\_')
+                    # print(f"{n} ({o.task.value})")
                     count += 1
                     break
+        # print("\\transferred")
         return count
 
     def evaluate_selection_visual_similarity_based(self, selected_bin):
