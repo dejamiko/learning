@@ -38,6 +38,7 @@ class AffineApproximationSolver(ApproximationSolver):
     def _init_data(self, i):
         super()._init_data(i)
         self._reset_affine_functions()
+        self.env.update_visual_similarities(self.affine_functions)
 
     def _reset_affine_functions(self):
         if self.config.DO_NOT_ITER:
@@ -176,11 +177,6 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                 [0.6954535244565685, 0.13072154780451728],
             ],
         ],  # Good
-        [
-            [],
-            [],
-            [],
-        ],  # Iterative
     ]
     configs = [
         (
@@ -206,62 +202,67 @@ def run_one_affine(run_num, bgt_b, bgt_d):
             True,
         ),
     ]
-    failures = 0
+    failures_1 = 0
+    failures_2 = 0
     for ind, (ps, emb, sim, use_all) in enumerate(configs):
         c.IMAGE_PREPROCESSING = ps
         c.IMAGE_EMBEDDINGS = emb
         c.SIMILARITY_MEASURE = sim
         c.USE_ALL_IMAGES = use_all
+        first_score = None
         for f in affine_fns:
-            if len(f[ind]) > 0:
-                c.AFFINE_FNS = f[ind]
-                c.DO_NOT_ITER = True
-                results = evaluate_provided_heuristics(
-                    AffineApproximationSolver,
-                    c,
-                    n=run_num,
-                    heuristics=(
-                        EvolutionaryStrategy,
-                        RandomisedHillClimbing,
-                        TabuSearch,
-                    ),
-                )
-                print(f"For config {c}")
-                for name, mean, std, total_time in results:
-                    print(f"{name}: {mean}")
+            c.AFFINE_FNS = f[ind]
+            c.DO_NOT_ITER = True
+            results = evaluate_provided_heuristics(
+                AffineApproximationSolver,
+                c,
+                n=run_num,
+                heuristics=(
+                    EvolutionaryStrategy,
+                    RandomisedHillClimbing,
+                    TabuSearch,
+                ),
+            )
+            if first_score is None:
+                first_score = max([r[1] for r in results])
             else:
-                c.DO_NOT_ITER = False
-                other_scores_min = 51
-                for strat in EstStg:
-                    c.OBJECT_SELECTION_STRATEGY_T = strat
-                    results = evaluate_provided_heuristics(
-                        AffineApproximationSolver,
-                        c,
-                        n=run_num,
-                        heuristics=(
-                            EvolutionaryStrategy,
-                            RandomisedHillClimbing,
-                            TabuSearch,
-                        ),
-                    )
-                    max_mh = np.max([r[1] for r in results])
-                    if strat == EstStg.RANDOM:
-                        random_score = max_mh
-                    else:
-                        other_scores_min = min(other_scores_min, max_mh)
-                    print(f"For config {c}")
-                    for name, mean, std, total_time in results:
-                        print(f"{name}: {mean}")
-                if random_score > other_scores_min:
-                    failures += 1
-    return failures
+                if first_score > max([r[1] for r in results]):
+                    failures_1 += 1
+            # print(f"For config {c}")
+            # for name, mean, std, total_time in results:
+            #     print(f"{name}: {mean}")
+        c.DO_NOT_ITER = False
+        other_scores_min = 51
+        for strat in EstStg:
+            c.OBJECT_SELECTION_STRATEGY_A = strat
+            results = evaluate_provided_heuristics(
+                AffineApproximationSolver,
+                c,
+                n=run_num,
+                heuristics=(
+                    EvolutionaryStrategy,
+                    RandomisedHillClimbing,
+                    TabuSearch,
+                ),
+            )
+            max_mh = np.max([r[1] for r in results])
+            if strat == EstStg.RANDOM:
+                random_score = max_mh
+            else:
+                other_scores_min = min(other_scores_min, max_mh)
+            # print(f"For config {c}")
+            # for name, mean, std, total_time in results:
+            #     print(f"{name}: {mean}")
+        if random_score > other_scores_min:
+            failures_2 += 1
+    return failures_1, failures_2
 
 
 if __name__ == "__main__":
-    for b in [500, 1000, 1500, 2000]:
+    for b in [250, 500, 750, 1000, 1500, 2000]:
         for d in [5, 6, 7, 8, 9, 10]:
-            f = run_one_affine(10, b, d)
-            print("For", b, "and", d, "got", f)
+            f1, f2 = run_one_affine(10, b, d)
+            print("For", b, "and", d, "got", f1, f2)
 
     # results = {}
     #
