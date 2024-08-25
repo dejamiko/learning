@@ -224,9 +224,9 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                 ),
             )
             max_scores.append(max([r[1] for r in results]))
-            # print(f"For config {c}")
-            # for name, mean, std, total_time in results:
-            #     print(f"{name}: {mean}")
+            print(f"For config {c}")
+            for name, mean, std, total_time in results:
+                print(f"{name}: {mean}")
         for i in range(len(max_scores) - 1):
             if max_scores[i + 1] < max_scores[i]:
                 failures_1 += 1
@@ -249,9 +249,9 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                 random_score = max_mh
             else:
                 other_scores_min = min(other_scores_min, max_mh)
-            # print(f"For config {c}")
-            # for name, mean, std, total_time in results:
-            #     print(f"{name}: {mean}")
+            print(f"For config {c}")
+            for name, mean, std, total_time in results:
+                print(f"{name}: {mean}")
         if random_score > other_scores_min:
             failures_2 += 1
     return failures_1, failures_2

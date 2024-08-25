@@ -204,11 +204,6 @@ def run_one_thresh(run_num, bgt_b, bgt_d):
             [0.04522613065326633, 0.11055276381909548, 0.135678391959799],
             [0.5376884422110553, 0.49246231155778897, 0.6080402010050251],
         ],  # Good
-        [
-            [],
-            [],
-            [],
-        ],  # Iterative
     ]
     configs = [
         (
@@ -230,68 +225,67 @@ def run_one_thresh(run_num, bgt_b, bgt_d):
             True,
         ),
     ]
-    failures = 0
+    failures_1 = 0
+    failures_2 = 0
     for ind, (ps, emb, sim, use_all) in enumerate(configs):
         c.IMAGE_PREPROCESSING = ps
         c.IMAGE_EMBEDDINGS = emb
         c.SIMILARITY_MEASURE = sim
         c.USE_ALL_IMAGES = use_all
+        max_scores = []
         for t in thresholds:
-            if len(t[ind]) > 0:
-                c.SIMILARITY_THRESHOLDS = t[ind]
-                c.DO_NOT_ITER = True
-                results = evaluate_provided_heuristics(
-                    ThresholdApproximationSolver,
-                    c,
-                    n=run_num,
-                    heuristics=(
-                        EvolutionaryStrategy,
-                        RandomisedHillClimbing,
-                        TabuSearch,
-                    ),
-                )
-                print(f"For config {c}")
-                for name, mean, std, total_time in results:
-                    print(f"{name}: {mean}")
+            c.SIMILARITY_THRESHOLDS = t[ind]
+            c.DO_NOT_ITER = True
+            results = evaluate_provided_heuristics(
+                ThresholdApproximationSolver,
+                c,
+                n=run_num,
+                heuristics=(
+                    EvolutionaryStrategy,
+                    RandomisedHillClimbing,
+                    TabuSearch,
+                ),
+            )
+            max_scores.append(max([r[1] for r in results]))
+            # print(f"For config {c}")
+            # for name, mean, std, total_time in results:
+            #     print(f"{name}: {mean}")
+
+        for i in range(len(max_scores) - 1):
+            if max_scores[i + 1] < max_scores[i]:
+                failures_1 += 1
+        c.DO_NOT_ITER = False
+        other_scores_min = 51
+        for strat in EstStg:
+            c.OBJECT_SELECTION_STRATEGY_T = strat
+            results = evaluate_provided_heuristics(
+                ThresholdApproximationSolver,
+                c,
+                n=run_num,
+                heuristics=(
+                    EvolutionaryStrategy,
+                    RandomisedHillClimbing,
+                    TabuSearch,
+                ),
+            )
+            max_mh = np.max([r[1] for r in results])
+            if strat == EstStg.RANDOM:
+                random_score = max_mh
             else:
-                c.DO_NOT_ITER = False
-                other_scores_min = 51
-                for strat in EstStg:
-                    c.OBJECT_SELECTION_STRATEGY_T = strat
-                    results = evaluate_provided_heuristics(
-                        ThresholdApproximationSolver,
-                        c,
-                        n=run_num,
-                        heuristics=(
-                            EvolutionaryStrategy,
-                            RandomisedHillClimbing,
-                            TabuSearch,
-                        ),
-                    )
-                    max_mh = np.max([r[1] for r in results])
-                    if strat == EstStg.RANDOM:
-                        random_score = max_mh
-                    else:
-                        other_scores_min = min(other_scores_min, max_mh)
-                    print(f"For config {c}")
-                    for name, mean, std, total_time in results:
-                        print(f"{name}: {mean}")
-                if random_score > other_scores_min:
-                    failures += 1
-    return failures
+                other_scores_min = min(other_scores_min, max_mh)
+            # print(f"For config {c}")
+            # for name, mean, std, total_time in results:
+            #     print(f"{name}: {mean}")
+        if random_score > other_scores_min:
+            failures_2 += 1
+    return failures_1, failures_2
 
 
 if __name__ == "__main__":
-    b_d = [
-        (500, 7),
-        (500, 9),
-        (1000, 8),
-        (1000, 10),
-        (1500, 5),
-    ]
-    for b, d in b_d:
-        f = run_one_thresh(10, b, d)
-        print("For", b, "and", d, "got", f)
+    for b in [250, 500, 750, 1000, 1500, 2000]:
+        for d in [5, 6, 7, 8, 9, 10]:
+            f1, f2 = run_one_thresh(10, b, d)
+            print("For", b, "and", d, "got", f1, f2)
     # results = {}
     # results_threshold_known = {}
     #
