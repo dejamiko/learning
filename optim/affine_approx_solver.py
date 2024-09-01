@@ -6,9 +6,9 @@ from optim.approx_solver import ApproximationSolver
 from optim.mh import (
     EvolutionaryStrategy,
     RandomisedHillClimbing,
-    TabuSearch,
+    TabuSearch, get_all_heuristics,
 )
-from optim.solver import evaluate_provided_heuristics, evaluate_heuristic
+from optim.solver import evaluate_provided_heuristics, evaluate_heuristic, evaluate_all_heuristics
 from tm_utils import (
     ObjectSelectionStrategyAffine as EstStg,
     get_object_indices,
@@ -19,6 +19,8 @@ from tm_utils import (
     ImagePreprocessing,
     NNImageEmbeddings,
     NNSimilarityMeasure,
+    ObjectSelectionStrategyThreshold,
+    ObjectSelectionStrategyAffine,
 )
 
 
@@ -74,12 +76,12 @@ class AffineApproximationSolver(ApproximationSolver):
         prev_intercept = self.affine_functions[obj_task][1]
         self.affine_functions[obj_task] = (
             float(
-                self.config.MERGING_FACTOR * slope
-                + (1 - self.config.MERGING_FACTOR) * prev_slope
+                self.config.MERGING_FACTOR * prev_slope
+                + (1 - self.config.MERGING_FACTOR) * slope
             ),
             float(
-                self.config.MERGING_FACTOR * intercept
-                + (1 - self.config.MERGING_FACTOR) * prev_intercept
+                self.config.MERGING_FACTOR * prev_intercept
+                + (1 - self.config.MERGING_FACTOR) * intercept
             ),
         )
         if self.config.VERBOSITY > 0:
@@ -228,9 +230,9 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                 ),
             )
             max_scores.append(max([r[1] for r in results]))
-            # print(f"For config {c}")
-            # for name, mean, std, total_time in results:
-            #     print(f"{name}: {mean}")
+            print(f"For config {c}")
+            for name, mean, std, total_time in results:
+                print(f"{name}: {mean}")
         for i in range(len(max_scores) - 1):
             if max_scores[i + 1] < max_scores[i]:
                 failures_1 += 1
@@ -253,9 +255,9 @@ def run_one_affine(run_num, bgt_b, bgt_d):
                 random_score = max_mh
             else:
                 other_scores_min = min(other_scores_min, max_mh)
-            # print(f"For config {c}")
-            # for name, mean, std, total_time in results:
-            #     print(f"{name}: {mean}")
+            print(f"For config {c}")
+            for name, mean, std, total_time in results:
+                print(f"{name}: {mean}")
         if random_score > other_scores_min:
             failures_2 += 1
     return failures_1, failures_2
@@ -267,7 +269,7 @@ def run_one(solver, heuristic, binary):
     config.OBJ_NUM = 51
     config.DEMONSTRATION_BUDGET = 5
     config.MH_BUDGET = 1000
-    config.VERBOSITY = 0
+    config.VERBOSITY = 1
     if binary:
         config.SUCCESS_RATE_BOOLEAN = True
         config.IMAGE_PREPROCESSING = [
@@ -277,6 +279,12 @@ def run_one(solver, heuristic, binary):
         config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
         config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
         config.USE_ALL_IMAGES = True
+        config.SIMILARITY_THRESHOLDS = [
+            0.5376884422110553,
+            0.49246231155778897,
+            0.6080402010050251,
+        ]
+        config.OBJECT_SELECTION_STRATEGY_T = ObjectSelectionStrategyThreshold.INTERVALS
         r = evaluate_heuristic(solver, config, heuristic)[0]
     else:
         config.SUCCESS_RATE_BOOLEAN = False
@@ -287,44 +295,40 @@ def run_one(solver, heuristic, binary):
         ]
         config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
         config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
+        config.OBJECT_SELECTION_STRATEGY_A = ObjectSelectionStrategyAffine.GREEDY_R
         config.USE_ALL_IMAGES = True
         r = evaluate_heuristic(solver, config, heuristic)[0]
     print(r)
 
 
 if __name__ == "__main__":
-    for b in [250, 500, 750, 1000, 1500, 2000]:
-        for d in [5, 6, 7, 8, 9, 10]:
-            f1, f2 = run_one_affine(10, b, d)
-            print("For", b, "and", d, "got", f1, f2)
+    results = {}
 
-    # results = {}
-    #
-    # methods = [m for m in EstStg]
-    # heuristics = get_all_heuristics()
-    #
-    # for method in methods:
-    #     config = Config()
-    #     # config.MH_TIME_BUDGET = 0.1
-    #     config.MH_BUDGET = 5000
-    #     config.OBJECT_SELECTION_STRATEGY_A = method
-    #     config.VERBOSITY = 0
-    #     single_results = evaluate_all_heuristics(AffineApproximationSolver, config, n=1)
-    #     for name, mean, std, time_taken in single_results:
-    #         results[(name, method)] = (mean, std, time_taken)
-    #
-    # # report the average per heuristic
-    # for heuristic in heuristics:
-    #     avg = np.mean([results[(heuristic.__name__, method)][0] for method in methods])
-    #     print(f"{heuristic.__name__}: {avg}")
-    #
-    # # report the average per method
-    # for method in methods:
-    #     avg = np.mean(
-    #         [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
-    #     )
-    #     print(f"{method.value}: {avg}")
-    #
+    methods = [m for m in EstStg]
+    heuristics = get_all_heuristics()
+
+    for method in methods:
+        config = Config()
+        config.MH_TIME_BUDGET = 0.1
+        config.MH_BUDGET = 1000
+        config.OBJECT_SELECTION_STRATEGY_A = method
+        config.VERBOSITY = 0
+        single_results = evaluate_all_heuristics(AffineApproximationSolver, config, n=1)
+        for name, mean, std, time_taken in single_results:
+            results[(name, method)] = (mean, std, time_taken)
+
+    # report the average per heuristic
+    for heuristic in heuristics:
+        avg = np.mean([results[(heuristic.__name__, method)][0] for method in methods])
+        print(f"{heuristic.__name__}: {avg}")
+
+    # report the average per method
+    for method in methods:
+        avg = np.mean(
+            [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
+        )
+        print(f"{method.value}: {avg}")
+
     # print("Random")
     # run_one(BasicSolver, RandomSearch, True)
     # run_one(BasicSolver, RandomSearch, False)

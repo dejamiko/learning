@@ -478,5 +478,24 @@ def get_preprocessed_images():
         cv2.imwrite(f"img_{ps}.png", img)
 
 
+def get_contours_for_object():
+    c = Config()
+    e = Extractor()
+    image = cv2.imread("_data/banana_grasping/image_0.png")
+    e._extract_mask_rcnn(image, c.MASK_RCNN_THRESHOLD, "mask_rcnn_banana")
+    e._extract_panoptic_fpn(image, c.MASK_RCNN_THRESHOLD, "panoptic_fpn_banana")
+    e._extract_cascade_mask_rcnn(image, c.MASK_RCNN_THRESHOLD, "cascade_mask_rcnn_banana")
+
+    image = cv2.imread("_data/hammer_grasping/image_0.png")
+    e._extract_mask_rcnn(image, c.MASK_RCNN_THRESHOLD, "mask_rcnn_hammer")
+    e._extract_panoptic_fpn(image, c.MASK_RCNN_THRESHOLD, "panoptic_fpn_hammer")
+    e._extract_cascade_mask_rcnn(image, c.MASK_RCNN_THRESHOLD, "cascade_mask_rcnn_hammer")
+
+    image = cv2.imread("_data/scissors_grasping/image_0.png")
+    e._extract_mask_rcnn(image, c.MASK_RCNN_THRESHOLD, "mask_rcnn_scissors")
+    e._extract_panoptic_fpn(image, c.MASK_RCNN_THRESHOLD, "panoptic_fpn_scissors")
+    e._extract_cascade_mask_rcnn(image, c.MASK_RCNN_THRESHOLD, "cascade_mask_rcnn_scissors")
+
+
 if __name__ == "__main__":
-    pass
+    get_contours_for_object()

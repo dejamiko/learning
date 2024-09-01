@@ -46,12 +46,12 @@ class Config:
     CASCADE_MASK_RCNN_THRESHOLD = 0.003
 
     # Threshold approximation solver
-    OBJECT_SELECTION_STRATEGY_T = ObjectSelectionStrategyThreshold.DENSITY
+    OBJECT_SELECTION_STRATEGY_T = ObjectSelectionStrategyThreshold.INTERVALS
     USE_TRANSFER_EVALUATION = False
 
     # Affine approximation solver
     MERGING_FACTOR = 0.5
-    OBJECT_SELECTION_STRATEGY_A = ObjectSelectionStrategyAffine.RANDOM
+    OBJECT_SELECTION_STRATEGY_A = ObjectSelectionStrategyAffine.GREEDY_R
 
     DO_NOT_ITER = False
 
@@ -65,7 +65,6 @@ class Config:
     SA_T_MIN = 0.1139
 
     TS_L = 10000
-    TS_GAMMA = 2
 
     RHC_ITER = 5
 
@@ -82,8 +81,8 @@ class Config:
 
     MP_OPTIMISER_NAME = "OriginalWarSO"
 
-    MH_BUDGET = 45000
-    MH_TIME_BUDGET = 8  # in seconds
+    MH_BUDGET = 2000
+    MH_TIME_BUDGET = 1  # in seconds
 
     def __init__(self):
         pass

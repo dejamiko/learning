@@ -2,8 +2,8 @@ import numpy as np
 
 from config import Config
 from optim.approx_solver import ApproximationSolver
-from optim.mh import EvolutionaryStrategy, RandomisedHillClimbing, TabuSearch
-from optim.solver import evaluate_provided_heuristics
+from optim.mh import EvolutionaryStrategy, RandomisedHillClimbing, TabuSearch, get_all_heuristics
+from optim.solver import evaluate_provided_heuristics, evaluate_all_heuristics
 from tm_utils import (
     ObjectSelectionStrategyThreshold as EstStg,
     get_object_indices,
@@ -247,9 +247,9 @@ def run_one_thresh(run_num, bgt_b, bgt_d):
                 ),
             )
             max_scores.append(max([r[1] for r in results]))
-            # print(f"For config {c}")
-            # for name, mean, std, total_time in results:
-            #     print(f"{name}: {mean}")
+            print(f"For config {c}")
+            for name, mean, std, total_time in results:
+                print(f"{name}: {mean}")
 
         for i in range(len(max_scores) - 1):
             if max_scores[i + 1] < max_scores[i]:
@@ -273,62 +273,58 @@ def run_one_thresh(run_num, bgt_b, bgt_d):
                 random_score = max_mh
             else:
                 other_scores_min = min(other_scores_min, max_mh)
-            # print(f"For config {c}")
-            # for name, mean, std, total_time in results:
-            #     print(f"{name}: {mean}")
+            print(f"For config {c}")
+            for name, mean, std, total_time in results:
+                print(f"{name}: {mean}")
         if random_score > other_scores_min:
             failures_2 += 1
     return failures_1, failures_2
 
 
 if __name__ == "__main__":
-    for b in [250, 500, 750, 1000, 1500, 2000]:
-        for d in [5, 6, 7, 8, 9, 10]:
-            f1, f2 = run_one_thresh(10, b, d)
-            print("For", b, "and", d, "got", f1, f2)
-    # results = {}
-    # results_threshold_known = {}
-    #
-    # methods = [m for m in EstStg]
-    # heuristics = get_all_heuristics()
-    #
-    # for method in methods:
-    #     config = Config()
-    #     # config.MH_TIME_BUDGET = 0.1
-    #     config.MH_BUDGET = 5000
-    #     config.OBJECT_SELECTION_STRATEGY_T = method
-    #     config.VERBOSITY = 0
-    #     single_results = evaluate_all_heuristics(
-    #         ThresholdApproximationSolver, config, n=1
-    #     )
-    #     for name, mean, std, time_taken in single_results:
-    #         results[(name, method)] = (mean, std, time_taken)
-    #     single_results = evaluate_all_heuristics(
-    #         ThresholdApproximationSolver, config, n=1
-    #     )
-    #     for name, mean, std, time_taken in single_results:
-    #         results_threshold_known[(name, method)] = (mean, std, time_taken)
-    #
-    # # report the average per heuristic
-    # for heuristic in heuristics:
-    #     avg = np.mean([results[(heuristic.__name__, method)][0] for method in methods])
-    #     avg_known = np.mean(
-    #         [
-    #             results_threshold_known[(heuristic.__name__, method)][0]
-    #             for method in methods
-    #         ]
-    #     )
-    #     print(f"{heuristic.__name__}: {avg}, {avg_known}")
-    #
-    # # report the average per method
-    # for method in methods:
-    #     avg = np.mean(
-    #         [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
-    #     )
-    #     avg_known = np.mean(
-    #         [
-    #             results_threshold_known[(heuristic.__name__, method)][0]
-    #             for heuristic in heuristics
-    #         ]
-    #     )
-    #     print(f"{method.value}: {avg}, {avg_known}")
+    results = {}
+    results_threshold_known = {}
+
+    methods = [m for m in EstStg]
+    heuristics = get_all_heuristics()
+
+    for method in methods:
+        config = Config()
+        config.MH_TIME_BUDGET = 0.1
+        config.MH_BUDGET = 1000
+        config.OBJECT_SELECTION_STRATEGY_T = method
+        config.VERBOSITY = 0
+        single_results = evaluate_all_heuristics(
+            ThresholdApproximationSolver, config, n=1
+        )
+        for name, mean, std, time_taken in single_results:
+            results[(name, method)] = (mean, std, time_taken)
+        single_results = evaluate_all_heuristics(
+            ThresholdApproximationSolver, config, n=1
+        )
+        for name, mean, std, time_taken in single_results:
+            results_threshold_known[(name, method)] = (mean, std, time_taken)
+
+    # report the average per heuristic
+    for heuristic in heuristics:
+        avg = np.mean([results[(heuristic.__name__, method)][0] for method in methods])
+        avg_known = np.mean(
+            [
+                results_threshold_known[(heuristic.__name__, method)][0]
+                for method in methods
+            ]
+        )
+        print(f"{heuristic.__name__}: {avg}, {avg_known}")
+
+    # report the average per method
+    for method in methods:
+        avg = np.mean(
+            [results[(heuristic.__name__, method)][0] for heuristic in heuristics]
+        )
+        avg_known = np.mean(
+            [
+                results_threshold_known[(heuristic.__name__, method)][0]
+                for heuristic in heuristics
+            ]
+        )
+        print(f"{method.value}: {avg}, {avg_known}")

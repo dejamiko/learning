@@ -97,15 +97,11 @@ class Environment:
         count = 0
         selected = get_object_indices(selected_bin)
         selected_obj = self.get_objects()[selected]
-        # print("transferred")
         for o in self.get_objects():
             for s in selected_obj:
                 if self.get_transfer_success(s.index, o.index):
-                    # n = o.name.replace('_', '\\_')
-                    # print(f"{n} ({o.task.value})")
                     count += 1
                     break
-        # print("\\transferred")
         return count
 
     def evaluate_selection_visual_similarity_based(self, selected_bin):

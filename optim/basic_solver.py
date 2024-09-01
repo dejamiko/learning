@@ -16,24 +16,27 @@ from tm_utils import (
 class BasicSolver(Solver):
     def solve_one(self):
         selected = self.heuristic.solve()
-        # objects = self.env.get_objects()
-        # sel = get_object_indices(selected)
-        # for s in sel:
-        #     print(objects[s].name, objects[s].task)
         return self.env.evaluate_selection_transfer_based(selected)
 
     def _init_data(self, i):
         super()._init_data(i)
-        if not self.config.SUCCESS_RATE_BOOLEAN:
-            self.env.update_visual_similarities(self.config.AFFINE_FUNCTIONS)
 
 
-def run_one_thresh(obj_num, run_num, bgt):
+def run_one_thresh(obj_num, run_num, bgt_b, bgt_d):
     c = Config()
     c.SUCCESS_RATE_BOOLEAN = True
     c.MH_TIME_BUDGET = 1
-    c.MH_BUDGET = bgt
+    c.MH_BUDGET = bgt_b
+    c.DEMONSTRATION_BUDGET = bgt_d
     c.OBJ_NUM = obj_num
+    failures = 0
+    baselines = [
+        "RandomSearch",
+        "ClusteringSearch",
+        "GreedyLocalSearch",
+        "RandomSearchIter",
+        "ExhaustiveSearch",
+    ]
     configs = [
         (
             [],
@@ -58,6 +61,7 @@ def run_one_thresh(obj_num, run_num, bgt):
         ),
     ]
     for ps, emb, sim, use_all, thresholds in configs:
+        count = 0
         c.IMAGE_PREPROCESSING = ps
         c.IMAGE_EMBEDDINGS = emb
         c.SIMILARITY_MEASURE = sim
@@ -67,15 +71,25 @@ def run_one_thresh(obj_num, run_num, bgt):
         print(f"For config {ps}, {emb}, {sim}, {use_all}")
         for name, mean, std, total_time in results:
             print(f"{name}: {mean}")
+        names_to_check = [
+            r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
+        ][:3]
+        for n in names_to_check:
+            if n in baselines:
+                count += 1
+        if count > 0:
+            failures += 1
+    return failures
 
 
-def run_one_affine(obj_num, run_num, bgt):
-    failures = 0
+def run_one_affine(obj_num, run_num, bgt_b, bgt_d):
     c = Config()
     c.SUCCESS_RATE_BOOLEAN = False
     c.MH_TIME_BUDGET = 1
-    c.MH_BUDGET = bgt
+    c.MH_BUDGET = bgt_b
+    c.DEMONSTRATION_BUDGET = bgt_d
     c.OBJ_NUM = obj_num
+    failures = 0
     baselines = [
         "RandomSearch",
         "ClusteringSearch",
@@ -131,32 +145,33 @@ def run_one_affine(obj_num, run_num, bgt):
         c.AFFINE_FUNCTIONS = funs
         results = evaluate_all_heuristics(BasicSolver, c, n=run_num)
         print(f"For config {ps}, {emb}, {sim}, {use_all}")
+        for name, mean, std, total_time in results:
+            print(f"{name}: {mean}")
         names_to_check = [
-                             r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
-                         ][:3]
+            r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
+        ][:3]
         for n in names_to_check:
             if n in baselines:
                 count += 1
         if count > 0:
             failures += 1
-            # print(f"Failed with {count} baselines")
-        for name, mean, std, total_time in results:
-            print(f"{name}: {mean}")
     return failures
 
 
 if __name__ == "__main__":
-    # for bgt in range(1000, 10000, 1000):
-    #     print(f"For budget {bgt}")
-    #     run_one_thresh(51, 100, bgt)
-    #     run_one_thresh(40, 100, bgt)
+    c = Config()
+    results = evaluate_all_heuristics(BasicSolver, c, n=10)
+    for name, mean, std, total_time in results:
+        print(f"{name}: {mean}")
+    # for b in [250, 500, 750, 1000, 1500, 2000]:
+    #     for d in [5, 6, 7, 8, 9, 10]:
+    #         f1 = run_one_thresh(51, 10, b, d)
+    #         f2 = run_one_thresh(40, 10, b, d)
+    #         f1_a = run_one_affine(51, 10, b, d)
+    #         f2_a = run_one_affine(40, 10, b, d)
+    #         print("For", b, "and", d, "got", f1, f2, f1_a, f2_a)
 
-    # for bgt in range(1000, 10001, 1000):
-    #     print(f"For budget {bgt}")
-    #     f1 = run_one_affine(51, 10, bgt)
-    #     f2 = run_one_affine(40, 10, bgt)
-    #     print(f1 + f2, "failures")
-
-    f1 = run_one_affine(51, 100, 7000)
-    f2 = run_one_affine(40, 100, 7000)
-    print(f1 + f2)
+    # run_one_thresh(51, 50, 2000, 8)
+    # run_one_thresh(40, 50, 2000, 8)
+    # run_one_affine(51, 50, 2000, 8)
+    # run_one_affine(40, 50, 2000, 8)

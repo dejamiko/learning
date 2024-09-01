@@ -397,23 +397,23 @@ class Extractor:
 
         return outputs.detach().cpu().numpy().squeeze().tolist()
 
-    def _extract_mask_rcnn(self, image, threshold):  # pragma: no cover
+    def _extract_mask_rcnn(self, image, threshold, add_name=""):  # pragma: no cover
         return self._extract_detectron(
-            image, "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml", threshold
+            image, "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml", threshold, add_name
         )
 
-    def _extract_panoptic_fpn(self, image, threshold):  # pragma: no cover
+    def _extract_panoptic_fpn(self, image, threshold, add_name=""):  # pragma: no cover
         return self._extract_detectron(
-            image, "COCO-PanopticSegmentation/panoptic_fpn_R_50_3x.yaml", threshold
+            image, "COCO-PanopticSegmentation/panoptic_fpn_R_50_3x.yaml", threshold, add_name
         )
 
-    def _extract_cascade_mask_rcnn(self, image, threshold):  # pragma: no cover
+    def _extract_cascade_mask_rcnn(self, image, threshold, add_name=""):  # pragma: no cover
         return self._extract_detectron(
-            image, "Misc/cascade_mask_rcnn_R_50_FPN_3x.yaml", threshold
+            image, "Misc/cascade_mask_rcnn_R_50_FPN_3x.yaml", threshold, add_name
         )
 
     @staticmethod
-    def _extract_detectron(image, model, threshold):  # pragma: no cover
+    def _extract_detectron(image, model, threshold, add_name=""):  # pragma: no cover
         from detectron2.config import get_cfg
         from detectron2.engine import DefaultPredictor
         from detectron2.model_zoo import model_zoo
@@ -449,6 +449,8 @@ class Extractor:
 
         _, binary = cv2.threshold(contour_image, 127, 255, cv2.THRESH_BINARY)
 
+        cv2.imwrite(f"contour{add_name}.png", contour_image)
+
         # Find contours
         contours, _ = cv2.findContours(
             contour_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
@@ -461,6 +463,7 @@ class Extractor:
 
     @staticmethod
     def _preprocess_background_rem(image):
+        # method adapted from https://stackoverflow.com/a/50900143
         def bincount_app(a):
             a2D = a.reshape(-1, a.shape[-1])
             col_range = (256, 256, 256)
