@@ -498,4 +498,4 @@ def get_contours_for_object():
 
 
 if __name__ == "__main__":
-    get_contours_for_object()
+    pass
