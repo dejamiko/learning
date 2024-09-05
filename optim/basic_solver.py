@@ -9,7 +9,6 @@ from tm_utils import (
     ContourImageEmbeddings,
     ContourSimilarityMeasure,
     Task,
-    get_object_indices,
 )
 
 

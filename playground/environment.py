@@ -10,8 +10,8 @@ def apply_affine_fun(param, f):
 
 class Environment:
     """
-    A class to represent the environment. It provides an interface to the solver which abstracts the storage, oracle,
-    and objects.
+    A class to represent the environment. It provides an interface to the solver which abstracts the storage, and
+    objects.
     """
 
     def __init__(self, c):
@@ -178,6 +178,11 @@ class Environment:
         return similarity_dict
 
     def _get_visual_similarity_matrix(self, f_dict=None):
+        """
+        Get the visual similarity in a matrix form, optionally transformed with a function
+        :param f_dict: The optional dictionary of functions per task
+        :return: The visual similarity matrix
+        """
         if f_dict is None:
             f_dict = {t: (1.0, 0.0) for t in Task}
         visual_similarity = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
@@ -189,6 +194,12 @@ class Environment:
         return visual_similarity
 
     def _get_latent_similarity_matrix(self, f_dict=None):
+        """
+        Get the latent similarity in a matrix form, optionally transformed with a function. Note that latent similarity
+        is transfer success rates.
+        :param f_dict: The optional dictionary of functions per task
+        :return: The latent similarity matrix
+        """
         if f_dict is None:
             f_dict = {t: (1.0, 0.0) for t in Task}
         latent_similarity = np.zeros((self.c.OBJ_NUM, self.c.OBJ_NUM))
@@ -209,7 +220,10 @@ class Environment:
         """
         return self.storage.get_true_success_probability(i, j, self.c.PROB_THRESHOLD)
 
-    def update_visual_similarities(self, f_dict):
+    def update_similarities(self, f_dict):
+        """
+        Update the similarity data with a dictionary of affine functions to be applied.
+        """
         self.similarity_dict = self._get_obj_to_similarity_list_dict(f_dict)
         self.similarity_matrix = self._get_visual_similarity_matrix(f_dict)
         self.latent_sim_matrix = self._get_latent_similarity_matrix(f_dict)

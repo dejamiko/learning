@@ -2,7 +2,12 @@ import numpy as np
 
 from config import Config
 from optim.approx_solver import ApproximationSolver
-from optim.mh import EvolutionaryStrategy, RandomisedHillClimbing, TabuSearch, get_all_heuristics
+from optim.mh import (
+    EvolutionaryStrategy,
+    RandomisedHillClimbing,
+    TabuSearch,
+    get_all_heuristics,
+)
 from optim.solver import evaluate_provided_heuristics, evaluate_all_heuristics
 from tm_utils import (
     ObjectSelectionStrategyThreshold as EstStg,

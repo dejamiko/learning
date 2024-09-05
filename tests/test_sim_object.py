@@ -5,7 +5,7 @@ from pytest import fixture
 
 from config import Config
 from playground.sim_object import SimObject
-from tm_utils import Task, NNSimilarityMeasure, ImageEmbeddings, NNImageEmbeddings
+from tm_utils import Task, NNSimilarityMeasure, NNImageEmbeddings
 
 
 def test_object_init_works():

@@ -378,7 +378,7 @@ class Extractor:
 
     @staticmethod
     def _extract_r3m(image, config):
-        r3m = load_r3m("resnet50")  # resnet18, resnet34
+        r3m = load_r3m("resnet50")
         r3m.eval()
         r3m.to(config.DEVICE)
 
@@ -399,15 +399,23 @@ class Extractor:
 
     def _extract_mask_rcnn(self, image, threshold, add_name=""):  # pragma: no cover
         return self._extract_detectron(
-            image, "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml", threshold, add_name
+            image,
+            "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml",
+            threshold,
+            add_name,
         )
 
     def _extract_panoptic_fpn(self, image, threshold, add_name=""):  # pragma: no cover
         return self._extract_detectron(
-            image, "COCO-PanopticSegmentation/panoptic_fpn_R_50_3x.yaml", threshold, add_name
+            image,
+            "COCO-PanopticSegmentation/panoptic_fpn_R_50_3x.yaml",
+            threshold,
+            add_name,
         )
 
-    def _extract_cascade_mask_rcnn(self, image, threshold, add_name=""):  # pragma: no cover
+    def _extract_cascade_mask_rcnn(
+        self, image, threshold, add_name=""
+    ):  # pragma: no cover
         return self._extract_detectron(
             image, "Misc/cascade_mask_rcnn_R_50_FPN_3x.yaml", threshold, add_name
         )
@@ -425,9 +433,7 @@ class Extractor:
         cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(model)
         predictor = DefaultPredictor(cfg)
 
-        # Perform inference
         outputs = predictor(image)
-        # Get the predicted masks
         pred_masks = outputs["instances"].pred_masks.to("cpu").numpy()
 
         # Create a blank mask with the same dimensions as the input image
@@ -435,17 +441,12 @@ class Extractor:
 
         # Get the contours from the binary masks and draw them on the blank mask
         for mask in pred_masks:
-            # Convert the mask to uint8 type
             mask = (mask * 255).astype(np.uint8)
-            # Find contours
             contours_info, _ = cv2.findContours(
                 mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
             )
             for contour in contours_info:
-                # Draw the contours on the blank mask
-                cv2.drawContours(
-                    contour_image, [contour], -1, (255), 2
-                )  # Draw in white
+                cv2.drawContours(contour_image, [contour], -1, (255), 2)
 
         _, binary = cv2.threshold(contour_image, 127, 255, cv2.THRESH_BINARY)
 
@@ -505,16 +506,12 @@ class Extractor:
             point_coords=point_coords, point_labels=np.ones(num_points)
         )
 
-        # Combine all masks into one (logical OR)
         combined_mask = np.any(masks, axis=0)
-
         inverted_mask = np.logical_not(combined_mask).astype(np.uint8)
-
         final_mask = cv2.morphologyEx(
             inverted_mask.astype(np.uint8), cv2.MORPH_OPEN, np.ones((5, 5), np.uint8)
         )
 
-        # Create an empty image and apply the combined mask
         isolated_image = np.zeros_like(image)
         isolated_image[final_mask > 0] = image[final_mask > 0]
         return isolated_image

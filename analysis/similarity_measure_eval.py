@@ -11,7 +11,6 @@ from scipy.stats import pearsonr, spearmanr, kendalltau
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import (
-    f1_score,
     explained_variance_score,
     mean_absolute_error,
     mean_squared_error,
@@ -138,10 +137,6 @@ def get_spearmans_correlation_coefficient(df):
     return abs(float(c))
 
 
-def get_f1_score(df):
-    return float(f1_score(df["ls"], df["vs"]))
-
-
 def get_cv_r2(df, model):
     return float(
         cross_val_score(model, df[["vs"]], df["ls"], cv=5, scoring="r2").mean()
@@ -209,34 +204,6 @@ def find_nn_not_self(array, index):
     return nns
 
 
-def get_residual_analysis_plot(df, model):
-    model.fit(df[["vs"]], df["ls"])
-
-    y_pred = model.predict(df[["vs"]])
-    residuals = df["ls"] - y_pred
-
-    plt.scatter(y_pred, residuals)
-    plt.xlabel("Predicted")
-    plt.ylabel("Residuals")
-    plt.title("Residual Analysis")
-    return plt
-
-
-def get_bland_altman_plots(means, diffs):
-    fig, axes = plt.subplots(1, len(means))
-
-    for m, d, axis in zip(means, diffs, axes):
-        mean_diff = np.mean(d)
-        std_diff = np.std(d)
-
-        fig.suptitle("Bland-Altman Plots")
-        axis.scatter(m, d)
-        axis.axhline(mean_diff, color="red", linestyle="--")
-        axis.axhline(mean_diff + 1.96 * std_diff, color="grey", linestyle="--")
-        axis.axhline(mean_diff - 1.96 * std_diff, color="grey", linestyle="--")
-    plt.show()
-
-
 def run_full_suite(df):
     scores = {
         # metrics that fit some model or allow for the features to have some relation
@@ -297,8 +264,6 @@ def run_across_tasks(config, environment):
             final_scores_boolean[k] += s[k]
     for k in final_scores_boolean.keys():
         final_scores_boolean[k] /= len(scores_boolean)
-
-    # get_bland_altman_plots(means, diffs)
 
     return final_scores, final_scores_boolean
 
@@ -455,10 +420,7 @@ def get_all_results():
             ImagePreprocessing.GREYSCALE,
         ],
     ]
-    for obj_num, run_num in [
-        (30, 10),
-        # (40, 10), (51, 1)
-    ]:
+    for obj_num, run_num in [(30, 10), (40, 10), (51, 1)]:
         for ps in processing_steps_to_try:
             start = time.time()
             config = Config()
@@ -667,8 +629,8 @@ def get_best_results():
 
 
 if __name__ == "__main__":
-    # get_all_results()
-    get_best_results()
+    get_all_results()
+    # get_best_results()
     # obj_num = 51
     # run_num = 1
     # config = Config()

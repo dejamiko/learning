@@ -99,8 +99,6 @@ if __name__ == "__main__":
     app = dash.Dash(__name__)
     server = app.server
 
-    # fig = create_fig(df)
-
     # Layout
     app.layout = html.Div(
         [

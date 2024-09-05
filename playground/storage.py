@@ -11,7 +11,7 @@ from tm_utils import get_rng, Task
 
 class ObjectStorage:
     """
-    A singleton class to store objects, either randomly generated or loaded from the DINOBot data.
+    A class to store objects, either randomly generated or loaded from the DINOBot data.
     """
 
     def __init__(self, c):

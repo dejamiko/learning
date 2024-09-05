@@ -6,9 +6,14 @@ from optim.approx_solver import ApproximationSolver
 from optim.mh import (
     EvolutionaryStrategy,
     RandomisedHillClimbing,
-    TabuSearch, get_all_heuristics,
+    TabuSearch,
+    get_all_heuristics,
 )
-from optim.solver import evaluate_provided_heuristics, evaluate_heuristic, evaluate_all_heuristics
+from optim.solver import (
+    evaluate_provided_heuristics,
+    evaluate_heuristic,
+    evaluate_all_heuristics,
+)
 from tm_utils import (
     ObjectSelectionStrategyAffine as EstStg,
     get_object_indices,
@@ -39,12 +44,12 @@ class AffineApproximationSolver(ApproximationSolver):
     def _update_state(self, obj_selected):
         if not self.config.DO_NOT_ITER:
             self._update_affine_functions(obj_selected)
-            self.env.update_visual_similarities(self.affine_functions)
+            self.env.update_similarities(self.affine_functions)
 
     def _init_data(self, i):
         super()._init_data(i)
         self._reset_affine_functions()
-        self.env.update_visual_similarities(self.affine_functions)
+        self.env.update_similarities(self.affine_functions)
 
     def _reset_affine_functions(self):
         if self.config.DO_NOT_ITER:

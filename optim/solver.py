@@ -43,7 +43,6 @@ class Solver(ABC):
 
 
 def evaluate_heuristic(solver_class, config, heuristic, n=1):
-    # print(f"Evaluating {heuristic.__name__} with config {config}")
     solver = solver_class(config, heuristic)
     mean, std = solver.solve(n)
     return mean, std, solver.get_mean_time()

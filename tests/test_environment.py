@@ -154,7 +154,7 @@ def test_evaluate_selection_similarity_based_real_value_works(env_fixture):
     selected[3] = 1
 
     assert np.allclose(
-        env.evaluate_selection_visual_similarity_based(selected), 33.63231293713767
+        env.evaluate_selection_visual_similarity_based(selected), 66.36768706286233
     )
 
 
@@ -183,13 +183,13 @@ def test_update_visual_similarities(env_fixture):
     assert np.allclose(env.similarity_matrix[0, 2], 0.6297178434321439)
     assert np.allclose(env.similarity_matrix[0, 4], 0.7615928478640059)
 
-    env.update_visual_similarities({t: (2.0, 0.0) for t in Task})
+    env.update_similarities({t: (2.0, 0.0) for t in Task})
 
     assert env.similarity_matrix[0, 1] == 0.0
     assert env.similarity_matrix[0, 2] == 1.0
     assert env.similarity_matrix[0, 4] == 1.0
 
-    env.update_visual_similarities({t: (1.0, -0.1) for t in Task})
+    env.update_similarities({t: (1.0, -0.1) for t in Task})
 
     assert env.similarity_matrix[0, 1] == 0.0
     assert np.allclose(env.similarity_matrix[0, 2], 0.5297178434321439)

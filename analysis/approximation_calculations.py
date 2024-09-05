@@ -35,13 +35,13 @@ def get_threshold(ls, vs, config):
     best_f1 = None
     for threshold in np.linspace(0.0, 1.0, 200):
         vs_bin = convert_binary(vs, threshold)
-        f1_score = get_f1_score(ls_bin, vs_bin)
+        f1_scr = get_f1_score(ls_bin, vs_bin)
 
         if best_f1 is None:
-            best_f1 = f1_score
+            best_f1 = f1_scr
             best_threshold = threshold
-        elif best_f1 < f1_score:
-            best_f1 = f1_score
+        elif best_f1 < f1_scr:
+            best_f1 = f1_scr
             best_threshold = threshold
 
     return best_threshold

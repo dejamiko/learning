@@ -148,10 +148,4 @@ def find_swarms_hyperparameters():
 
 
 if __name__ == "__main__":
-    c = Config()
-    find_es_hyperparameters(c)
-    find_mealpy_optimiser(c)
-    find_sa_hyperparameters(c)
-    find_ts_hyperparameters(c)
-    evaluate_mealpy_optimisers(c)
-    find_swarms_hyperparameters()
+    pass
