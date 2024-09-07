@@ -282,13 +282,16 @@ def generate_training_plots():
         data = json.load(f)
     for emb, losses_by_model in data.items():
         for model_type, losses in losses_by_model.items():
+            plt.close()
+            plt.rcParams.update({'font.size': 15})
             training = losses["training"]
             validation = losses["validation"]
-            plt.close()
-            plt.plot(training, label="training")
-            plt.plot(validation, label="validation")
+            plt.plot(training, label="training", color="blue")
+            plt.plot(validation, label="validation", color="green")
+            plt.xlabel("Epoch")
+            plt.ylabel("Average Error")
             plt.legend()
-            plt.title(f"Preprocessing [{emb}] and model type `{model_type}`")
+            plt.title(f"[{emb}] and `{model_type}`", fontsize=18)
             plt.savefig(f"{emb}-{model_type}")
 
 

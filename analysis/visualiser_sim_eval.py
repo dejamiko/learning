@@ -9,12 +9,13 @@ from dash.dependencies import Input, Output
 
 from config import Config
 from playground.environment import Environment
-from tm_utils import NNImageEmbeddings, NNSimilarityMeasure, ImagePreprocessing
+from tm_utils import NNImageEmbeddings, NNSimilarityMeasure, ImagePreprocessing, ImageEmbeddings, SimilarityMeasure
 
 
 def prepare_data():
     config = Config()
     config.OBJ_NUM = 51
+    # best overall
     config.IMAGE_EMBEDDINGS = NNImageEmbeddings.SIAMESE
     config.SIMILARITY_MEASURE = NNSimilarityMeasure.TRAINED
     config.IMAGE_PREPROCESSING = [
@@ -22,6 +23,20 @@ def prepare_data():
         ImagePreprocessing.BACKGROUND_REM,
         ImagePreprocessing.GREYSCALE,
     ]
+    config.USE_ALL_IMAGES = True
+    # best non-siamese
+    # config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_FULL
+    # config.SIMILARITY_MEASURE = SimilarityMeasure.COSINE
+    # config.IMAGE_PREPROCESSING = []
+    # config.USE_ALL_IMAGES = False
+    # config.IMAGE_EMBEDDINGS = ImageEmbeddings.DINO_FULL
+    # original metric
+    # config.SIMILARITY_MEASURE = SimilarityMeasure.COSINE
+    # config.IMAGE_PREPROCESSING = [
+    #     ImagePreprocessing.CROPPING,
+    #     ImagePreprocessing.BACKGROUND_REM,
+    # ]
+    # config.USE_ALL_IMAGES = True
     env = Environment(config)
     vis_sims = []
     latent_sims = []
@@ -85,6 +100,7 @@ def create_fig(df):
         x="visual_similarity",
         y="transfer_success_rate",
         hover_name="name",
+        trendline="ols",
     )
     fig.update_traces(marker=dict(size=10))
     return fig

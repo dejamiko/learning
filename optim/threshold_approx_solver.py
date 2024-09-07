@@ -254,7 +254,7 @@ def run_one_thresh(run_num, bgt_b, bgt_d):
             max_scores.append(max([r[1] for r in results]))
             print(f"For config {c}")
             for name, mean, std, total_time in results:
-                print(f"{name}: {mean}")
+                print(f"{name}: {round(mean, 1)}±{round(std, 1)}")
 
         for i in range(len(max_scores) - 1):
             if max_scores[i + 1] < max_scores[i]:
@@ -280,7 +280,7 @@ def run_one_thresh(run_num, bgt_b, bgt_d):
                 other_scores_min = min(other_scores_min, max_mh)
             print(f"For config {c}")
             for name, mean, std, total_time in results:
-                print(f"{name}: {mean}")
+                print(f"{name}: {round(mean, 1)}±{round(std, 1)}")
         if random_score > other_scores_min:
             failures_2 += 1
     return failures_1, failures_2

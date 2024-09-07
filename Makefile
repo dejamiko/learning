@@ -30,8 +30,8 @@ vis_sim:
 	@python3 -m analysis.visualiser_sim_eval
 
 
-vis_mh:
-	@python3 -m analysis.visualiser_metaheuristic
+vis_proj:
+	@python3 -m analysis.visualiser_proj
 
 
 approx:

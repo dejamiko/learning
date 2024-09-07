@@ -4,7 +4,6 @@ import time
 from functools import cmp_to_key
 from pprint import pprint
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr, kendalltau
@@ -363,6 +362,18 @@ def compare_weighted_sum(scores_1, scores_2):
     return float_comp(tally)
 
 
+def get_ws_s(scores):
+    tally = 0.0
+    for m in metrics_scale_0_1.keys():
+        tally += metrics_weights[m] * metrics_scale_0_1[m](scores[m])
+
+    return round(tally, 4)
+
+
+def get_dnn_s(scores):
+    return round(scores["DINOBot NN score"], 4)
+
+
 def run_and_save(config, filename, n=10):
     all_scores = {}
     for emb in ImageEmbeddings:
@@ -605,8 +616,11 @@ class ResultStorage:
 
 
 def get_print(results):
+    scores = [get_ws_s(r[1][0]) for r in results]
+    # scores = [get_dnn_s(r[1][0]) for r in results]
     results = [r[0] for r in results]
-    pprint(results[:10])
+    for i in range(min(len(results), 20)):
+        pprint((results[i], scores[i]))
 
 
 def get_best_results():

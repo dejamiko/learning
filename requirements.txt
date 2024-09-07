@@ -7,6 +7,7 @@ wandb~=0.17.2
 pyswarms~=1.3.0
 simanneal~=0.5.0
 plotly
+statsmodels
 pandas
 umap-learn
 stopit

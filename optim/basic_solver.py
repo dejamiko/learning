@@ -69,7 +69,7 @@ def run_one_thresh(obj_num, run_num, bgt_b, bgt_d):
         results = evaluate_all_heuristics(BasicSolver, c, n=run_num)
         print(f"For config {ps}, {emb}, {sim}, {use_all}")
         for name, mean, std, total_time in results:
-            print(f"{name}: {mean}")
+            print(f"{name}: {round(mean, 1)}±{round(std, 1)}")
         names_to_check = [
             r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
         ][:3]
@@ -145,7 +145,7 @@ def run_one_affine(obj_num, run_num, bgt_b, bgt_d):
         results = evaluate_all_heuristics(BasicSolver, c, n=run_num)
         print(f"For config {ps}, {emb}, {sim}, {use_all}")
         for name, mean, std, total_time in results:
-            print(f"{name}: {mean}")
+            print(f"{name}: {round(mean, 1)}±{round(std, 1)}")
         names_to_check = [
             r[0] for r in sorted(results, key=lambda x: x[1], reverse=True)
         ][:3]
@@ -162,13 +162,6 @@ if __name__ == "__main__":
     results = evaluate_all_heuristics(BasicSolver, c, n=10)
     for name, mean, std, total_time in results:
         print(f"{name}: {mean}")
-    # for b in [250, 500, 750, 1000, 1500, 2000]:
-    #     for d in [5, 6, 7, 8, 9, 10]:
-    #         f1 = run_one_thresh(51, 10, b, d)
-    #         f2 = run_one_thresh(40, 10, b, d)
-    #         f1_a = run_one_affine(51, 10, b, d)
-    #         f2_a = run_one_affine(40, 10, b, d)
-    #         print("For", b, "and", d, "got", f1, f2, f1_a, f2_a)
 
     # run_one_thresh(51, 50, 2000, 8)
     # run_one_thresh(40, 50, 2000, 8)
